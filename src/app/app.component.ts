@@ -1,0 +1,51 @@
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationCancel } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.sass']
+})
+export class AppComponent implements OnInit {
+  title = 'novo-player';
+  links: Link[];
+  selectedIndex: number = 0;
+  oldSelectedIndex: number = 0;
+
+  constructor(private router: Router) {
+    router.events.subscribe((val) => {
+      if(val instanceof NavigationCancel) {
+        //The navigation away from a form with unsaved data was canceled
+        //therefore restore the old index so that the navigation bar selection
+        //goes back to where it was, which is the current form page
+        this.selectedIndex = this.oldSelectedIndex;
+      }
+  });
+  }
+
+  ngOnInit() {
+    this.links = [
+      new Link("/", "assets/navigation/ic_home_white_24dp.png"),
+      new Link("/search", "assets/navigation/ic_search_white_24dp.png"),
+      new Link("/settings", "assets/navigation/ic_settings_applications_white_24dp.png", true),
+      new Link("/help", "assets/navigation/ic_help_white_24dp.png"),
+    ];
+  }
+
+  setSelection(index:number) {
+    this.oldSelectedIndex = this.selectedIndex;
+    this.selectedIndex = index;
+  }
+}
+
+class Link {
+  route: string;
+  image: string;
+  splitTopFromBottom: boolean;
+
+  constructor(route: string, image: string, splitTopFromBottom: boolean = false) {
+    this.route = route;
+    this.image = image;
+    this.splitTopFromBottom = splitTopFromBottom;
+  }
+}

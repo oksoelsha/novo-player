@@ -1,0 +1,13 @@
+<app-window-controls title-img="assets/novo-player-logo.png"></app-window-controls>
+
+<div id="app-area">
+  <div id="navigation-menu">
+    <div *ngFor="let link of links; let i = index" [ngClass]="[(link.splitTopFromBottom)?'split-top-from-bottom':'', (selectedIndex == i)?'selected':'']">
+      <a href="#" (click)="setSelection(i)" [routerLink]="link.route"><img src="{{ link.image }}" /></a>
+    </div>
+  </div>
+  <div id="content">
+    <app-alerts></app-alerts>
+    <router-outlet></router-outlet>
+  </div>
+</div>

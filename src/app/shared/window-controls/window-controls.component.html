@@ -1,0 +1,30 @@
+<div id="titlebar" class="{{ maximizedClass }}">
+
+  <div id="window-title">
+    <img id="window-title-img" src="{{ titleImg }}" />
+  </div>
+
+  <div id="window-controls">
+
+    <div class="button" id="min-button" (click)="minimizeMainWindow()">
+      <img class="icon"
+        srcset="assets/icons/controls/min-w-10.png 1x, assets/icons/controls/min-w-12.png 1.25x, assets/icons/controls/min-w-15.png 1.5x, assets/icons/controls/min-w-15.png 1.75x, assets/icons/controls/min-w-20.png 2x, assets/icons/controls/min-w-20.png 2.25x, assets/icons/controls/min-w-24.png 2.5x, assets/icons/controls/min-w-30.png 3x, assets/icons/controls/min-w-30.png 3.5x"
+        draggable="false" />
+    </div>
+    <div class="button" id="max-button" (click)="maximizeMainWindow()">
+      <img class="icon"
+        srcset="assets/icons/controls/max-w-10.png 1x, assets/icons/controls/max-w-12.png 1.25x, assets/icons/controls/max-w-15.png 1.5x, assets/icons/controls/max-w-15.png 1.75x, assets/icons/controls/max-w-20.png 2x, assets/icons/controls/max-w-20.png 2.25x, assets/icons/controls/max-w-24.png 2.5x, assets/icons/controls/max-w-30.png 3x, assets/icons/controls/max-w-30.png 3.5x"
+        draggable="false" />
+    </div>
+    <div class="button" id="restore-button" (click)="restoreMainWindow()">
+      <img class="icon"
+        srcset="assets/icons/controls/restore-w-10.png 1x, assets/icons/controls/restore-w-12.png 1.25x, assets/icons/controls/restore-w-15.png 1.5x, assets/icons/controls/restore-w-15.png 1.75x, assets/icons/controls/restore-w-20.png 2x, assets/icons/controls/restore-w-20.png 2.25x, assets/icons/controls/restore-w-24.png 2.5x, assets/icons/controls/restore-w-30.png 3x, assets/icons/controls/restore-w-30.png 3.5x"
+        draggable="false" />
+    </div>
+    <div class="button" id="close-button" (click)="closeMainWindow()">
+      <img class="icon"
+        srcset="assets/icons/controls/close-w-10.png 1x, assets/icons/controls/close-w-12.png 1.25x, assets/icons/controls/close-w-15.png 1.5x, assets/icons/controls/close-w-15.png 1.75x, assets/icons/controls/close-w-20.png 2x, assets/icons/controls/close-w-20.png 2.25x, assets/icons/controls/close-w-24.png 2.5x, assets/icons/controls/close-w-30.png 3x, assets/icons/controls/close-w-30.png 3.5x"
+        draggable="false" />
+    </div>
+  </div>
+</div>

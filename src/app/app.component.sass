@@ -1,0 +1,47 @@
+* {box-sizing: border-box}
+
+#app-area
+  display: flex;
+  height: 100%;
+  padding-bottom: 32px;
+
+#navigation-menu
+  flex: 0 0 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  div
+    width: 100%;
+    margin-right: 0;
+    vertical-align: middle;
+    margin-bottom: 8px;
+    border-left: 2px solid transparent;
+    transition: 0.4s;
+    opacity: 0.3;
+
+  div img
+    display: block;
+    margin: 0 auto;
+
+  div:hover
+    opacity: 1.0;
+
+  div:active
+    opacity: 0.7;
+
+.split-top-from-bottom
+  margin-top: auto;
+
+.selected
+  opacity: 1.0 !important;
+  border-left: 2px solid white !important;
+
+.selected a
+  pointer-events: none;
+  cursor: default;
+
+#content
+  background-color: #333;
+  flex: 1;
+  padding: 0 20px 20px 20px;
