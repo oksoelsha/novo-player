@@ -1,5 +1,5 @@
 import { Component, OnDestroy  } from '@angular/core';
-import { AlertsService } from './alerts.service';
+import { AlertsService, AlertType } from './alerts.service';
 import { Subscription, timer, Observable } from 'rxjs';
 
 @Component({
@@ -15,10 +15,10 @@ export class AlertsComponent implements OnDestroy {
   waitTimer: Observable<number> = timer(3000);
 
   constructor(private alertService: AlertsService) {
-    this.subscription = this.alertService.getMessage().subscribe(message => {
-      if (message) {
-        this.alertMessage = message;
-        this.alertClass = message;
+    this.subscription = this.alertService.getAlert().subscribe(alert => {
+      if (alert) {
+        this.alertMessage = alert.message;
+        this.alertClass = AlertType[alert.type];
         this.startTimer();
       }
     });

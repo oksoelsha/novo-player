@@ -48,6 +48,6 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
     let settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path']);
     this.settingsService.saveSettings(settings);
     this.submitDisabled = true;
-    this.alertService.sendMessage('success');
+    this.alertService.success('Settings saved successfully');
   }
 }

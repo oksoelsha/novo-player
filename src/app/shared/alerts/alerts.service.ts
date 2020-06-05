@@ -5,15 +5,34 @@ import { Subject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AlertsService {
-  private subject = new Subject<string>();
+  private subject = new Subject<Alert>();
 
   constructor() { }
 
-  sendMessage(msg: string) {
-    this.subject.next(msg);
+  success(msg: string) {
+    this.subject.next(new Alert(msg, AlertType.Success));
   }
 
-  getMessage(): Observable<any> {
+  failure(msg: string) {
+    this.subject.next(new Alert(msg, AlertType.Failure));
+  }
+
+  getAlert(): Observable<Alert> {
     return this.subject.asObservable();
   }
+}
+
+class Alert {
+  message: string;
+  type: AlertType;
+
+  constructor(message: string, type: AlertType) {
+    this.message = message;
+    this.type = type;
+  }
+}
+
+export enum AlertType {
+  Success,
+  Failure
 }
