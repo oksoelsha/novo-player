@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Game } from 'src/app/models/game';
+import { GamesListerService } from 'src/app/services/games-lister.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  games: Promise<Game[]>;
+
+  constructor(private gamesLister: GamesListerService) { }
 
   ngOnInit() {
+    this.games = this.gamesLister.getGames();
   }
 
+  launch(game: Game) {
+    this.gamesLister.launchGame(game);
+  }
 }

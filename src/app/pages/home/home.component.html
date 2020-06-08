@@ -1,3 +1,13 @@
-<p>
-  home works!
-</p>
+<table *ngIf="games">
+  <tr>
+    <th>Name</th>
+    <th>Company</th>
+    <th>Year</th>
+  </tr>
+  <tr *ngFor="let game of games | async">
+    <td class="name">{{ game.name }}</td>
+    <td class="company">{{ game.company }}</td>
+    <td class="year">{{ game.year }}</td>
+    <td><span (click)="launch(game)">Launch</span></td>
+  </tr>
+</table>

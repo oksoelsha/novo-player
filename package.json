@@ -1,7 +1,7 @@
 {
   "name": "novo-player",
   "version": "0.0.0",
-  "main": "src/electron/dist/main.js",
+  "main": "electron/dist/electron/main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build --base-href ./ && tsc --p src/electron && electron ."
+    "electron": "ng build --base-href ./ && tsc --p electron && electron ."
   },
   "private": true,
   "dependencies": {

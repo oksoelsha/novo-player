@@ -2,18 +2,26 @@ import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import { SettingsService} from './SettingsService'
+import { GamesService } from './GamesService'
+import { EmulatorLaunchService } from './EmulatorLaunchService'
 
 let win: BrowserWindow
 let settingsService: SettingsService
+let gamesService: GamesService
+let emulatorLaunchService: EmulatorLaunchService
 
-app.on('ready', createWindow)
+app.on('ready', startApp)
 
 app.on('activate', () => {
     if (win === null) {
-        createWindow()
-        initializeServices();
+        startApp()
     }
 })
+
+function startApp() {
+    createWindow();
+    initializeServices();
+}
 
 function createWindow() {
     win = new BrowserWindow({
@@ -24,7 +32,7 @@ function createWindow() {
         backgroundColor: '#2e2c29',
         show: false,
         webPreferences: {
-            nodeIntegration: true,
+            nodeIntegration: true
         }
     })
     if (process.platform === "darwin") {
@@ -46,11 +54,15 @@ function createWindow() {
     win.on('closed', () => {
         win = null
     })
-
-    initializeServices();
 }
 
 function initializeServices() {
     settingsService = new SettingsService(win);
     settingsService.init();
+
+    gamesService = new GamesService(win);
+    gamesService.init();
+
+    emulatorLaunchService = new EmulatorLaunchService(settingsService);
+    emulatorLaunchService.init();
 }

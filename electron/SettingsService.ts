@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain } from 'electron'
 import * as os from 'os';
 import * as path from 'path'
 import * as fs from 'fs'
-import { Settings } from '../app/models/settings'
+import { Settings } from '../src/app/models/settings'
 
 export class SettingsService {
 
@@ -25,10 +25,10 @@ export class SettingsService {
         })
     }
 
-    getSettings() {
+    getSettings(): Settings {
         if (this.settings === undefined) {
             if (!fs.existsSync(this.settingsFile)) {
-                return "";
+                return new Settings("", "");
             } else {
                 let fileData = fs.readFileSync(this.settingsFile);
                 return JSON.parse(fileData.toString());
