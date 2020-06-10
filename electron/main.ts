@@ -4,11 +4,13 @@ import * as url from 'url'
 import { SettingsService} from './SettingsService'
 import { GamesService } from './GamesService'
 import { EmulatorLaunchService } from './EmulatorLaunchService'
+import { FilesService } from './FilesService'
 
 let win: BrowserWindow
 let settingsService: SettingsService
 let gamesService: GamesService
 let emulatorLaunchService: EmulatorLaunchService
+let filesService: FilesService
 
 app.on('ready', startApp)
 
@@ -65,4 +67,7 @@ function initializeServices() {
 
     emulatorLaunchService = new EmulatorLaunchService(settingsService);
     emulatorLaunchService.init();
+
+    filesService = new FilesService(win, settingsService);
+    filesService.init();
 }

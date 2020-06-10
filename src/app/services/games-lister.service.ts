@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IpcRenderer } from 'electron';
 import { Game } from '../models/game';
+import { ScreenshotData } from '../models/screenshot-data';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,14 @@ export class GamesListerService {
 
   launchGame(game: Game) {
     this.ipc.send("launchGame", game);
+  }
+
+  getScreenshot(game: Game): Promise<ScreenshotData> {
+    return new Promise<ScreenshotData>((resolve, reject) => {
+      this.ipc.once("getScreenshotResponse", (event, arg) => {
+        resolve(arg);
+      });
+      this.ipc.send("getScreenshot", game.msxGenId);
+    });
   }
 }
