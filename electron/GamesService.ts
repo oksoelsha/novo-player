@@ -25,6 +25,7 @@ export class GamesService {
             new Game('Ninja Princess', 'Pony Canyon', 1986, 820, 'C:\\Games\\MSX System\\Software\\roms\\NINJAPRI.ROM'),
             new Game('Pointless Fighting', 'SoftCorp', 2014, 10020, 'C:\\Games\\MSX System\\Software\\roms\\pfightin.rom'),
             new Game('Rambo', 'Pack-In-Video', 1985, 676, 'C:\\Games\\MSX System\\Software\\roms\\RAMBO.ROM'),
+            new Game('Gofer no Yabou Episode 2 - Nemesis 3 The Eve Of Destruction', 'Konami', 1988, 1254, 'C:\\Games\\MSX System\\Software\\cheats\\Nem3-inv.rom'),
         ]
     }
 }

@@ -1,16 +1,20 @@
 <table *ngIf="games">
   <tr>
-    <th>Name</th>
-    <th>Company</th>
-    <th>Year</th>
-  </tr>
-  <tr *ngFor="let game of games | async" (click)="showInfo(game)">
-    <td class="name">{{ game.name }}</td>
-    <td class="company">{{ game.company }}</td>
-    <td class="year">{{ game.year }}</td>
-    <td><img src="assets/operations/ic_play_arrow_white_18dp.png" (click)="launch(game)"></td>
+    <th class="name-title">Name</th>
+    <th class="company-title">Company</th>
+    <th class="year-title">Year</th>
   </tr>
 </table>
+<div class="table-data">
+  <table>
+    <tr *ngFor="let game of games | async" (click)="showInfo(game)">
+      <td class="name">{{ game.name }}</td>
+      <td class="company">{{ game.company }}</td>
+      <td class="year">{{ game.year }}</td>
+      <td><img src="assets/operations/ic_play_arrow_white_18dp.png" (click)="launch(game)"></td>
+    </tr>
+  </table>
+</div>
 
 <div class="screenshot">
   <img src="{{ (screenshot_a_1 | async)?.screenshot1 }}" class="{{ transparent1 }}">

@@ -6,6 +6,8 @@ import { ScreenshotData } from '../src/app/models/screenshot-data'
 
 export class FilesService {
 
+    private imageDataPrefix: string = 'data:image/png;base64,';
+
     constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
 
     init() {
@@ -17,12 +19,23 @@ export class FilesService {
 
     getScreenshotData(genMsxId: number): ScreenshotData {
         var screenshotsPath1 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'a.png')
-        var data1 = fs.readFileSync(screenshotsPath1).toString('base64');
+        var data1: string;
+        try {
+            data1 = this.imageDataPrefix + fs.readFileSync(screenshotsPath1).toString('base64');
+        } catch (err) {
+            data1 = "";
+        }
 
-        var screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b.png')
-        var data2 = fs.readFileSync(screenshotsPath2).toString('base64');
+        if (data1 != "") {
+            var screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b.png')
+            var data2: string;
+            try {
+                data2 = this.imageDataPrefix + fs.readFileSync(screenshotsPath2).toString('base64');
+            } catch (err) {
+                data2 = "";
+            }
+        }
 
-        var prefix = 'data:image/png;base64,'
-        return new ScreenshotData(prefix + data1, prefix + data2)
+        return new ScreenshotData(data1, data2)
     }
 }
