@@ -10,11 +10,14 @@ import { ScreenshotData } from 'src/app/models/screenshot-data';
 })
 export class HomeComponent implements OnInit {
 
+  static noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
+  static noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
+
   games: Promise<Game[]>;
-  screenshot_a_1: Promise<ScreenshotData>;
-  screenshot_a_2: Promise<ScreenshotData>;
-  screenshot_b_1: Promise<ScreenshotData>;
-  screenshot_b_2: Promise<ScreenshotData>;
+  screenshot_a_1: ScreenshotData;
+  screenshot_a_2: ScreenshotData;
+  screenshot_b_1: ScreenshotData;
+  screenshot_b_2: ScreenshotData;
   toggle: boolean = false;
   transparent1: string = "";
   transparent2: string = "transparent";
@@ -23,12 +26,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.games = this.gamesLister.getGames();
-    this.screenshot_a_1 = new Promise((resolve) => {
-      resolve(new ScreenshotData("assets/noscrsht.png", ""));
-    });
-    this.screenshot_b_1 = new Promise((resolve) => {
-      resolve(new ScreenshotData("", "assets/noscrsht.png"));
-    });
+    this.screenshot_a_1 = this.screenshot_a_2 = HomeComponent.noScreenshot1;
+    this.screenshot_b_1 = this.screenshot_b_2 = HomeComponent.noScreenshot2;
   }
 
   launch(game: Game) {
@@ -36,18 +35,35 @@ export class HomeComponent implements OnInit {
   }
 
   showInfo(game: Game) {
-    let screenshots: Promise<ScreenshotData> = this.gamesLister.getScreenshot(game)
-    if(this.toggle) {
-      this.screenshot_a_1 = screenshots;
-      this.screenshot_b_1 = screenshots;
-      this.transparent1 = ""
-      this.transparent2 = "transparent"
+    this.gamesLister.getScreenshot(game).then((screenshots) => {
+      if (this.toggle) {
+        this.screenshot_a_1 = this.getScreenshot1Data(screenshots);
+        this.screenshot_b_1 = this.getScreenshot2Data(screenshots);
+        this.transparent1 = ""
+        this.transparent2 = "transparent"
+      } else {
+        this.screenshot_a_2 = this.getScreenshot1Data(screenshots);
+        this.screenshot_b_2 = this.getScreenshot2Data(screenshots);
+        this.transparent1 = "transparent"
+        this.transparent2 = ""
+      }
+      this.toggle = !this.toggle;
+    })
+  }
+
+  private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {
+    if (screenshots.screenshot1 == "") {
+      return HomeComponent.noScreenshot1;
     } else {
-      this.screenshot_a_2 = screenshots;
-      this.screenshot_b_2 = screenshots;
-      this.transparent1 = "transparent"
-      this.transparent2 = ""
+      return screenshots;
     }
-    this.toggle = !this.toggle;
+  }
+
+  private getScreenshot2Data(screenshots: ScreenshotData): ScreenshotData {
+    if (screenshots.screenshot2 == "") {
+      return HomeComponent.noScreenshot2;
+    } else {
+      return screenshots;
+    }
   }
 }

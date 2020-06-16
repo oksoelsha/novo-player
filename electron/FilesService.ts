@@ -26,14 +26,16 @@ export class FilesService {
             data1 = "";
         }
 
+        var data2: string;
         if (data1 != "") {
             var screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b.png')
-            var data2: string;
             try {
                 data2 = this.imageDataPrefix + fs.readFileSync(screenshotsPath2).toString('base64');
             } catch (err) {
                 data2 = "";
             }
+        } else {
+            data2 = "";
         }
 
         return new ScreenshotData(data1, data2)
