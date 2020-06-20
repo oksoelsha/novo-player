@@ -5,9 +5,11 @@ import { SettingsService} from './SettingsService'
 import { GamesService } from './GamesService'
 import { EmulatorLaunchService } from './EmulatorLaunchService'
 import { FilesService } from './FilesService'
+import { EmulatorRepositoryService } from './EmulatorRepositoryService'
 
 let win: BrowserWindow
 let settingsService: SettingsService
+let emulatorRepositoryService: EmulatorRepositoryService
 let gamesService: GamesService
 let emulatorLaunchService: EmulatorLaunchService
 let filesService: FilesService
@@ -62,7 +64,10 @@ function initializeServices() {
     settingsService = new SettingsService(win);
     settingsService.init();
 
-    gamesService = new GamesService(win);
+    emulatorRepositoryService = new EmulatorRepositoryService(settingsService)
+    emulatorRepositoryService.init();
+
+    gamesService = new GamesService(win, emulatorRepositoryService);
     gamesService.init();
 
     emulatorLaunchService = new EmulatorLaunchService(settingsService);

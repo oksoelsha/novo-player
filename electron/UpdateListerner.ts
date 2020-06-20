@@ -1,0 +1,3 @@
+interface UpdateListerner {
+    reinit(): void;
+}

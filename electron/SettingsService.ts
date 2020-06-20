@@ -9,6 +9,7 @@ export class SettingsService {
     settings: Settings;
     settingsPath: string = path.join(os.homedir(), 'Novo Player');
     settingsFile: string = path.join(this.settingsPath, 'settings.nps');
+    listeners: UpdateListerner[] = [];
 
     constructor(private win: BrowserWindow) { }
 
@@ -42,11 +43,22 @@ export class SettingsService {
         let data = JSON.stringify(settings);
         fs.writeFileSync(this.settingsFile, data);
         this.settings = settings;
+        this.updateListerners();
+    }
+
+    addListerner(listener: UpdateListerner) {
+        this.listeners.push(listener);
     }
 
     private createFolderIfNecessary() {
         if (!fs.existsSync(this.settingsPath)) {
             fs.mkdirSync(this.settingsPath);
         }
+    }
+
+    private updateListerners() {
+        this.listeners.forEach((listener) => {
+            listener.reinit();
+        });
     }
 }
