@@ -36,6 +36,9 @@ export class GamesService {
             if (repositoryData != null) {
                 game.setCompany(repositoryData.company)
                 game.setYear(repositoryData.year)
+                game.setCountry(repositoryData.country)
+                game.setMapper(repositoryData.mapper)
+                game.setRemark(repositoryData.remark)
             }
         });
 

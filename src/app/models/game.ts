@@ -5,6 +5,10 @@ export class Game {
     sha1Code: string;
     company: string;
     year: string;
+    country: string;
+
+    mapper: string;
+    remark: string;
 
     constructor(name: string, rom: string, sha1Code: string, msxGenId: number) {
         this.name = name;
@@ -19,5 +23,17 @@ export class Game {
 
     setYear(year: string) {
         this.year = year;
+    }
+
+    setCountry(country: string) {
+        this.country = country;
+    }
+
+    setMapper(mapper: string) {
+        this.mapper = mapper;
+    }
+
+    setRemark(remark: string) {
+        this.remark = remark;
     }
 }

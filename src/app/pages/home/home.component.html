@@ -25,3 +25,28 @@
   <img src="{{ screenshot_b_1.screenshot2 }}" class="{{ transparent1 }}">
   <img src="{{ screenshot_b_2.screenshot2 }}" class="{{ transparent2 }}">
 </div>
+
+<div>
+  <table *ngIf="selectedGame">
+    <tr>
+      <td>Country</td>
+      <td>{{ selectedGame.country }}</td>
+    </tr>
+    <tr>
+      <td>SHA1</td>
+      <td>{{ selectedGame.sha1Code }}</td>
+    </tr>
+    <tr>
+      <td>MSX Generation ID</td>
+      <td>{{ selectedGame.msxGenId }}</td>
+    </tr>
+    <tr>
+      <td>Mapper</td>
+      <td>{{ selectedGame.mapper }}</td>
+    </tr>
+    <tr *ngIf="selectedGame.remark">
+      <td>Remark</td>
+      <td>{{ selectedGame.remark }}</td>
+    </tr>
+  </table>
+</div>

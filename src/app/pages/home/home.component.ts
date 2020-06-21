@@ -22,6 +22,8 @@ export class HomeComponent implements OnInit {
   transparent1: string = "";
   transparent2: string = "transparent";
 
+  selectedGame: Game = null;
+
   constructor(private gamesLister: GamesListerService) { }
 
   ngOnInit() {
@@ -35,6 +37,7 @@ export class HomeComponent implements OnInit {
   }
 
   showInfo(game: Game) {
+    this.selectedGame = game;
     this.gamesLister.getScreenshot(game).then((screenshots) => {
       if (this.toggle) {
         this.screenshot_a_1 = this.getScreenshot1Data(screenshots);

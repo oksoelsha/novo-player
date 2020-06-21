@@ -12,7 +12,7 @@ export class EmulatorRepositoryService implements UpdateListerner {
         settingsService.addListerner(this);
     }
 
-    init() {
+    init(): void {
         let gamesDataMap: Map<string, RepositoryData> = new Map<string, RepositoryData>();
         let softwaredbFilename: string = path.join(this.settingsService.getSettings().openmsxPath, 'share/softwaredb.xml');
 
@@ -29,6 +29,8 @@ export class EmulatorRepositoryService implements UpdateListerner {
 
                             if (dump[y].rom.hasOwnProperty('type')) {
                                 repositoryData.setMapper(dump[y].rom.type)
+                            } else {
+                                repositoryData.setMapper('Mirrored ROM')
                             }
 
                             if (dump[y].rom.hasOwnProperty('remark')) {
@@ -60,7 +62,7 @@ export class EmulatorRepositoryService implements UpdateListerner {
         return this.repositoryInfo;
     }
 
-    reinit() {
+    reinit(): void {
         this.init();
     }
 }
