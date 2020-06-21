@@ -8,11 +8,12 @@ export class EmulatorRepositoryService implements UpdateListerner {
 
     repositoryInfo: Map<string, RepositoryData>;
 
-    constructor(private settingsService: SettingsService) { 
+    constructor(private settingsService: SettingsService) {
         settingsService.addListerner(this);
     }
 
     init(): void {
+        var self = this;
         let gamesDataMap: Map<string, RepositoryData> = new Map<string, RepositoryData>();
         let softwaredbFilename: string = path.join(this.settingsService.getSettings().openmsxPath, 'share/softwaredb.xml');
 
@@ -21,41 +22,51 @@ export class EmulatorRepositoryService implements UpdateListerner {
                 var result = parser.parse(data.toString());
                 for (var s in result.softwaredb.software) {
                     var software = result.softwaredb.software
-                    for (var y in software[s].dump) {
-                        var dump = software[s].dump
-                        if (dump[y].hasOwnProperty('rom')) {
-                            let repositoryData = new RepositoryData(software[s].title, software[s].system, software[s].company,
-                                software[s].year, software[s].country);
 
-                            if (dump[y].rom.hasOwnProperty('type')) {
-                                repositoryData.setMapper(dump[y].rom.type)
-                            } else {
-                                repositoryData.setMapper('Mirrored ROM')
-                            }
-
-                            if (dump[y].rom.hasOwnProperty('remark')) {
-                                repositoryData.setRemark(dump[y].rom.remark)
-                            }
-
-                            gamesDataMap.set(dump[y].rom.hash, repositoryData)
-
-                        } else if (dump[y].hasOwnProperty('megarom')) {
-                            let repositoryData = new RepositoryData(software[s].title, software[s].system, software[s].company,
-                                software[s].year, software[s].country);
-
-                            repositoryData.setMapper(dump[y].megarom.type)
-
-                            if (dump[y].megarom.hasOwnProperty('remark')) {
-                                repositoryData.setRemark(dump[y].megarom.remark)
-                            }
-
-                            gamesDataMap.set(dump[y].megarom.hash, repositoryData)
+                    if (Object.prototype.toString.call(software[s].dump) === '[object Array]') {
+                        for (var y in software[s].dump) {
+                            self.processDump(software[s], software[s].dump[y], gamesDataMap)
                         }
+                    } else {
+                        self.processDump(software[s], software[s].dump, gamesDataMap)
                     }
                 }
             });
         }
         this.repositoryInfo = gamesDataMap
+    }
+
+
+    processDump(software: any, dump: any, gamesDataMap: Map<string, RepositoryData>): void {
+        if (dump.hasOwnProperty('rom')) {
+            let repositoryData = new RepositoryData(software.title, software.system, software.company,
+                software.year, software.country);
+
+            if (dump.rom.hasOwnProperty('type')) {
+                repositoryData.setMapper(dump.rom.type)
+            } else {
+                repositoryData.setMapper('Mirrored ROM')
+            }
+
+            if (dump.rom.hasOwnProperty('remark')) {
+                repositoryData.setRemark(dump.rom.remark)
+            }
+
+            gamesDataMap.set(dump.rom.hash, repositoryData)
+
+        }
+        if (dump.hasOwnProperty('megarom')) {
+            let repositoryData = new RepositoryData(software.title, software.system, software.company,
+                software.year, software.country);
+
+            repositoryData.setMapper(dump.megarom.type)
+
+            if (dump.megarom.hasOwnProperty('remark')) {
+                repositoryData.setRemark(dump.megarom.remark)
+            }
+
+            gamesDataMap.set(dump.megarom.hash, repositoryData)
+        }
     }
 
     getRepositoryInfo(): Map<string, RepositoryData> {
