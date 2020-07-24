@@ -6,13 +6,15 @@ import { GamesService } from './GamesService'
 import { EmulatorLaunchService } from './EmulatorLaunchService'
 import { FilesService } from './FilesService'
 import { EmulatorRepositoryService } from './EmulatorRepositoryService'
+import { ExtraDataService } from './ExtraDataService'
 
 let win: BrowserWindow
 let settingsService: SettingsService
-let emulatorRepositoryService: EmulatorRepositoryService
 let gamesService: GamesService
 let emulatorLaunchService: EmulatorLaunchService
 let filesService: FilesService
+let emulatorRepositoryService: EmulatorRepositoryService
+let extraDataService: ExtraDataService
 
 app.on('ready', startApp)
 
@@ -72,6 +74,9 @@ function initializeServices() {
 
     emulatorLaunchService = new EmulatorLaunchService(settingsService);
     emulatorLaunchService.init();
+
+    extraDataService = new ExtraDataService();
+    extraDataService.init();
 
     filesService = new FilesService(win, settingsService);
     filesService.init();

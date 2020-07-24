@@ -1,4 +1,3 @@
-import { ipcMain } from 'electron'
 import { SettingsService } from 'SettingsService'
 import * as path from 'path'
 import * as fs from 'fs'
@@ -6,7 +5,7 @@ import * as parser from 'fast-xml-parser';
 
 export class EmulatorRepositoryService implements UpdateListerner {
 
-    repositoryInfo: Map<string, RepositoryData>;
+    private repositoryInfo: Map<string, RepositoryData>;
 
     constructor(private settingsService: SettingsService) {
         settingsService.addListerner(this);
@@ -16,10 +15,13 @@ export class EmulatorRepositoryService implements UpdateListerner {
         var self = this;
         let gamesDataMap: Map<string, RepositoryData> = new Map<string, RepositoryData>();
         let softwaredbFilename: string = path.join(this.settingsService.getSettings().openmsxPath, 'share/softwaredb.xml');
+        var options = {
+            tagValueProcessor : (val: any, tagName: any) => val.replace(/&amp;/g, '&')
+        }
 
         if (fs.existsSync(softwaredbFilename)) {
             fs.readFile(softwaredbFilename, function (err, data) {
-                var result = parser.parse(data.toString());
+                var result = parser.parse(data.toString(), options);
                 for (var s in result.softwaredb.software) {
                     var software = result.softwaredb.software
 

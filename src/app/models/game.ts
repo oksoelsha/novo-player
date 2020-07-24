@@ -3,6 +3,7 @@ export class Game {
     rom: string;
     msxGenId: number;
     sha1Code: string;
+    title: string;
     company: string;
     year: string;
     country: string;
@@ -15,6 +16,10 @@ export class Game {
         this.rom = rom;
         this.sha1Code = sha1Code;
         this.msxGenId = msxGenId;
+    }
+
+    setTitle(title: string) {
+        this.title = title;
     }
 
     setCompany(company: string) {
