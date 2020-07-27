@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { GamesListerService } from 'src/app/services/games-lister.service';
 import { ScreenshotData } from 'src/app/models/screenshot-data';
+import { ScannerService } from 'src/app/services/scanner.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
 
   selectedGame: Game = null;
 
-  constructor(private gamesLister: GamesListerService) { }
+  constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
 
   ngOnInit() {
     this.games = this.gamesLister.getGames();
@@ -52,6 +53,18 @@ export class HomeComponent implements OnInit {
       }
       this.toggle = !this.toggle;
     })
+  }
+
+  scanForGames() {
+    this.startScan([
+      'C:\\Games\\MSX System\\Software\\roms',
+    ])
+  }
+
+  startScan(folders: string[]) {
+    this.scanner.scan(folders).then( (result) => {
+      this.games = Promise.resolve(result)
+    });
   }
 
   private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {

@@ -7,6 +7,7 @@ import { EmulatorLaunchService } from './EmulatorLaunchService'
 import { FilesService } from './FilesService'
 import { EmulatorRepositoryService } from './EmulatorRepositoryService'
 import { ExtraDataService } from './ExtraDataService'
+import { ScanService } from './ScanService'
 
 let win: BrowserWindow
 let settingsService: SettingsService
@@ -15,6 +16,7 @@ let emulatorLaunchService: EmulatorLaunchService
 let filesService: FilesService
 let emulatorRepositoryService: EmulatorRepositoryService
 let extraDataService: ExtraDataService
+let scanService: ScanService
 
 app.on('ready', startApp)
 
@@ -66,6 +68,9 @@ function initializeServices() {
     settingsService = new SettingsService(win);
     settingsService.init();
 
+    extraDataService = new ExtraDataService();
+    extraDataService.init();
+
     emulatorRepositoryService = new EmulatorRepositoryService(settingsService)
     emulatorRepositoryService.init();
 
@@ -75,9 +80,9 @@ function initializeServices() {
     emulatorLaunchService = new EmulatorLaunchService(settingsService);
     emulatorLaunchService.init();
 
-    extraDataService = new ExtraDataService();
-    extraDataService.init();
-
     filesService = new FilesService(win, settingsService);
     filesService.init();
+
+    scanService = new ScanService(win, extraDataService, emulatorRepositoryService);
+    scanService.init();
 }

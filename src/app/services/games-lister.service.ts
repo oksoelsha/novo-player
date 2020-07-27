@@ -39,7 +39,7 @@ export class GamesListerService {
       this.ipc.once("getScreenshotResponse", (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getScreenshot", game.msxGenId);
+      this.ipc.send("getScreenshot", game.generationMSXId);
     });
   }
 }

@@ -4,7 +4,7 @@ import * as path from 'path'
 export class ExtraDataService implements UpdateListerner {
 
     private extraDataPath: string = path.join(__dirname, '/../../../dist/novo-player/assets/data/extra-data.dat')
-    private extraDataMap: Map<string, ExtraData> = new Map()
+    private extraDataInfo: Map<string, ExtraData> = new Map()
 
     constructor() {}
 
@@ -56,13 +56,17 @@ export class ExtraDataService implements UpdateListerner {
                 } else if (readCodes) {
                     var codes: string[] = line.split('|')
                     codes.forEach((code) => {
-                        this.extraDataMap.set(code, extraData)
+                        this.extraDataInfo.set(code, extraData)
                     })
     
                     readCodes = false
                 }
             }
         })    
+    }
+
+    getExtraDataInfo(): Map<string, ExtraData> {
+        return this.extraDataInfo;
     }
 
     reinit(): void {

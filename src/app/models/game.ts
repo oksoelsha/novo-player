@@ -1,8 +1,8 @@
 export class Game {
     name: string;
     rom: string;
-    msxGenId: number;
     sha1Code: string;
+    generationMSXId: number;
     title: string;
     company: string;
     year: string;
@@ -11,11 +11,14 @@ export class Game {
     mapper: string;
     remark: string;
 
-    constructor(name: string, rom: string, sha1Code: string, msxGenId: number) {
+    constructor(name: string, rom: string, sha1Code: string) {
         this.name = name;
         this.rom = rom;
         this.sha1Code = sha1Code;
-        this.msxGenId = msxGenId;
+    }
+
+    setGenerationMSXId(generationMSXId: number) {
+        this.generationMSXId = generationMSXId;
     }
 
     setTitle(title: string) {
