@@ -25,12 +25,29 @@ export class HomeComponent implements OnInit {
 
   selectedGame: Game = null;
 
+  private details = [
+    {name: "Common Name", value: "selectedGame.title"},
+    {name: "Country", value: "selectedGame.country"},
+    {name: "SHA1", value: "selectedGame.sha1Code"},
+    {name: "Mapper", value: "selectedGame.mapper"},
+    {name: "Remark", value: "selectedGame.remark"},
+    {name: "Generation-MSX ID", value: "selectedGame.generationMSXId"},
+  ]
+
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
 
   ngOnInit() {
     this.games = this.gamesLister.getGames();
     this.screenshot_a_1 = this.screenshot_a_2 = HomeComponent.noScreenshot1;
     this.screenshot_b_1 = this.screenshot_b_2 = HomeComponent.noScreenshot2;
+  }
+
+  getFilteredGameDetails() {
+    return this.details.filter(d => this.evaluateDetail(d.value) != null)
+  }
+
+  evaluateDetail(value: string): string {
+    return eval("this." + value)
   }
 
   launch(game: Game) {
@@ -62,7 +79,7 @@ export class HomeComponent implements OnInit {
   }
 
   startScan(folders: string[]) {
-    this.scanner.scan(folders).then( (result) => {
+    this.scanner.scan(folders).then(result => {
       this.games = Promise.resolve(result)
     });
   }

@@ -1,61 +1,49 @@
-<div>
-  <button (click)="scanForGames()">Scan</button>
-</div>
-<div id="games-table">
-  <table *ngIf="games">
-    <tr>
-      <th class="name-title">Name</th>
-      <th class="company-title">Company</th>
-      <th class="year-title">Year</th>
-    </tr>
-  </table>
-  <div class="table-data">
-    <table>
-      <tr *ngFor="let game of games | async" (click)="showInfo(game)">
-        <td class="name">{{ game.name }}</td>
-        <td class="company">{{ game.company }}</td>
-        <td class="year">{{ game.year }}</td>
-        <td><img src="assets/operations/ic_play_arrow_white_18dp.png" (click)="launch(game)"></td>
-      </tr>
-    </table>
+<div class="entire-area">
+  <div class="area-on-the-left">
+    <div>
+      <button (click)="scanForGames()">Scan</button>
+    </div>
+    <div id="games-table">
+      <table *ngIf="games">
+        <tr>
+          <th class="name-title">Name</th>
+          <th class="company-title">Company</th>
+          <th class="year-title">Year</th>
+        </tr>
+      </table>
+      <div class="table-data">
+        <table>
+          <tr *ngFor="let game of games | async" (click)="showInfo(game)">
+            <td class="name">{{ game.name }}</td>
+            <td class="company">{{ game.company }}</td>
+            <td class="year">{{ game.year }}</td>
+            <td><img src="assets/operations/ic_play_arrow_white_18dp.png" (click)="launch(game)"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="screenshot">
-  <img src="{{ screenshot_a_1.screenshot1 }}" class="{{ transparent1 }}">
-  <img src="{{ screenshot_a_2.screenshot1 }}" class="{{ transparent2 }}">
-</div>
+  <div class="area-on-the-right">
+    <div>
+      <div class="screenshot">
+        <img src="{{ screenshot_a_1.screenshot1 }}" class="{{ transparent1 }}">
+        <img src="{{ screenshot_a_2.screenshot1 }}" class="{{ transparent2 }}">
+      </div>
 
-<div class="screenshot">
-  <img src="{{ screenshot_b_1.screenshot2 }}" class="{{ transparent1 }}">
-  <img src="{{ screenshot_b_2.screenshot2 }}" class="{{ transparent2 }}">
-</div>
+      <div class="screenshot">
+        <img src="{{ screenshot_b_1.screenshot2 }}" class="{{ transparent1 }}">
+        <img src="{{ screenshot_b_2.screenshot2 }}" class="{{ transparent2 }}">
+      </div>
 
-<div>
-  <table *ngIf="selectedGame">
-    <tr>
-      <td>Common Name</td>
-      <td>{{ selectedGame.title }}</td>
-    </tr>
-    <tr>
-      <td>Country</td>
-      <td>{{ selectedGame.country }}</td>
-    </tr>
-    <tr>
-      <td>SHA1</td>
-      <td>{{ selectedGame.sha1Code }}</td>
-    </tr>
-    <tr>
-      <td>MSX Generation ID</td>
-      <td>{{ selectedGame.msxGenId }}</td>
-    </tr>
-    <tr>
-      <td>Mapper</td>
-      <td>{{ selectedGame.mapper }}</td>
-    </tr>
-    <tr *ngIf="selectedGame.remark">
-      <td>Remark</td>
-      <td>{{ selectedGame.remark }}</td>
-    </tr>
-  </table>
+      <div class="additional-info">
+        <table *ngIf="selectedGame">
+          <tr *ngFor="let detail of getFilteredGameDetails()">
+            <td class="game-detail-name">{{ detail.name }}</td>
+            <td>{{ evaluateDetail(detail.value) }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

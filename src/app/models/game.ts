@@ -2,6 +2,7 @@ export class Game {
     name: string;
     rom: string;
     sha1Code: string;
+
     generationMSXId: number;
     title: string;
     company: string;

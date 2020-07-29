@@ -15,8 +15,11 @@ export class ScanService {
     private scannedFilesCounter: number = 0
     private games: Game[] = []
 
-    constructor(private win: BrowserWindow, private extraDataService: ExtraDataService,
+    constructor(
+        private win: BrowserWindow,
+        private extraDataService: ExtraDataService,
         private emulatorRepositoryService: EmulatorRepositoryService) {
+
         this.extraDataInfo = extraDataService.getExtraDataInfo()
         this.repositoryInfo = emulatorRepositoryService.getRepositoryInfo()
     }
@@ -62,24 +65,10 @@ export class ScanService {
             var fullPath: string = path.join(folder, file)
             if (fs.statSync(fullPath).isFile()) {
                 this.processFile(fullPath)
-            }
-            else {
+            } else {
                 this.readFolder(fullPath);
             }
         })
-    }
-
-    private getGameName(hash: string, file: string): string {
-        if (this.repositoryInfo != null) {
-            let repositoryData: RepositoryData = this.repositoryInfo.get(hash)
-            if (repositoryData != null) {
-                return repositoryData.title
-            } else {
-                return path.basename(file)
-            }
-        } else {
-            return path.basename(file)
-        }
     }
 
     private processFile(file: string) {
@@ -87,16 +76,27 @@ export class ScanService {
         sha1.then((hash) => {
             var extraData: ExtraData = this.extraDataInfo.get(hash)
             var game: Game = new Game(this.getGameName(hash, file), file, hash)
-         
+
             if (extraData != null) {
                 game.setGenerationMSXId(extraData.generationMSXID)
-            } else {
             }
+
+            if (this.repositoryInfo != null) {
+                let repositoryData: RepositoryData = this.repositoryInfo.get(hash)
+                if (repositoryData != null) {
+                    game.setTitle(repositoryData.title)
+                    game.setCompany(repositoryData.company)
+                    game.setYear(repositoryData.year)
+                    game.setCountry(repositoryData.country)
+                    game.setMapper(repositoryData.mapper)
+                    game.setRemark(repositoryData.remark)
+                }
+            }
+
             this.games.push(game)
 
             this.scannedFilesCounter++
-            if(this.scannedFilesCounter == this.totalFilesToScan) {
-                console.log('FINISHED Scan - Not all are necessarily MSX files')
+            if (this.scannedFilesCounter == this.totalFilesToScan) {
                 this.win.webContents.send('scanResponse', this.games)
             }
         });
@@ -138,6 +138,19 @@ export class ScanService {
                     return resolve(hash);
                 })
             });
+        }
+    }
+
+    private getGameName(hash: string, file: string): string {
+        if (this.repositoryInfo != null) {
+            let repositoryData: RepositoryData = this.repositoryInfo.get(hash)
+            if (repositoryData != null) {
+                return repositoryData.title
+            } else {
+                return path.basename(file)
+            }
+        } else {
+            return path.basename(file)
         }
     }
 }

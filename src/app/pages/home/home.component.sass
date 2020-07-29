@@ -1,6 +1,21 @@
+.entire-area
+  display: flex;
+  height: 100%;
+
+.area-on-the-left
+  flex: 0 0 500px;
+  display: flex;
+  flex-direction: column;
+
+.area-on-the-right
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+
 .table-data
-  height: 200px;
-  width: 580px;
+  height: 90vh;
+  width: 640px;
   overflow: auto;
 
 div::-webkit-scrollbar
@@ -42,13 +57,16 @@ div::-webkit-scrollbar-thumb
       padding-top: 3px;
       padding-bottom: 3px;
     .name-title, .name
-      width: 400px;
+      width: 410px;
+      max-width: 410px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      display: block;
     .company-title, .company
-      width: 100px;
+      width: 150px;
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
       text-overflow: ellipsis;
     .year-title
       width: 80px;
@@ -67,6 +85,12 @@ div::-webkit-scrollbar-thumb
   top: 0;
   left: 0;
   -webkit-transition: opacity 0.7s ease-in-out;
+
+.additional-info
+  padding-left: 30px;
+
+.game-detail-name
+  padding-right: 10px;
 
 .transparent
   opacity: 0;
