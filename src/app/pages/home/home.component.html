@@ -40,7 +40,7 @@
         <table *ngIf="selectedGame">
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>
-            <td>{{ evaluateDetail(detail.value) }}</td>
+            <td>{{ selectedGame[detail.value] }}</td>
           </tr>
         </table>
       </div>

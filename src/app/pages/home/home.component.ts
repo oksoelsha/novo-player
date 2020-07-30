@@ -25,13 +25,16 @@ export class HomeComponent implements OnInit {
 
   selectedGame: Game = null;
 
-  private details = [
-    {name: "Common Name", value: "selectedGame.title"},
-    {name: "Country", value: "selectedGame.country"},
-    {name: "SHA1", value: "selectedGame.sha1Code"},
-    {name: "Mapper", value: "selectedGame.mapper"},
-    {name: "Remark", value: "selectedGame.remark"},
-    {name: "Generation-MSX ID", value: "selectedGame.generationMSXId"},
+  private gameDetails = [
+    {name: "Common Name", value: "title"},
+    {name: "Company", value: "company"},
+    {name: "Year", value: "year"},
+    {name: "Country", value: "country"},
+    {name: "SHA1", value: "sha1Code"},
+    {name: "Size", value: "size"},
+    {name: "Mapper", value: "mapper"},
+    {name: "Remark", value: "remark"},
+    {name: "Generation-MSX ID", value: "generationMSXId"},
   ]
 
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
@@ -43,11 +46,7 @@ export class HomeComponent implements OnInit {
   }
 
   getFilteredGameDetails() {
-    return this.details.filter(d => this.evaluateDetail(d.value) != null)
-  }
-
-  evaluateDetail(value: string): string {
-    return eval("this." + value)
+    return this.gameDetails.filter(d => this.selectedGame[d.value] != null)
   }
 
   launch(game: Game) {
@@ -75,6 +74,8 @@ export class HomeComponent implements OnInit {
   scanForGames() {
     this.startScan([
       'C:\\Games\\MSX System\\Software\\roms',
+      'C:\\Games\\MSX System\\Software\\DSK',
+      'C:\\Games\\MSX various game files\\cas',
     ])
   }
 

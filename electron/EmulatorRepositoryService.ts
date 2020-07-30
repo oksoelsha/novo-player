@@ -14,26 +14,32 @@ export class EmulatorRepositoryService implements UpdateListerner {
     init(): void {
         var self = this;
         let gamesDataMap: Map<string, RepositoryData> = new Map<string, RepositoryData>();
-        let softwaredbFilename: string = path.join(this.settingsService.getSettings().openmsxPath, 'share/softwaredb.xml');
+        let softwaredbFilenames: string[] = [
+            path.join(this.settingsService.getSettings().openmsxPath, 'share/softwaredb.xml'),
+            path.join(__dirname, '/../../../dist/novo-player/assets/data/msxdskdb.xml'),
+            path.join(__dirname, '/../../../dist/novo-player/assets/data/msxcaswavdb.xml')
+        ]
         var options = {
             tagValueProcessor : (val: any, tagName: any) => val.replace(/&amp;/g, '&')
         }
 
-        if (fs.existsSync(softwaredbFilename)) {
-            fs.readFile(softwaredbFilename, function (err, data) {
-                var result = parser.parse(data.toString(), options);
-                for (var s in result.softwaredb.software) {
-                    var software = result.softwaredb.software
+        for(var softwaredbFilename of softwaredbFilenames) {
+            if (fs.existsSync(softwaredbFilename)) {
+                fs.readFile(softwaredbFilename, function (err, data) {
+                    var result = parser.parse(data.toString(), options);
+                    for (var s in result.softwaredb.software) {
+                        var software = result.softwaredb.software
 
-                    if (Object.prototype.toString.call(software[s].dump) === '[object Array]') {
-                        for (var y in software[s].dump) {
-                            self.processDump(software[s], software[s].dump[y], gamesDataMap)
+                        if (Object.prototype.toString.call(software[s].dump) === '[object Array]') {
+                            for (var y in software[s].dump) {
+                                self.processDump(software[s], software[s].dump[y], gamesDataMap)
+                            }
+                        } else {
+                            self.processDump(software[s], software[s].dump, gamesDataMap)
                         }
-                    } else {
-                        self.processDump(software[s], software[s].dump, gamesDataMap)
                     }
-                }
-            });
+                });
+            }
         }
         this.repositoryInfo = gamesDataMap
     }
@@ -55,7 +61,6 @@ export class EmulatorRepositoryService implements UpdateListerner {
             }
 
             gamesDataMap.set(dump.rom.hash, repositoryData)
-
         }
         if (dump.hasOwnProperty('megarom')) {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
@@ -68,6 +73,28 @@ export class EmulatorRepositoryService implements UpdateListerner {
             }
 
             gamesDataMap.set(dump.megarom.hash, repositoryData)
+        }
+        if (dump.hasOwnProperty('dsk')) {
+            let repositoryData = new RepositoryData(software.title, software.system, software.company,
+                software.year, software.country);
+
+            if (dump.dsk.hasOwnProperty('remark')) {
+                repositoryData.setRemark(dump.dsk.remark)
+            }
+
+            gamesDataMap.set(dump.dsk.format.hash, repositoryData)
+        }
+        if (dump.hasOwnProperty('cas')) {
+            let repositoryData = new RepositoryData(software.title, software.system, software.company,
+                software.year, software.country);
+
+            if (dump.cas.hasOwnProperty('remark')) {
+                repositoryData.setRemark(dump.cas.remark.text)
+            }
+
+            for (var f in dump.cas.format) {
+                gamesDataMap.set(dump.cas.format[f].hash, repositoryData)
+            }
         }
     }
 
