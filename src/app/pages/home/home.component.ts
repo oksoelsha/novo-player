@@ -71,11 +71,22 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  getGameMedium(game: Game): string {
+    if(game.romA != null) {
+      return "assets/icons/media/rom.png"
+    } else if(game.diskA != null) {
+      return "assets/icons/media/disk.png"
+    } else if(game.tape != null) {
+      return "assets/icons/media/tape.png"
+    }
+}
+
   scanForGames() {
     this.startScan([
       'C:\\Games\\MSX System\\Software\\roms',
       'C:\\Games\\MSX System\\Software\\DSK',
       'C:\\Games\\MSX various game files\\cas',
+//      'C:\\Games\\MSX-Laserdisc',
     ])
   }
 

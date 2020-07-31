@@ -13,10 +13,64 @@
   justify-content: center;
   padding-top: 50px;
 
-.table-data
+#games-table-header
+  table
+    font-size: 14px;
+    th
+      background-color: grey;
+      padding-left: 5px;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      text-transform: uppercase;
+      font-weight: normal;
+
+#games-table-data
   height: 90vh;
   width: 640px;
   overflow: auto;
+  table
+    font-size: 14px;
+    tr
+      transition: 0.1s;
+    tr:hover
+      background-color: #444;
+      cursor: pointer;
+    tr:hover th
+      background-color: #444;
+    tr:hover td img
+      opacity: 1;
+      transform: scale(0.75);
+    tr td img
+      opacity: 0;
+      transition: 0.1s;
+    tr td img:hover
+      transform: scale(1.0);
+    th
+      background-color: #333;
+    th img
+      display: block;
+      margin: 0 auto;
+    td
+      padding-left: 5px;
+      padding-top: 3px;
+      padding-bottom: 3px;
+
+.name-title, .name
+  width: 410px;
+  max-width: 410px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+.company-title, .company
+  width: 150px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+.year-title
+  width: 80px;
+.year
+  width: 40px;
 
 div::-webkit-scrollbar
   width: 8px;
@@ -28,50 +82,6 @@ div::-webkit-scrollbar-thumb
   background-color: #444;
   border-radius: 20px;
   border: 1px solid transparent;
-
-#games-table
-  table
-    font-size: 14px;
-    tr
-      transition: 0.1s;
-    tr:hover
-      background-color: #444;
-      cursor: pointer;
-    tr:hover td img
-      opacity: 1;
-      transform: scale(0.75);
-    tr td img
-      opacity: 0;
-      transition: 0.1s;
-    tr td img:hover
-      transform: scale(1.0);
-    th
-      background-color: grey;
-      padding-left: 5px;
-      padding-top: 3px;
-      padding-bottom: 3px;
-      text-transform: uppercase;
-      font-weight: normal;
-    td
-      padding-left: 5px;
-      padding-top: 3px;
-      padding-bottom: 3px;
-    .name-title, .name
-      width: 410px;
-      max-width: 410px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    .company-title, .company
-      width: 150px;
-      max-width: 150px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    .year-title
-      width: 80px;
-    .year
-      width: 40px;
 
 .screenshot
   position: relative;

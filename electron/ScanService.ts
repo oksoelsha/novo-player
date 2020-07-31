@@ -66,6 +66,9 @@ export class ScanService {
             if (fs.statSync(fullPath).isFile()) {
                 if(FileTypeUtils.isMSXFile(fullPath)) {
                     this.processFile(fullPath)
+                } else {
+                    //a file that wasn't processed was still scanned
+                    this.scannedFilesCounter++;
                 }
             } else {
                 this.readFolder(fullPath);

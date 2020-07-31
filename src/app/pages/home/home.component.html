@@ -3,7 +3,7 @@
     <div>
       <button (click)="scanForGames()">Scan</button>
     </div>
-    <div id="games-table">
+    <div id="games-table-header">
       <table *ngIf="games">
         <tr>
           <th class="name-title">Name</th>
@@ -11,9 +11,10 @@
           <th class="year-title">Year</th>
         </tr>
       </table>
-      <div class="table-data">
+      <div id="games-table-data">
         <table>
           <tr *ngFor="let game of games | async" (click)="showInfo(game)">
+            <th><img src="{{ getGameMedium(game) }}"/></th>
             <td class="name">{{ game.name }}</td>
             <td class="company">{{ game.company }}</td>
             <td class="year">{{ game.year }}</td>
