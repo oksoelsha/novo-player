@@ -46,6 +46,8 @@ export class ExtraDataService implements UpdateListerner {
                     }
                     if (tokens.length > 3) {
                         suffix = tokens[3]
+                    } else {
+                        suffix = null
                     }
     
                     extraData = new ExtraData(generationMSXID, generations, soundChips,

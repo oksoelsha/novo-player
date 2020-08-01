@@ -11,14 +11,20 @@ export class FilesService {
     constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
 
     init() {
-        ipcMain.on('getScreenshot', (event, arg) => {
-            var screenshotData = this.getScreenshotData(arg);
+        ipcMain.on('getScreenshot', (event, genMsxId, suffix) => {
+            var screenshotData = this.getScreenshotData(genMsxId, suffix);
             this.win.webContents.send('getScreenshotResponse', screenshotData)
         })
     }
 
-    getScreenshotData(genMsxId: number): ScreenshotData {
-        var screenshotsPath1 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'a.png')
+    getScreenshotData(genMsxId: number, suffix: string): ScreenshotData {
+        var screenshotsPath1: string;
+        if (suffix == null) {
+            screenshotsPath1 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'a.png')
+        } else {
+            screenshotsPath1 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'a' + suffix + '.png')
+        }
+
         var data1: string;
         try {
             data1 = this.imageDataPrefix + fs.readFileSync(screenshotsPath1).toString('base64');
@@ -28,8 +34,13 @@ export class FilesService {
 
         var data2: string;
         if (data1 != "") {
-            var screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b.png')
-            try {
+            var screenshotsPath2: string;
+            if (suffix == null) {
+                screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b.png')
+            } else {
+                screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b' + suffix + '.png')
+            }
+                try {
                 data2 = this.imageDataPrefix + fs.readFileSync(screenshotsPath2).toString('base64');
             } catch (err) {
                 data2 = "";

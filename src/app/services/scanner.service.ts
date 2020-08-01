@@ -22,8 +22,8 @@ export class ScannerService {
 
   scan(folders: string[]): Promise<Game[]> {
     return new Promise<Game[]>((resolve, reject) => {
-      this.ipc.once("scanResponse", (event, arg) => {
-        resolve(arg);
+      this.ipc.once("scanResponse", (event, games) => {
+        resolve(games);
       });
       this.ipc.send("scan", folders);
     });

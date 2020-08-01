@@ -13,13 +13,21 @@ export class Game {
     harddisk: string;
     laserdisc: string;
 
-    generationMSXId: number;
     title: string;
     company: string;
     year: string;
     country: string;
     mapper: string;
     remark: string;
+
+    generationMSXId: number;
+    generations: number;
+    screenshotSuffix: string;
+
+    private readonly MASK_GENERATION_MSX = 1;
+    private readonly MASK_GENERATION_MSX2 = 2;
+    private readonly MASK_GENERATION_MSX2PLUS = 4;
+    private readonly MASK_GENERATION_TURBO_R = 8;
 
     constructor(name: string, sha1Code: string, size: number) {
         this.name = name;
@@ -85,6 +93,26 @@ export class Game {
 
     setRemark(remark: string) {
         this.remark = remark;
+    }
+
+    setScreenshotSuffix(screenshotSuffix: string) {
+        this.screenshotSuffix = screenshotSuffix;
+    }
+
+    isMSX(): boolean {
+        return (this.generations & this.MASK_GENERATION_MSX) > 0
+    }
+
+    isMSX2(): boolean {
+        return (this.generations & this.MASK_GENERATION_MSX2) > 0
+    }
+
+    isMSX2Plus(): boolean {
+        return (this.generations & this.MASK_GENERATION_MSX2PLUS) > 0
+    }
+
+    isTurboR(): boolean {
+        return (this.generations & this.MASK_GENERATION_TURBO_R) > 0
     }
 
     private setSize(sizeInBytes: number) {

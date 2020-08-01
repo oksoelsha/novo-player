@@ -101,6 +101,7 @@ export class ScanService {
 
             if (extraData != null) {
                 game.setGenerationMSXId(extraData.generationMSXID)
+                game.setScreenshotSuffix(extraData.suffix)
             }
 
             if (this.repositoryInfo != null) {

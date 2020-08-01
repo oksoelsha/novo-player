@@ -25,16 +25,16 @@ export class HomeComponent implements OnInit {
 
   selectedGame: Game = null;
 
-  private gameDetails = [
-    {name: "Common Name", value: "title"},
-    {name: "Company", value: "company"},
-    {name: "Year", value: "year"},
-    {name: "Country", value: "country"},
-    {name: "SHA1", value: "sha1Code"},
-    {name: "Size", value: "size"},
-    {name: "Mapper", value: "mapper"},
-    {name: "Remark", value: "remark"},
-    {name: "Generation-MSX ID", value: "generationMSXId"},
+  private readonly gameDetails = [
+    { name: "Common Name", value: "title" },
+    { name: "Company", value: "company" },
+    { name: "Year", value: "year" },
+    { name: "Country", value: "country" },
+    { name: "SHA1", value: "sha1Code" },
+    { name: "Size", value: "size" },
+    { name: "Mapper", value: "mapper" },
+    { name: "Remark", value: "remark" },
+    { name: "Generation-MSX ID", value: "generationMSXId" },
   ]
 
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
@@ -72,21 +72,21 @@ export class HomeComponent implements OnInit {
   }
 
   getGameMedium(game: Game): string {
-    if(game.romA != null) {
+    if (game.romA != null) {
       return "assets/icons/media/rom.png"
-    } else if(game.diskA != null) {
+    } else if (game.diskA != null) {
       return "assets/icons/media/disk.png"
-    } else if(game.tape != null) {
+    } else if (game.tape != null) {
       return "assets/icons/media/tape.png"
     }
-}
+  }
 
   scanForGames() {
     this.startScan([
       'C:\\Games\\MSX System\\Software\\roms',
       'C:\\Games\\MSX System\\Software\\DSK',
       'C:\\Games\\MSX various game files\\cas',
-//      'C:\\Games\\MSX-Laserdisc',
+      //      'C:\\Games\\MSX-Laserdisc',
     ])
   }
 
@@ -94,6 +94,14 @@ export class HomeComponent implements OnInit {
     this.scanner.scan(folders).then(result => {
       this.games = Promise.resolve(result)
     });
+  }
+
+  selectedGameClass(game: Game): string {
+    if(this.selectedGame != null && game.sha1Code == this.selectedGame.sha1Code) {
+      return "selected-game";
+    } else {
+      return "";
+    }
   }
 
   private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {
