@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { GamesListerService } from 'src/app/services/games-lister.service';
 import { ScreenshotData } from 'src/app/models/screenshot-data';
 import { ScannerService } from 'src/app/services/scanner.service';
+import { GameUtils } from 'src/app/models/game-utils';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +11,13 @@ import { ScannerService } from 'src/app/services/scanner.service';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('gameDetailSimpleText') private gameDetailSimpleText: TemplateRef<object>;
+  @ViewChild('gameDetailGenerations') private gameDetailGenerations: TemplateRef<object>;
+  @ViewChild('gameDetailSounds') private gameDetailSounds: TemplateRef<object>;
+  @ViewChild('gameDetailGenres') private gameDetailGenres: TemplateRef<object>;
 
-  static noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
-  static noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
+  static readonly noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
+  static readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
 
   games: Promise<Game[]>;
   screenshot_a_1: ScreenshotData;
@@ -26,15 +31,18 @@ export class HomeComponent implements OnInit {
   selectedGame: Game = null;
 
   private readonly gameDetails = [
-    { name: "Common Name", value: "title" },
-    { name: "Company", value: "company" },
-    { name: "Year", value: "year" },
-    { name: "Country", value: "country" },
-    { name: "SHA1", value: "sha1Code" },
-    { name: "Size", value: "size" },
-    { name: "Mapper", value: "mapper" },
-    { name: "Remark", value: "remark" },
-    { name: "Generation-MSX ID", value: "generationMSXId" },
+    { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
+    { name: "Company", value: "company", blockName: "gameDetailSimpleText" },
+    { name: "Year", value: "year", blockName: "gameDetailSimpleText" },
+    { name: "Country", value: "country", blockName: "gameDetailSimpleText" },
+    { name: "SHA1", value: "sha1Code", blockName: "gameDetailSimpleText" },
+    { name: "Size", value: "size", blockName: "gameDetailSimpleText" },
+    { name: "Generations", value: "generations", blockName: "gameDetailGenerations" },
+    { name: "Sound", value: "sounds", blockName: "gameDetailSounds" },
+    { name: "Genres", value: "genre1", blockName: "gameDetailGenres" },
+    { name: "Mapper", value: "mapper", blockName: "gameDetailSimpleText" },
+    { name: "Remark", value: "remark", blockName: "gameDetailSimpleText" },
+    { name: "Generation-MSX ID", value: "generationMSXId", blockName: "gameDetailSimpleText" },
   ]
 
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
@@ -78,15 +86,20 @@ export class HomeComponent implements OnInit {
       return "assets/icons/media/disk.png"
     } else if (game.tape != null) {
       return "assets/icons/media/tape.png"
+    } else if (game.harddisk != null) {
+      return "assets/icons/media/harddisk.png"
+    } else if (game.laserdisc != null) {
+      return "assets/icons/media/laserdisc.png"
     }
   }
 
   scanForGames() {
     this.startScan([
+//      'C:\\Games\\MSX System\\Software\\Programs',
       'C:\\Games\\MSX System\\Software\\roms',
-      'C:\\Games\\MSX System\\Software\\DSK',
-      'C:\\Games\\MSX various game files\\cas',
-      //      'C:\\Games\\MSX-Laserdisc',
+//      'C:\\Games\\MSX System\\Software\\DSK',
+//      'C:\\Games\\MSX various game files\\cas',
+//      'C:\\Games\\MSX-Laserdisc\\Astron Belt',
     ])
   }
 
@@ -102,6 +115,68 @@ export class HomeComponent implements OnInit {
     } else {
       return "";
     }
+  }
+
+  isGenerationMSX(): boolean {
+    return GameUtils.isMSX(this.selectedGame)
+  }
+
+  isGenerationMSX2(): boolean {
+    return GameUtils.isMSX2(this.selectedGame)
+  }
+
+  isGenerationMSX2Plus(): boolean {
+    return GameUtils.isMSX2Plus(this.selectedGame)
+  }
+
+  isGenerationTurboR(): boolean {
+    return GameUtils.isTurboR(this.selectedGame)
+  }
+
+  getSoundsDisplayString(): string {
+    let displayString: string = "";
+
+    if (GameUtils.isPSG(this.selectedGame)) {
+      displayString += "PSG, "
+    }
+    if (GameUtils.isSCC(this.selectedGame)) {
+      displayString += "SCC, "
+    }
+    if (GameUtils.isSCCI(this.selectedGame)) {
+      displayString += "SCC-I, "
+    }
+    if (GameUtils.isPCM(this.selectedGame)) {
+      displayString += "PCM, "
+    }
+    if (GameUtils.isMSXMusic(this.selectedGame)) {
+      displayString += "MSX-MUSIC, "
+    }
+    if (GameUtils.isMSXAudio(this.selectedGame)) {
+      displayString += "MUSIC-AUDIO, "
+    }
+    if (GameUtils.isMoonsound(this.selectedGame)) {
+      displayString += "Moonsound, "
+    }
+    if (GameUtils.isMidi(this.selectedGame)) {
+      displayString += "MIDI"
+    }
+
+    if (displayString.endsWith(", ")) {
+      displayString = displayString.substr(0, displayString.length - 2);
+    }
+
+    return displayString;
+  }
+
+  getGenresDisplayString(): string {
+    let displayString: string = GameUtils.getGenre(this.selectedGame.genre1);
+    if (displayString != null) {
+      var genre2 = GameUtils.getGenre(this.selectedGame.genre2);
+      if (genre2 != null) {
+        displayString += ", " + genre2;
+      }
+    }
+    return displayString;
   }
 
   private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {

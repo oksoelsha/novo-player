@@ -76,7 +76,7 @@ export class ScanService {
         })
     }
 
-    private setMainFileForGame(game: Game, filename: string, realFilename ) {
+    private setMainFileForGame(game: Game, filename: string, realFilename: string ) {
         if (FileTypeUtils.isROM(realFilename)) {
             game.setRomA(filename)
         } else if (FileTypeUtils.isDisk(realFilename)) {
@@ -92,9 +92,9 @@ export class ScanService {
 
     private processFile(filename: string) {
         var sha1 = this.getSha1(filename);
-        sha1.then((data) => {
+        sha1.then((data: any) => {
             var extraData: ExtraData = this.extraDataInfo.get(data.hash)
-            var game: Game = new Game(this.getGameName(data.hash, filename), data.hash, data.size)
+            var game: Game = new Game(this.getGameName(data.hash, data.filename), data.hash, data.size)
 
             this.setMainFileForGame(game, filename, data.filename)
             game.setMachine('Boosted_MSX2_EN')
@@ -102,6 +102,10 @@ export class ScanService {
             if (extraData != null) {
                 game.setGenerationMSXId(extraData.generationMSXID)
                 game.setScreenshotSuffix(extraData.suffix)
+                game.setGenerations(extraData.generations)
+                game.setSounds(extraData.soundChips)
+                game.setGenre1(extraData.genre1)
+                game.setGenre2(extraData.genre2)
             }
 
             if (this.repositoryInfo != null) {
@@ -184,10 +188,14 @@ export class ScanService {
             if (repositoryData != null) {
                 return repositoryData.title
             } else {
-                return path.basename(file)
+                return this.getFilenameWithoutExt(path.basename(file))
             }
         } else {
-            return path.basename(file)
+            return this.getFilenameWithoutExt(path.basename(file))
         }
+    }
+
+    private getFilenameWithoutExt(filename: string): string {
+        return filename.substring(0, filename.lastIndexOf('.'));
     }
 }

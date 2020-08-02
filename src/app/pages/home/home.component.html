@@ -43,10 +43,31 @@
         <table *ngIf="selectedGame">
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>
-            <td>{{ selectedGame[detail.value] }}</td>
+            <ng-container [ngTemplateOutlet]="this[detail.blockName]" [ngTemplateOutletContext]="{ $implicit: detail }"></ng-container>
           </tr>
         </table>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #gameDetailSimpleText let-detail>
+  <td>{{ selectedGame[detail.value] }}</td>
+</ng-template>
+
+<ng-template #gameDetailGenerations>
+  <div id="game-detail-generations">
+    <img *ngIf="isGenerationMSX()" src="assets/icons/generations/msx.png"/>
+    <img *ngIf="isGenerationMSX2()" src="assets/icons/generations/msx2.png"/>
+    <img *ngIf="isGenerationMSX2Plus()" src="assets/icons/generations/msx2p.png"/>
+    <img *ngIf="isGenerationTurboR()" src="assets/icons/generations/msxturbor.png"/>
+  </div>
+</ng-template>
+
+<ng-template #gameDetailSounds>
+  <td>{{ getSoundsDisplayString() }}</td>
+</ng-template>
+
+<ng-template #gameDetailGenres>
+  <td>{{ getGenresDisplayString() }}</td>
+</ng-template>

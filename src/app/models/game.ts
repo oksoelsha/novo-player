@@ -22,12 +22,24 @@ export class Game {
 
     generationMSXId: number;
     generations: number;
+    sounds: number;
+    genre1: number;
+    genre2: number;
     screenshotSuffix: string;
 
-    private readonly MASK_GENERATION_MSX = 1;
-    private readonly MASK_GENERATION_MSX2 = 2;
-    private readonly MASK_GENERATION_MSX2PLUS = 4;
-    private readonly MASK_GENERATION_TURBO_R = 8;
+    public readonly MASK_GENERATION_MSX = 1;
+    public readonly MASK_GENERATION_MSX2 = 2;
+    public readonly MASK_GENERATION_MSX2PLUS = 4;
+    public readonly MASK_GENERATION_TURBO_R = 8;
+
+    public readonly MASK_SOUND_PSG = 1;
+    public readonly MASK_SOUND_SCC = 2;
+    public readonly MASK_SOUND_SCC_I = 4;
+    public readonly MASK_SOUND_PCM = 8;
+    public readonly MASK_SOUND_MSX_MUSIC = 16;
+    public readonly MASK_SOUND_MSX_AUDIO = 32;
+    public readonly MASK_SOUND_MOONSOUND = 64;
+    public readonly MASK_SOUND_MIDI = 128;
 
     constructor(name: string, sha1Code: string, size: number) {
         this.name = name;
@@ -99,20 +111,20 @@ export class Game {
         this.screenshotSuffix = screenshotSuffix;
     }
 
-    isMSX(): boolean {
-        return (this.generations & this.MASK_GENERATION_MSX) > 0
+    setGenerations(generations: number) {
+        this.generations = generations;
     }
 
-    isMSX2(): boolean {
-        return (this.generations & this.MASK_GENERATION_MSX2) > 0
+    setSounds(sounds: number) {
+        this.sounds = sounds;
     }
 
-    isMSX2Plus(): boolean {
-        return (this.generations & this.MASK_GENERATION_MSX2PLUS) > 0
+    setGenre1(genre1: number) {
+        this.genre1 = genre1;
     }
 
-    isTurboR(): boolean {
-        return (this.generations & this.MASK_GENERATION_TURBO_R) > 0
+    setGenre2(genre2: number) {
+        this.genre2 = genre2;
     }
 
     private setSize(sizeInBytes: number) {
