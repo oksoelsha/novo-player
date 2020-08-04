@@ -43,7 +43,9 @@
         <table *ngIf="selectedGame">
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>
-            <ng-container [ngTemplateOutlet]="this[detail.blockName]" [ngTemplateOutletContext]="{ $implicit: detail }"></ng-container>
+            <td class="game-detail-value">
+              <ng-container [ngTemplateOutlet]="this[detail.blockName]" [ngTemplateOutletContext]="{ $implicit: detail }"></ng-container>
+            </td>
           </tr>
         </table>
       </div>
@@ -52,7 +54,15 @@
 </div>
 
 <ng-template #gameDetailSimpleText let-detail>
-  <td>{{ selectedGame[detail.value] }}</td>
+  {{ selectedGame[detail.value] }}
+</ng-template>
+
+<ng-template #gameDetailFiles>
+  <div *ngFor="let file of getSelectedGameFiles()">{{ file }}</div>
+</ng-template>
+
+<ng-template #gameDetailSize>
+  {{ getSizeDisplayString() }}
 </ng-template>
 
 <ng-template #gameDetailGenerations>
@@ -65,7 +75,7 @@
 </ng-template>
 
 <ng-template #gameDetailSounds>
-  <td>{{ getSoundsDisplayString() }}</td>
+  {{ getSoundsDisplayString() }}
 </ng-template>
 
 <ng-template #gameDetailGenres>

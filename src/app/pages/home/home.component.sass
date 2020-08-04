@@ -104,13 +104,21 @@ div::-webkit-scrollbar-thumb
   padding-left: 30px;
 
 .game-detail-name
-  padding-right: 10px;
+  width: 145px;
+  vertical-align: top;
+
+.game-detail-value, .game-detail-value div
+  max-width: 360px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #cef;
+
+#game-detail-generations img
+  padding-right: 5px;
 
 .transparent
   opacity: 0;
 
 .selected-game, .selected-game th
   background-color: #555 !important;
-
-#game-detail-generations img
-  padding-right: 5px;

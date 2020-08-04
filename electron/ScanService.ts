@@ -112,10 +112,12 @@ export class ScanService {
                 let repositoryData: RepositoryData = this.repositoryInfo.get(data.hash)
                 if (repositoryData != null) {
                     game.setTitle(repositoryData.title)
+                    game.setSystem(repositoryData.system)
                     game.setCompany(repositoryData.company)
                     game.setYear(repositoryData.year)
                     game.setCountry(repositoryData.country)
                     game.setMapper(repositoryData.mapper)
+                    game.setStart(repositoryData.start)
                     game.setRemark(repositoryData.remark)
                 }
             }

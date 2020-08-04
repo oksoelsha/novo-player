@@ -20,7 +20,7 @@ export class EmulatorRepositoryService implements UpdateListerner {
             path.join(__dirname, '/../../../dist/novo-player/assets/data/msxcaswavdb.xml')
         ]
         var options = {
-            tagValueProcessor : (val: any, tagName: any) => val.replace(/&amp;/g, '&')
+            tagValueProcessor : (val: any, tagName: any) => val.replace(/&amp;/g, '&').replace(/&#34;/g, '"')
         }
 
         for(var softwaredbFilename of softwaredbFilenames) {
@@ -54,6 +54,10 @@ export class EmulatorRepositoryService implements UpdateListerner {
                 repositoryData.setMapper(dump.rom.type)
             } else {
                 repositoryData.setMapper('Mirrored ROM')
+            }
+
+            if (dump.rom.hasOwnProperty('start')) {
+                repositoryData.setStart(dump.rom.start)
             }
 
             if (dump.rom.hasOwnProperty('remark')) {
@@ -90,6 +94,10 @@ export class EmulatorRepositoryService implements UpdateListerner {
 
             if (dump.cas.hasOwnProperty('remark')) {
                 repositoryData.setRemark(dump.cas.remark.text)
+            }
+
+            if (dump.cas.hasOwnProperty('start')) {
+                repositoryData.setStart(dump.cas.start.text)
             }
 
             for (var f in dump.cas.format) {

@@ -12,6 +12,8 @@ import { GameUtils } from 'src/app/models/game-utils';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('gameDetailSimpleText') private gameDetailSimpleText: TemplateRef<object>;
+  @ViewChild('gameDetailFiles') private gameDetailFiles: TemplateRef<object>;
+  @ViewChild('gameDetailSize') private gameDetailSize: TemplateRef<object>;
   @ViewChild('gameDetailGenerations') private gameDetailGenerations: TemplateRef<object>;
   @ViewChild('gameDetailSounds') private gameDetailSounds: TemplateRef<object>;
   @ViewChild('gameDetailGenres') private gameDetailGenres: TemplateRef<object>;
@@ -32,15 +34,18 @@ export class HomeComponent implements OnInit {
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
+    { name: "Files", value: "sha1Code", blockName: "gameDetailFiles" },          //HACK - had to use sha1Code for the field name - CHANGE
+    { name: "System", value: "system", blockName: "gameDetailSimpleText" },
     { name: "Company", value: "company", blockName: "gameDetailSimpleText" },
     { name: "Year", value: "year", blockName: "gameDetailSimpleText" },
     { name: "Country", value: "country", blockName: "gameDetailSimpleText" },
     { name: "SHA1", value: "sha1Code", blockName: "gameDetailSimpleText" },
-    { name: "Size", value: "size", blockName: "gameDetailSimpleText" },
+    { name: "Size", value: "size", blockName: "gameDetailSize" },
     { name: "Generations", value: "generations", blockName: "gameDetailGenerations" },
     { name: "Sound", value: "sounds", blockName: "gameDetailSounds" },
     { name: "Genres", value: "genre1", blockName: "gameDetailGenres" },
     { name: "Mapper", value: "mapper", blockName: "gameDetailSimpleText" },
+    { name: "Start", value: "start", blockName: "gameDetailSimpleText" },
     { name: "Remark", value: "remark", blockName: "gameDetailSimpleText" },
     { name: "Generation-MSX ID", value: "generationMSXId", blockName: "gameDetailSimpleText" },
   ]
@@ -97,8 +102,8 @@ export class HomeComponent implements OnInit {
     this.startScan([
 //      'C:\\Games\\MSX System\\Software\\Programs',
       'C:\\Games\\MSX System\\Software\\roms',
-//      'C:\\Games\\MSX System\\Software\\DSK',
-//      'C:\\Games\\MSX various game files\\cas',
+      'C:\\Games\\MSX System\\Software\\DSK',
+      'C:\\Games\\MSX various game files\\cas',
 //      'C:\\Games\\MSX-Laserdisc\\Astron Belt',
     ])
   }
@@ -115,6 +120,22 @@ export class HomeComponent implements OnInit {
     } else {
       return "";
     }
+  }
+
+  getSelectedGameFiles(): string[] {
+    var fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc']
+    var files: string[] = []
+
+    for(let fileField of fileFields) {
+      if (this.selectedGame[fileField] != null) {
+        files.push(this.selectedGame[fileField]);
+      }
+    }
+    return files;
+  }
+
+  getSizeDisplayString(): string {
+    return Math.floor(this.selectedGame.size / 1024) + " KB"
   }
 
   isGenerationMSX(): boolean {

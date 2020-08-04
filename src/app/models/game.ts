@@ -1,7 +1,7 @@
 export class Game {
     name: string;
     sha1Code: string;
-    size: string;
+    size: number;
     machine: string;
 
     romA: string;
@@ -14,10 +14,12 @@ export class Game {
     laserdisc: string;
 
     title: string;
+    system: string;
     company: string;
     year: string;
     country: string;
     mapper: string;
+    start: string;
     remark: string;
 
     generationMSXId: number;
@@ -44,7 +46,7 @@ export class Game {
     constructor(name: string, sha1Code: string, size: number) {
         this.name = name;
         this.sha1Code = sha1Code;
-        this.setSize(size);
+        this.size = size;
     }
 
     setMachine(machine: string) {
@@ -87,6 +89,10 @@ export class Game {
         this.title = title;
     }
 
+    setSystem(system: string) {
+        this.system = system;
+    }
+
     setCompany(company: string) {
         this.company = company;
     }
@@ -101,6 +107,10 @@ export class Game {
 
     setMapper(mapper: string) {
         this.mapper = mapper;
+    }
+
+    setStart(start: string) {
+        this.start = start;
     }
 
     setRemark(remark: string) {
@@ -125,10 +135,5 @@ export class Game {
 
     setGenre2(genre2: number) {
         this.genre2 = genre2;
-    }
-
-    private setSize(sizeInBytes: number) {
-        var humanReadableSize: number = sizeInBytes / 1024;
-        this.size = humanReadableSize + " KB";
     }
 }
