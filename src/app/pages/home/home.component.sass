@@ -1,6 +1,6 @@
-button
-  background-color: #333;
-  border: none;
+.btn:focus
+  outline: none;
+  box-shadow: none;
 
 .entire-area
   display: flex;
@@ -16,6 +16,9 @@ button
   display: flex;
   justify-content: center;
   padding-top: 50px;
+
+.table-buttons
+  margin-bottom: 4px;
 
 #games-table-header
   table
@@ -105,6 +108,7 @@ div::-webkit-scrollbar-thumb
 
 .game-detail-name
   width: 145px;
+  height: 23px;
   vertical-align: top;
 
 .game-detail-value, .game-detail-value div
@@ -112,6 +116,9 @@ div::-webkit-scrollbar-thumb
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #cef;
+
+.game-detail-value a
   color: #cef;
 
 #game-detail-generations img

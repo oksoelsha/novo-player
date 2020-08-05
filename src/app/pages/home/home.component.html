@@ -1,9 +1,7 @@
 <div class="entire-area">
   <div class="area-on-the-left">
-    <div>
-      <button (click)="scanForGames()">
-        <img src="assets/icons/actions/scanFolders.png"/>
-      </button>
+    <div class="table-buttons">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="scanForGames()">Scan</button>
     </div>
     <div id="games-table-header">
       <table *ngIf="games">
@@ -39,8 +37,9 @@
         <img src="{{ screenshot_b_2.screenshot2 }}" class="{{ transparent2 }}">
       </div>
 
-      <div class="additional-info">
-        <table *ngIf="selectedGame">
+      <div class="additional-info" *ngIf="selectedGame">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="launch(selectedGame)">Launch</button>
+        <table>
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>
             <td class="game-detail-value">
@@ -80,4 +79,8 @@
 
 <ng-template #gameDetailGenres>
   <td>{{ getGenresDisplayString() }}</td>
+</ng-template>
+
+<ng-template #gameDetailGenerationMSXLink>
+  <a href="#" (click)="openGenerationMSXInBrowser(selectedGame.generationMSXId)">{{ selectedGame.generationMSXId }}</a>
 </ng-template>

@@ -4,6 +4,7 @@ import { GamesListerService } from 'src/app/services/games-lister.service';
 import { ScreenshotData } from 'src/app/models/screenshot-data';
 import { ScannerService } from 'src/app/services/scanner.service';
 import { GameUtils } from 'src/app/models/game-utils';
+import { Remote } from 'electron';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('gameDetailGenerations') private gameDetailGenerations: TemplateRef<object>;
   @ViewChild('gameDetailSounds') private gameDetailSounds: TemplateRef<object>;
   @ViewChild('gameDetailGenres') private gameDetailGenres: TemplateRef<object>;
+  @ViewChild('gameDetailGenerationMSXLink') private gameDetailGenerationMSXLink: TemplateRef<object>;
+
+  private remote: Remote = (<any>window).require('electron').remote;
 
   static readonly noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
   static readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
@@ -44,10 +48,11 @@ export class HomeComponent implements OnInit {
     { name: "Generations", value: "generations", blockName: "gameDetailGenerations" },
     { name: "Sound", value: "sounds", blockName: "gameDetailSounds" },
     { name: "Genres", value: "genre1", blockName: "gameDetailGenres" },
+    { name: "Dump", value: "dump", blockName: "gameDetailSimpleText" },
     { name: "Mapper", value: "mapper", blockName: "gameDetailSimpleText" },
     { name: "Start", value: "start", blockName: "gameDetailSimpleText" },
     { name: "Remark", value: "remark", blockName: "gameDetailSimpleText" },
-    { name: "Generation-MSX ID", value: "generationMSXId", blockName: "gameDetailSimpleText" },
+    { name: "Generation-MSX ID", value: "generationMSXId", blockName: "gameDetailGenerationMSXLink" },
   ]
 
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
@@ -59,7 +64,7 @@ export class HomeComponent implements OnInit {
   }
 
   getFilteredGameDetails() {
-    return this.gameDetails.filter(d => this.selectedGame[d.value] != null)
+    return this.gameDetails.filter(d => d.value == null || this.selectedGame[d.value] != null)
   }
 
   launch(game: Game) {
@@ -82,6 +87,10 @@ export class HomeComponent implements OnInit {
       }
       this.toggle = !this.toggle;
     })
+  }
+
+  openGenerationMSXInBrowser(generationMSXId: number) {
+    this.remote.shell.openExternal("http://www.generation-msx.nl/msxdb/softwareinfo/" + generationMSXId);
   }
 
   getGameMedium(game: Game): string {

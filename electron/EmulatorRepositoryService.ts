@@ -50,6 +50,10 @@ export class EmulatorRepositoryService implements UpdateListerner {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
                 software.year, software.country);
 
+            if (dump.hasOwnProperty('original')) {
+                repositoryData.setDump(dump.original)
+            }
+    
             if (dump.rom.hasOwnProperty('type')) {
                 repositoryData.setMapper(dump.rom.type)
             } else {
@@ -69,6 +73,10 @@ export class EmulatorRepositoryService implements UpdateListerner {
         if (dump.hasOwnProperty('megarom')) {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
                 software.year, software.country);
+
+            if (dump.hasOwnProperty('original')) {
+                repositoryData.setDump(dump.original)
+            }
 
             repositoryData.setMapper(dump.megarom.type)
 
@@ -122,6 +130,7 @@ export class RepositoryData {
     year: string;
     country: string;
 
+    dump: string;
     mapper: string;
     start: string;
     remark: string;
@@ -132,6 +141,10 @@ export class RepositoryData {
         this.company = company;
         this.year = year;
         this.country = country;
+    }
+
+    setDump(dump: string) {
+        this.dump = dump;
     }
 
     setMapper(mapper: string) {

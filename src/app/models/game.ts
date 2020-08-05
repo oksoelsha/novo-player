@@ -18,6 +18,7 @@ export class Game {
     company: string;
     year: string;
     country: string;
+    dump: string;
     mapper: string;
     start: string;
     remark: string;
@@ -103,6 +104,10 @@ export class Game {
 
     setCountry(country: string) {
         this.country = country;
+    }
+
+    setDump(dump: string) {
+        this.dump = dump;
     }
 
     setMapper(mapper: string) {

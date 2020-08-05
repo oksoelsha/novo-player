@@ -116,6 +116,7 @@ export class ScanService {
                     game.setCompany(repositoryData.company)
                     game.setYear(repositoryData.year)
                     game.setCountry(repositoryData.country)
+                    game.setDump(repositoryData.dump)
                     game.setMapper(repositoryData.mapper)
                     game.setStart(repositoryData.start)
                     game.setRemark(repositoryData.remark)
