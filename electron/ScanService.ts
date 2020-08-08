@@ -80,11 +80,17 @@ export class ScanService {
         if (FileTypeUtils.isROM(realFilename)) {
             game.setRomA(filename)
         } else if (FileTypeUtils.isDisk(realFilename)) {
-            game.setDiskA(filename)
+            if (game.size <= FileTypeUtils.MAX_DISK_FILE_SIZE) {
+                game.setDiskA(filename)
+            } else {
+                game.setHarddisk(filename);
+                game.setExtensionRom(FileTypeUtils.EXTENSION_ROM_IDE);
+            }
         } else if (FileTypeUtils.isTape(realFilename)) {
             game.setTape(filename)
         } else if (FileTypeUtils.isHarddisk(realFilename)) {
             game.setHarddisk(filename)
+            game.setExtensionRom(FileTypeUtils.EXTENSION_ROM_IDE);
         } else if (FileTypeUtils.isLaserdisc(realFilename)) {
             game.setLaserdisc(filename)
         }

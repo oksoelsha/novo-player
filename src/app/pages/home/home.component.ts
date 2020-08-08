@@ -14,7 +14,9 @@ import { Remote } from 'electron';
 export class HomeComponent implements OnInit {
   @ViewChild('gameDetailSimpleText') private gameDetailSimpleText: TemplateRef<object>;
   @ViewChild('gameDetailFiles') private gameDetailFiles: TemplateRef<object>;
+  @ViewChild('gameDetailMedium') private gameDetailMedium: TemplateRef<object>;
   @ViewChild('gameDetailSize') private gameDetailSize: TemplateRef<object>;
+  @ViewChild('gameDetailCountry') private gameDetailCountry: TemplateRef<object>;
   @ViewChild('gameDetailGenerations') private gameDetailGenerations: TemplateRef<object>;
   @ViewChild('gameDetailSounds') private gameDetailSounds: TemplateRef<object>;
   @ViewChild('gameDetailGenres') private gameDetailGenres: TemplateRef<object>;
@@ -22,8 +24,9 @@ export class HomeComponent implements OnInit {
 
   private remote: Remote = (<any>window).require('electron').remote;
 
-  static readonly noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
-  static readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
+  private readonly noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
+  private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
+  private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
   games: Promise<Game[]>;
   screenshot_a_1: ScreenshotData;
@@ -35,14 +38,16 @@ export class HomeComponent implements OnInit {
   transparent2: string = "transparent";
 
   selectedGame: Game = null;
+  selectedGameMedium: Promise<string>;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
-    { name: "Files", value: "sha1Code", blockName: "gameDetailFiles" },          //HACK - had to use sha1Code for the field name - CHANGE
+    { name: "Files", blockName: "gameDetailFiles" },
+    { name: "Medium", blockName: "gameDetailMedium" },
     { name: "System", value: "system", blockName: "gameDetailSimpleText" },
     { name: "Company", value: "company", blockName: "gameDetailSimpleText" },
     { name: "Year", value: "year", blockName: "gameDetailSimpleText" },
-    { name: "Country", value: "country", blockName: "gameDetailSimpleText" },
+    { name: "Country", value: "country", blockName: "gameDetailCountry" },
     { name: "SHA1", value: "sha1Code", blockName: "gameDetailSimpleText" },
     { name: "Size", value: "size", blockName: "gameDetailSize" },
     { name: "Generations", value: "generations", blockName: "gameDetailGenerations" },
@@ -55,16 +60,40 @@ export class HomeComponent implements OnInit {
     { name: "Generation-MSX ID", value: "generationMSXId", blockName: "gameDetailGenerationMSXLink" },
   ]
 
+  private readonly countryFlags: Map<string,string>  = new Map([
+    ["BR", "pt_BR"],
+    ["DE", "de_DE"],
+    ["ES", "es_ES"],
+    ["FR", "fr_FR"],
+    ["GB", "UK"],
+    ["HK", "HK"],
+    ["IT", "it_IT"],
+    ["JP", "ja_JP"],
+    ["KR", "ko_KR"],
+    ["KW", "KW"],
+    ["NL", "nl_NL"],
+    ["PT", "PT"],
+    ["RU", "ru_RU"],
+    ["SA", "SA"],
+    ["SE", "sv_SE"],
+    ["UK", "UK"],
+    ["US", "en_US"],
+    ["TW", "zh_TW"],
+    ["CA", "CA"],
+    ["EU", "EU"]
+    ]);
+
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
 
   ngOnInit() {
     this.games = this.gamesLister.getGames();
-    this.screenshot_a_1 = this.screenshot_a_2 = HomeComponent.noScreenshot1;
-    this.screenshot_b_1 = this.screenshot_b_2 = HomeComponent.noScreenshot2;
+    this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
+    this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
   }
 
   getFilteredGameDetails() {
-    return this.gameDetails.filter(d => d.value == null || this.selectedGame[d.value] != null)
+    return this.gameDetails.filter(d => d.value == null ||
+      (this.selectedGame[d.value] != null && this.selectedGame[d.value] != 0))
   }
 
   launch(game: Game) {
@@ -73,6 +102,7 @@ export class HomeComponent implements OnInit {
 
   showInfo(game: Game) {
     this.selectedGame = game;
+    this.setSelectedGameMedium();
     this.gamesLister.getScreenshot(game).then((screenshots) => {
       if (this.toggle) {
         this.screenshot_a_1 = this.getScreenshot1Data(screenshots);
@@ -109,8 +139,8 @@ export class HomeComponent implements OnInit {
 
   scanForGames() {
     this.startScan([
-//      'C:\\Games\\MSX System\\Software\\Programs',
       'C:\\Games\\MSX System\\Software\\roms',
+//      'C:\\Games\\MSX System\\Software\\OS',
       'C:\\Games\\MSX System\\Software\\DSK',
       'C:\\Games\\MSX various game files\\cas',
 //      'C:\\Games\\MSX-Laserdisc\\Astron Belt',
@@ -132,15 +162,33 @@ export class HomeComponent implements OnInit {
   }
 
   getSelectedGameFiles(): string[] {
-    var fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc']
     var files: string[] = []
 
-    for(let fileField of fileFields) {
+    for(let fileField of this.fileFields) {
       if (this.selectedGame[fileField] != null) {
         files.push(this.selectedGame[fileField]);
       }
     }
     return files;
+  }
+
+  setSelectedGameMedium() {
+    if (this.selectedGame.romA != null) {
+      this.selectedGameMedium = Promise.resolve('ROM');
+    } else if (this.selectedGame.diskA != null) {
+      this.selectedGameMedium = Promise.resolve('Disk');
+      //TODO - get disk group
+    } else if (this.selectedGame.tape != null) {
+      this.selectedGameMedium = Promise.resolve('Tape');
+      //TODO - get tape group
+    } else if (this.selectedGame.harddisk != null) {
+      this.selectedGameMedium = Promise.resolve('Harddisk');
+    } else if (this.selectedGame.laserdisc != null) {
+      this.selectedGameMedium = Promise.resolve('Laserdisc');
+    } else {
+      //shouldn't happen
+      this.selectedGameMedium = Promise.resolve('')
+    }
   }
 
   getSizeDisplayString(): string {
@@ -164,38 +212,34 @@ export class HomeComponent implements OnInit {
   }
 
   getSoundsDisplayString(): string {
-    let displayString: string = "";
+    let displayString: string[] = []
 
     if (GameUtils.isPSG(this.selectedGame)) {
-      displayString += "PSG, "
+      displayString.push('PSG')
     }
     if (GameUtils.isSCC(this.selectedGame)) {
-      displayString += "SCC, "
+      displayString.push('SCC')
     }
     if (GameUtils.isSCCI(this.selectedGame)) {
-      displayString += "SCC-I, "
+      displayString.push('SCC-I')
     }
     if (GameUtils.isPCM(this.selectedGame)) {
-      displayString += "PCM, "
+      displayString.push('PCM')
     }
     if (GameUtils.isMSXMusic(this.selectedGame)) {
-      displayString += "MSX-MUSIC, "
+      displayString.push('MSX-MUSIC')
     }
     if (GameUtils.isMSXAudio(this.selectedGame)) {
-      displayString += "MUSIC-AUDIO, "
+      displayString.push('MSX-AUDIO')
     }
     if (GameUtils.isMoonsound(this.selectedGame)) {
-      displayString += "Moonsound, "
+      displayString.push('Moonsound')
     }
     if (GameUtils.isMidi(this.selectedGame)) {
-      displayString += "MIDI"
+      displayString.push('MIDI')
     }
 
-    if (displayString.endsWith(", ")) {
-      displayString = displayString.substr(0, displayString.length - 2);
-    }
-
-    return displayString;
+    return displayString.join(', ')
   }
 
   getGenresDisplayString(): string {
@@ -211,7 +255,7 @@ export class HomeComponent implements OnInit {
 
   private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {
     if (screenshots.screenshot1 == "") {
-      return HomeComponent.noScreenshot1;
+      return this.noScreenshot1;
     } else {
       return screenshots;
     }
@@ -219,7 +263,7 @@ export class HomeComponent implements OnInit {
 
   private getScreenshot2Data(screenshots: ScreenshotData): ScreenshotData {
     if (screenshots.screenshot2 == "") {
-      return HomeComponent.noScreenshot2;
+      return this.noScreenshot2;
     } else {
       return screenshots;
     }

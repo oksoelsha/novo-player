@@ -62,6 +62,10 @@ export class Game {
         this.romB = romB;
     }
 
+    setExtensionRom(extensionRom: string) {
+        this.extensionRom = extensionRom;
+    }
+
     setDiskA(diskA: string) {
         this.diskA = diskA;
     }

@@ -6,6 +6,17 @@ import { Game } from '../src/app/models/game'
 
 export class EmulatorLaunchService {
 
+    private static readonly fieldsToArgs = [
+        ["machine", "machine"],
+        ["romA", "carta"],
+        ["romB", "cartb"],
+        ["diskA", "diska"],
+        ["diskB", "diskb"],
+        ["tape", "cassetteplayer"],
+        ["harddisk", "hda"],
+        ["extensionRom", "ext"],
+    ];
+
     constructor(private settingsService: SettingsService) { }
 
     init() {
@@ -15,28 +26,18 @@ export class EmulatorLaunchService {
     }
 
     private launch(game: Game) {
-        var openmsx= '"' + path.join(this.settingsService.getSettings().openmsxPath, 'openmsx.exe') + '"';
-        var args = this.getGameFileArg(game) + this.getMachineArg(game)
-        const ls = cp.exec(openmsx + args, function (error, stdout, stderr) {
+        var openmsx= '"' + path.join(this.settingsService.getSettings().openmsxPath, 'openmsx.exe') + '" ';
+        const ls = cp.exec(openmsx + this.getArguments(game), function (error, stdout, stderr) {
             if (error) {
                 console.log(error.stack)
             }
         });
     }
 
-    private getGameFileArg(game: Game): string {
-        if (game.romA != null) {
-            return ' -carta "' + game.romA + '"'
-        } else if (game.diskA != null) {
-            return ' -diska "' + game.diskA + '"'
-        } else if (game.tape != null) {
-            return ' -cassetteplayer "' + game.tape + '"'
-        } else {
-            return ''
-        }
-    }
-
-    private getMachineArg(game: Game) {
-        return ' -machine "' + game.machine + '"'
+    private getArguments(game: Game): string {
+        return EmulatorLaunchService.fieldsToArgs
+            .filter(e => game[e[0]] != null)
+            .map(e => '-' + e[1] + ' "' + game[e[0]] + '"')
+            .join(' ');
     }
 }

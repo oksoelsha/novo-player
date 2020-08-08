@@ -60,8 +60,19 @@
   <div *ngFor="let file of getSelectedGameFiles()">{{ file }}</div>
 </ng-template>
 
+<ng-template #gameDetailMedium>
+  {{ selectedGameMedium | async }}
+</ng-template>
+
 <ng-template #gameDetailSize>
   {{ getSizeDisplayString() }}
+</ng-template>
+
+<ng-template #gameDetailCountry>
+  <div id="game-detail-country">
+    <img *ngIf="countryFlags.get(selectedGame.country)" src="assets/icons/flags/{{ countryFlags.get(selectedGame.country) }}.png"/>
+    {{ selectedGame.country }}
+  </div>
 </ng-template>
 
 <ng-template #gameDetailGenerations>
@@ -78,7 +89,7 @@
 </ng-template>
 
 <ng-template #gameDetailGenres>
-  <td>{{ getGenresDisplayString() }}</td>
+  {{ getGenresDisplayString() }}
 </ng-template>
 
 <ng-template #gameDetailGenerationMSXLink>
