@@ -125,24 +125,24 @@ export class HomeComponent implements OnInit {
 
   getGameMedium(game: Game): string {
     if (game.romA != null) {
-      return "assets/icons/media/rom.png"
+      return "assets/images/media/rom.png"
     } else if (game.diskA != null) {
-      return "assets/icons/media/disk.png"
+      return "assets/images/media/disk.png"
     } else if (game.tape != null) {
-      return "assets/icons/media/tape.png"
+      return "assets/images/media/tape.png"
     } else if (game.harddisk != null) {
-      return "assets/icons/media/harddisk.png"
+      return "assets/images/media/harddisk.png"
     } else if (game.laserdisc != null) {
-      return "assets/icons/media/laserdisc.png"
+      return "assets/images/media/laserdisc.png"
     }
   }
 
   scanForGames() {
     this.startScan([
-      'C:\\Games\\MSX System\\Software\\roms',
-//      'C:\\Games\\MSX System\\Software\\OS',
+//      'C:\\Games\\MSX System\\Software\\roms',
+      'C:\\Games\\MSX System\\Software\\OS',
       'C:\\Games\\MSX System\\Software\\DSK',
-      'C:\\Games\\MSX various game files\\cas',
+//      'C:\\Games\\MSX various game files\\cas',
 //      'C:\\Games\\MSX-Laserdisc\\Astron Belt',
     ])
   }

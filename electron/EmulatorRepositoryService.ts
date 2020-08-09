@@ -20,6 +20,7 @@ export class EmulatorRepositoryService implements UpdateListerner {
             path.join(__dirname, '/../../../dist/novo-player/assets/data/msxcaswavdb.xml')
         ]
         var options = {
+            parseTrueNumberOnly: true,
             tagValueProcessor : (val: any, tagName: any) => val.replace(/&amp;/g, '&').replace(/&#34;/g, '"')
         }
 

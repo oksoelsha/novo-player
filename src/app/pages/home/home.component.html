@@ -3,7 +3,7 @@
     <div class="table-buttons">
       <button type="button" class="btn btn-secondary btn-sm" (click)="scanForGames()">Scan</button>
     </div>
-    <div id="games-table-header">
+    <div id="games-table">
       <table *ngIf="games">
         <tr>
           <th class="name-title">Name</th>
@@ -18,7 +18,7 @@
             <td class="name">{{ game.name }}</td>
             <td class="company">{{ game.company }}</td>
             <td class="year">{{ game.year }}</td>
-            <td><img src="assets/operations/ic_play_arrow_white_18dp.png" (click)="launch(game)"></td>
+            <td><img src="assets/images/operations/play.png" (click)="launch(game)"></td>
           </tr>
         </table>
       </div>
@@ -70,17 +70,17 @@
 
 <ng-template #gameDetailCountry>
   <div id="game-detail-country">
-    <img *ngIf="countryFlags.get(selectedGame.country)" src="assets/icons/flags/{{ countryFlags.get(selectedGame.country) }}.png"/>
+    <img *ngIf="countryFlags.get(selectedGame.country)" src="assets/images/flags/{{ countryFlags.get(selectedGame.country) }}.png"/>
     {{ selectedGame.country }}
   </div>
 </ng-template>
 
 <ng-template #gameDetailGenerations>
   <div id="game-detail-generations">
-    <img *ngIf="isGenerationMSX()" src="assets/icons/generations/msx.png"/>
-    <img *ngIf="isGenerationMSX2()" src="assets/icons/generations/msx2.png"/>
-    <img *ngIf="isGenerationMSX2Plus()" src="assets/icons/generations/msx2p.png"/>
-    <img *ngIf="isGenerationTurboR()" src="assets/icons/generations/msxturbor.png"/>
+    <img *ngIf="isGenerationMSX()" src="assets/images/generations/msx.png"/>
+    <img *ngIf="isGenerationMSX2()" src="assets/images/generations/msx2.png"/>
+    <img *ngIf="isGenerationMSX2Plus()" src="assets/images/generations/msx2p.png"/>
+    <img *ngIf="isGenerationTurboR()" src="assets/images/generations/msxturbor.png"/>
   </div>
 </ng-template>
 

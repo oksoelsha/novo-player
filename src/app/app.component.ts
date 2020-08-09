@@ -25,10 +25,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.links = [
-      new Link("/", "assets/navigation/ic_home_white_24dp.png"),
-      new Link("/dashboard", "assets/navigation/ic_dashboard_white_24dp.png"),
-      new Link("/settings", "assets/navigation/ic_settings_applications_white_24dp.png", true),
-      new Link("/help", "assets/navigation/ic_help_white_24dp.png"),
+      new Link("/", "assets/images/navigation/ic_home_white_24dp.png"),
+      new Link("/dashboard", "assets/images/navigation/ic_dashboard_white_24dp.png"),
+      new Link("/settings", "assets/images/navigation/ic_settings_applications_white_24dp.png", true),
+      new Link("/help", "assets/images/navigation/ic_help_white_24dp.png"),
     ];
   }
 
