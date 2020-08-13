@@ -139,17 +139,17 @@ export class HomeComponent implements OnInit {
 
   scanForGames() {
     this.startScan([
-//      'C:\\Games\\MSX System\\Software\\roms',
+      'C:\\Games\\MSX System\\Software\\roms',
       'C:\\Games\\MSX System\\Software\\OS',
       'C:\\Games\\MSX System\\Software\\DSK',
-//      'C:\\Games\\MSX various game files\\cas',
+      'C:\\Games\\MSX various game files\\cas',
 //      'C:\\Games\\MSX-Laserdisc\\Astron Belt',
     ])
   }
 
   startScan(folders: string[]) {
     this.scanner.scan(folders).then(result => {
-      this.games = Promise.resolve(result)
+      this.games = this.gamesLister.getGames();
     });
   }
 

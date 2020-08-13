@@ -83,6 +83,6 @@ function initializeServices() {
     filesService = new FilesService(win, settingsService);
     filesService.init();
 
-    scanService = new ScanService(win, extraDataService, emulatorRepositoryService);
+    scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService);
     scanService.init();
 }

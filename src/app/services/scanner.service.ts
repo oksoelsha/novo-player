@@ -20,10 +20,10 @@ export class ScannerService {
     }
   }
 
-  scan(folders: string[]): Promise<Game[]> {
-    return new Promise<Game[]>((resolve, reject) => {
-      this.ipc.once("scanResponse", (event, games) => {
-        resolve(games);
+  scan(folders: string[]): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      this.ipc.once("scanResponse", (event, totalAddedToDatabase) => {
+        resolve(totalAddedToDatabase);
       });
       this.ipc.send("scan", folders);
     });

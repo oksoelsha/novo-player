@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { BrowserWindow, ipcMain } from 'electron';
+import { ipcMain, BrowserWindow } from 'electron';
 import { ExtraData, ExtraDataService } from 'ExtraDataService';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -7,18 +7,19 @@ import { Stream } from 'stream';
 import { FileTypeUtils } from './utils/FileTypeUtils';
 import { Game } from '../src/app/models/game'
 import { EmulatorRepositoryService, RepositoryData } from 'EmulatorRepositoryService';
+import { GamesService } from 'GamesService';
 
 export class ScanService {
     private extraDataInfo: Map<string, ExtraData>;
     private repositoryInfo: Map<string, RepositoryData>;
     private totalFilesToScan: number = 0
     private scannedFilesCounter: number = 0
-    private games: Game[] = []
 
     constructor(
         private win: BrowserWindow,
         private extraDataService: ExtraDataService,
-        private emulatorRepositoryService: EmulatorRepositoryService) {
+        private emulatorRepositoryService: EmulatorRepositoryService,
+        private gamesService: GamesService) {
 
         this.extraDataInfo = extraDataService.getExtraDataInfo()
         this.repositoryInfo = emulatorRepositoryService.getRepositoryInfo()
@@ -114,28 +115,17 @@ export class ScanService {
                 game.setGenre2(extraData.genre2)
             }
 
-            if (this.repositoryInfo != null) {
-                let repositoryData: RepositoryData = this.repositoryInfo.get(data.hash)
-                if (repositoryData != null) {
-                    game.setTitle(repositoryData.title)
-                    game.setSystem(repositoryData.system)
-                    game.setCompany(repositoryData.company)
-                    game.setYear(repositoryData.year)
-                    game.setCountry(repositoryData.country)
-                    game.setDump(repositoryData.dump)
-                    game.setMapper(repositoryData.mapper)
-                    game.setStart(repositoryData.start)
-                    game.setRemark(repositoryData.remark)
-                }
-            }
-
-            this.games.push(game)
-
             this.scannedFilesCounter++
             if (this.scannedFilesCounter == this.totalFilesToScan) {
-                this.win.webContents.send('scanResponse', this.games)
+                this.gamesService.saveGame(game, this.finishScan, this);
+            } else {
+                this.gamesService.saveGame(game);
             }
         });
+    }
+
+    private finishScan(totalAddedToDatabase: number, ref: any) {
+        ref.win.webContents.send('scanResponse', totalAddedToDatabase)
     }
 
     private getSha1(filename: string): Promise<any> {
@@ -181,7 +171,7 @@ export class ScanService {
     }
 
     private getMSXFileIndexInZip(entries: any): number {
-        let index: number = 0;
+        let index: number;
         for(index = 0; index < entries.length; index++) {
             if(FileTypeUtils.isMSXFile(entries[index].name)) {
                 return index;
