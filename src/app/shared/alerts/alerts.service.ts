@@ -17,6 +17,10 @@ export class AlertsService {
     this.subject.next(new Alert(msg, AlertType.Failure));
   }
 
+  info(msg: string) {
+    this.subject.next(new Alert(msg, AlertType.Info));
+  }
+
   getAlert(): Observable<Alert> {
     return this.subject.asObservable();
   }
@@ -34,5 +38,6 @@ class Alert {
 
 export enum AlertType {
   Success,
-  Failure
+  Failure,
+  Info
 }

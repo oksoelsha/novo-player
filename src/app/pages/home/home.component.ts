@@ -5,6 +5,7 @@ import { ScreenshotData } from 'src/app/models/screenshot-data';
 import { ScannerService } from 'src/app/services/scanner.service';
 import { GameUtils } from 'src/app/models/game-utils';
 import { Remote } from 'electron';
+import { AlertsService } from 'src/app/shared/alerts/alerts.service';
 
 @Component({
   selector: 'app-home',
@@ -83,7 +84,7 @@ export class HomeComponent implements OnInit {
     ["EU", "EU"]
     ]);
 
-  constructor(private gamesLister: GamesListerService, private scanner: ScannerService) { }
+  constructor(private gamesLister: GamesListerService, private scanner: ScannerService, private alertService: AlertsService) { }
 
   ngOnInit() {
     this.games = this.gamesLister.getGames();
@@ -148,7 +149,9 @@ export class HomeComponent implements OnInit {
   }
 
   startScan(folders: string[]) {
+    this.alertService.info("Started scanning process...")
     this.scanner.scan(folders).then(result => {
+      this.alertService.info("Total games added = " + result)
       this.games = this.gamesLister.getGames();
     });
   }

@@ -23,8 +23,9 @@ export class GamesListerService {
 
   async getGames(): Promise<Game[]> {
     return new Promise<Game[]>((resolve, reject) => {
-      this.ipc.once("getGamesResponse", (event, arg) => {
-        resolve(arg);
+      this.ipc.once("getGamesResponse", (event, games) => {
+        games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        resolve(games);
       });
       this.ipc.send("getGames");
     });

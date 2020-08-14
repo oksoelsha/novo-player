@@ -12,7 +12,7 @@ export class AlertsComponent implements OnDestroy {
   alertMessage: string = "";
   alertClass: string = "";
   subscription: Subscription;
-  waitTimer: Observable<number> = timer(3000);
+  waitTimer: Observable<number> = timer(5000);
 
   constructor(private alertService: AlertsService) {
     this.subscription = this.alertService.getAlert().subscribe(alert => {
