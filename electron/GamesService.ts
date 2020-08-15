@@ -25,20 +25,31 @@ export class GamesService {
         ipcMain.on('getGames', (event, arg) => {
             this.getGames();
         });
+
+        ipcMain.on('removeGame', (event, game: Game) => {
+            this.removeGame(game);
+        });
     }
 
     saveGame(game: Game, reportResult: any = null, ref: any = null) {
         var self = this;
-            var gameDO: GameDO = new GameDO(game);
-            this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
-                if (err == null) {
-                    self.totalAddedToDatabase++;
-                }
-                if (reportResult != null) {
-                    reportResult(self.totalAddedToDatabase, ref);
-                    self.totalAddedToDatabase = 0;
-                }
-            });
+        var gameDO: GameDO = new GameDO(game);
+        this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
+            if (err == null) {
+                self.totalAddedToDatabase++;
+            }
+            if (reportResult != null) {
+                reportResult(self.totalAddedToDatabase, ref);
+                self.totalAddedToDatabase = 0;
+            }
+        });
+    }
+
+    private removeGame(game: Game) {
+        var self = this;
+        this.database.remove({ _id: game.sha1Code }, {}, function (err: any, numRemoved: number) {
+            self.win.webContents.send('removeGameResponse', numRemoved == 1)
+        });
     }
 
     private getGames() {

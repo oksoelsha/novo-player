@@ -35,6 +35,15 @@ export class GamesListerService {
     this.ipc.send("launchGame", game);
   }
 
+  async removeGame(game: Game) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once("removeGameResponse", (event, removed: boolean) => {
+        resolve(removed);
+      });
+      this.ipc.send("removeGame", game);
+    });
+  }
+
   getScreenshot(game: Game): Promise<ScreenshotData> {
     return new Promise<ScreenshotData>((resolve, reject) => {
       this.ipc.once("getScreenshotResponse", (event, arg) => {

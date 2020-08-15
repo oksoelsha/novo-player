@@ -13,12 +13,15 @@
       </table>
       <div id="games-table-data">
         <table>
-          <tr *ngFor="let game of games | async" (click)="showInfo(game)" class="{{ selectedGameClass(game) }}">
+          <tr *ngFor="let game of games" (click)="showInfo(game)" class="{{ selectedGameClass(game) }}">
             <th><img src="{{ getGameMedium(game) }}"/></th>
             <td class="name">{{ game.name }}</td>
             <td class="company">{{ game.company }}</td>
             <td class="year">{{ game.year }}</td>
-            <td><img src="assets/images/operations/play.png" (click)="launch(game)"></td>
+            <td>
+              <img src="assets/images/operations/play.png" (click)="launch(game)">
+              <img src="assets/images/operations/remove.png" (click)="$event.stopPropagation(); remove(game)">
+            </td>
           </tr>
         </table>
       </div>

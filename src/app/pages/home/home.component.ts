@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
   private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
-  games: Promise<Game[]>;
+  games: Game[];
   screenshot_a_1: ScreenshotData;
   screenshot_a_2: ScreenshotData;
   screenshot_b_1: ScreenshotData;
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService, private alertService: AlertsService) { }
 
   ngOnInit() {
-    this.games = this.gamesLister.getGames();
+    this.gamesLister.getGames().then((data:Game[]) => this.games = data);
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
   }
@@ -99,6 +99,17 @@ export class HomeComponent implements OnInit {
 
   launch(game: Game) {
     this.gamesLister.launchGame(game);
+  }
+
+  remove(game: Game) {
+    this.gamesLister.removeGame(game).then((removed: boolean) => {
+      if (removed) {
+        this.alertService.success("Game was removed");
+        this.games.splice(this.games.indexOf(game), 1);
+      } else {
+        this.alertService.failure("Game was not remved!");
+      }
+    })
   }
 
   showInfo(game: Game) {
@@ -152,7 +163,7 @@ export class HomeComponent implements OnInit {
     this.alertService.info("Started scanning process...")
     this.scanner.scan(folders).then(result => {
       this.alertService.info("Total games added = " + result)
-      this.games = this.gamesLister.getGames();
+      this.gamesLister.getGames().then((data:Game[]) => this.games = data);
     });
   }
 
