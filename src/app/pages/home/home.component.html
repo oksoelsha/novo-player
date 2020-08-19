@@ -2,6 +2,7 @@
   <div class="area-on-the-left">
     <div class="table-buttons">
       <button type="button" class="btn btn-secondary btn-sm" (click)="scanForGames()">Scan</button>
+      <span>Total = {{ games.length  }}</span>
     </div>
     <div id="games-table">
       <table *ngIf="games">
@@ -11,9 +12,9 @@
           <th class="year-title">Year</th>
         </tr>
       </table>
-      <div id="games-table-data">
+      <div id="games-table-data" tabindex="0" (keydown)="$event.preventDefault()">
         <table>
-          <tr *ngFor="let game of games" (click)="showInfo(game)" class="{{ selectedGameClass(game) }}">
+          <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}" class="{{ selectedGameClass(game) }}">
             <th><img src="{{ getGameMedium(game) }}"/></th>
             <td class="name">{{ game.name }}</td>
             <td class="company">{{ game.company }}</td>

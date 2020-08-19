@@ -31,10 +31,13 @@
       text-transform: uppercase;
       font-weight: normal;
 
+#games-table-data:focus
+  outline: none;
+
 #games-table-data
   height: 86vh;
   width: 670px;
-  overflow: auto;
+  overflow-y: auto;
   table
     font-size: 14px;
     tr
@@ -79,9 +82,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 .year-title
-  width: 80px;
+  width: 90px;
 .year
-  width: 40px;
+  width: 42px;
 
 div::-webkit-scrollbar
   width: 8px;

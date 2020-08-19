@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, HostListener } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { GamesListerService } from 'src/app/services/games-lister.service';
 import { ScreenshotData } from 'src/app/models/screenshot-data';
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
   private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
-  games: Game[];
+  games: Game[] = [];
   screenshot_a_1: ScreenshotData;
   screenshot_a_2: ScreenshotData;
   screenshot_b_1: ScreenshotData;
@@ -40,6 +40,8 @@ export class HomeComponent implements OnInit {
 
   selectedGame: Game = null;
   selectedGameMedium: Promise<string>;
+
+  private gamesTable: Element;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -84,9 +86,34 @@ export class HomeComponent implements OnInit {
     ["EU", "EU"]
     ]);
 
+  private readonly ENTER = 13;
+  private readonly KEY_UP = 38;
+  private readonly KEY_DOWN = 40;
+
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService, private alertService: AlertsService) { }
 
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (this.selectedGame != null) {
+      if (event.keyCode == this.KEY_UP) {
+        var index = this.games.indexOf(this.selectedGame);
+        if (index > 0) {
+          this.showInfo(this.games[index - 1]);
+        }
+      } else if (event.keyCode === this.KEY_DOWN) {
+        var index = this.games.indexOf(this.selectedGame);
+        if (index < (this.games.length - 1)) {
+          this.showInfo(this.games[index + 1]);
+        }
+      } else if (event.keyCode === this.ENTER) {
+        this.launch(this.selectedGame);
+      }
+    }
+  }
+
   ngOnInit() {
+    this.gamesTable = document.getElementById("games-table-data");
+
     this.gamesLister.getGames().then((data:Game[]) => this.games = data);
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
@@ -107,7 +134,7 @@ export class HomeComponent implements OnInit {
         this.alertService.success("Game was removed");
         this.games.splice(this.games.indexOf(game), 1);
       } else {
-        this.alertService.failure("Game was not remved!");
+        this.alertService.failure("Game was not removed!");
       }
     })
   }
@@ -115,6 +142,8 @@ export class HomeComponent implements OnInit {
   showInfo(game: Game) {
     this.selectedGame = game;
     this.setSelectedGameMedium();
+    this.adjustScrollForArrowKeys(game);
+
     this.gamesLister.getScreenshot(game).then((screenshots) => {
       if (this.toggle) {
         this.screenshot_a_1 = this.getScreenshot1Data(screenshots);
@@ -265,6 +294,19 @@ export class HomeComponent implements OnInit {
       }
     }
     return displayString;
+  }
+
+  private adjustScrollForArrowKeys(game: Game) {
+    let gamesTableTop: number = this.gamesTable.getBoundingClientRect().top;
+    let gamesTableBottom: number = this.gamesTable.getBoundingClientRect().bottom;
+    let tableCellTop: number = document.getElementById(game.sha1Code).getBoundingClientRect().top;
+    let tableCellBottom: number = document.getElementById(game.sha1Code).getBoundingClientRect().bottom;
+
+    if (tableCellTop < gamesTableTop) {
+      this.gamesTable.scrollTop = (tableCellTop + this.gamesTable.scrollTop) - gamesTableTop;
+    } else if (tableCellBottom > gamesTableBottom) {
+      this.gamesTable.scrollTop = (tableCellBottom + this.gamesTable.scrollTop) - gamesTableBottom;
+    }
   }
 
   private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {
