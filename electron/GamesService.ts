@@ -26,12 +26,16 @@ export class GamesService {
             this.getGames();
         });
 
+        ipcMain.on('saveGame', (event, game: Game) => {
+            this.saveGame(game);
+        });
+
         ipcMain.on('removeGame', (event, game: Game) => {
             this.removeGame(game);
         });
     }
 
-    saveGame(game: Game, reportResult: any = null, ref: any = null) {
+    saveGameInBatch(game: Game, reportResult: any = null, ref: any = null) {
         var self = this;
         var gameDO: GameDO = new GameDO(game);
         this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
@@ -42,6 +46,14 @@ export class GamesService {
                 reportResult(self.totalAddedToDatabase, ref);
                 self.totalAddedToDatabase = 0;
             }
+        });
+    }
+
+    private saveGame(game: Game) {
+        var self = this;
+        var gameDO: GameDO = new GameDO(game);
+        this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
+            self.win.webContents.send('saveGameResponse', err == null)
         });
     }
 

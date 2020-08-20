@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
 
   selectedGame: Game = null;
   selectedGameMedium: Promise<string>;
+  lastRemovedGame: Game = null;
 
   private gamesTable: Element;
 
@@ -108,6 +109,9 @@ export class HomeComponent implements OnInit {
       } else if (event.keyCode === this.ENTER) {
         this.launch(this.selectedGame);
       }
+    } else if (this.selectedGame == null && event.keyCode === this.KEY_DOWN && this.games.length > 0) {
+      this.selectedGame = this.games[0];
+      this.showInfo(this.games[0]);
     }
   }
 
@@ -132,11 +136,26 @@ export class HomeComponent implements OnInit {
     this.gamesLister.removeGame(game).then((removed: boolean) => {
       if (removed) {
         this.alertService.success("Game was removed");
+        this.lastRemovedGame = game;
         this.games.splice(this.games.indexOf(game), 1);
       } else {
         this.alertService.failure("Game was not removed!");
       }
     })
+  }
+
+  undoRemove() {
+    if (this.lastRemovedGame != null) {
+      this.gamesLister.saveGame(this.lastRemovedGame).then((added: boolean) => {
+        if (added) {
+          this.alertService.success("Game was added back");
+          this.addGameToSortedList(this.lastRemovedGame);
+          this.lastRemovedGame = null;
+        } else {
+          this.alertService.failure("Game was not added back!");
+        }
+      });
+    }
   }
 
   showInfo(game: Game) {
@@ -322,6 +341,16 @@ export class HomeComponent implements OnInit {
       return this.noScreenshot2;
     } else {
       return screenshots;
+    }
+  }
+
+  private addGameToSortedList(game: Game) {
+    let index: number;
+    for (index = 0; index < this.games.length && this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++);
+    if (index < this.games.length) {
+      this.games.splice(index, 0, game);
+    } else {
+      this.games.push(game);
     }
   }
 }

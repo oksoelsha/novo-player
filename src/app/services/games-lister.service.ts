@@ -35,6 +35,15 @@ export class GamesListerService {
     this.ipc.send("launchGame", game);
   }
 
+  async saveGame(game: Game) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once("saveGameResponse", (event, removed: boolean) => {
+        resolve(removed);
+      });
+      this.ipc.send("saveGame", game);
+    });
+  }
+
   async removeGame(game: Game) {
     return new Promise<boolean>((resolve, reject) => {
       this.ipc.once("removeGameResponse", (event, removed: boolean) => {

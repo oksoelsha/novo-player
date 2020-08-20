@@ -117,9 +117,9 @@ export class ScanService {
 
             this.scannedFilesCounter++
             if (this.scannedFilesCounter == this.totalFilesToScan) {
-                this.gamesService.saveGame(game, this.finishScan, this);
+                this.gamesService.saveGameInBatch(game, this.finishScan, this);
             } else {
-                this.gamesService.saveGame(game);
+                this.gamesService.saveGameInBatch(game);
             }
         });
     }
