@@ -87,29 +87,39 @@ export class HomeComponent implements OnInit {
     ["EU", "EU"]
     ]);
 
-  private readonly ENTER = 13;
-  private readonly KEY_UP = 38;
-  private readonly KEY_DOWN = 40;
-
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService, private alertService: AlertsService) { }
+
+  private gameQuickSearch: string = ""
+  private quickTypeTimer: NodeJS.Timer = null;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (this.selectedGame != null) {
-      if (event.keyCode == this.KEY_UP) {
+    if (event.key.length == 1 &&
+      ((event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') || (event.key >= 'A' && event.key <= 'Z'))) {
+        if (this.quickTypeTimer != null) {
+          clearTimeout(this.quickTypeTimer);
+        }
+        this.gameQuickSearch += event.key;
+        this.quickTypeTimer = setTimeout(() => {
+          this.jumpToNearestGame(this.gameQuickSearch);
+          this.gameQuickSearch = "";
+        }, 300)
+    }
+    else if (this.selectedGame != null) {
+      if (event.key == 'ArrowUp') {
         var index = this.games.indexOf(this.selectedGame);
         if (index > 0) {
           this.showInfo(this.games[index - 1]);
         }
-      } else if (event.keyCode === this.KEY_DOWN) {
+      } else if (event.key == 'ArrowDown') {
         var index = this.games.indexOf(this.selectedGame);
         if (index < (this.games.length - 1)) {
           this.showInfo(this.games[index + 1]);
         }
-      } else if (event.keyCode === this.ENTER) {
+      } else if (event.key == 'Enter') {
         this.launch(this.selectedGame);
       }
-    } else if (this.selectedGame == null && event.keyCode === this.KEY_DOWN && this.games.length > 0) {
+    } else if (this.selectedGame == null && event.key == 'ArrowDown' && this.games.length > 0) {
       this.selectedGame = this.games[0];
       this.showInfo(this.games[0]);
     }
@@ -117,6 +127,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.gamesTable = document.getElementById("games-table-data");
+
+    if(sessionStorage.getItem('lastRemovedGame') != null) {
+      this.lastRemovedGame = JSON.parse(sessionStorage.getItem('lastRemovedGame'));
+    }
 
     this.gamesLister.getGames().then((data:Game[]) => this.games = data);
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
@@ -137,6 +151,7 @@ export class HomeComponent implements OnInit {
       if (removed) {
         this.alertService.success("Game was removed");
         this.lastRemovedGame = game;
+        sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
         this.games.splice(this.games.indexOf(game), 1);
       } else {
         this.alertService.failure("Game was not removed!");
@@ -161,7 +176,7 @@ export class HomeComponent implements OnInit {
   showInfo(game: Game) {
     this.selectedGame = game;
     this.setSelectedGameMedium();
-    this.adjustScrollForArrowKeys(game);
+    this.adjustScrollForSelectedGame(game);
 
     this.gamesLister.getScreenshot(game).then((screenshots) => {
       if (this.toggle) {
@@ -315,7 +330,7 @@ export class HomeComponent implements OnInit {
     return displayString;
   }
 
-  private adjustScrollForArrowKeys(game: Game) {
+  private adjustScrollForSelectedGame(game: Game) {
     let gamesTableTop: number = this.gamesTable.getBoundingClientRect().top;
     let gamesTableBottom: number = this.gamesTable.getBoundingClientRect().bottom;
     let tableCellTop: number = document.getElementById(game.sha1Code).getBoundingClientRect().top;
@@ -351,6 +366,14 @@ export class HomeComponent implements OnInit {
       this.games.splice(index, 0, game);
     } else {
       this.games.push(game);
+    }
+  }
+
+  private jumpToNearestGame(charachters: string) {
+    let index: number;
+    for (index = 0; index < this.games.length && !this.games[index].name.toLowerCase().startsWith(charachters.toLowerCase()); index++);
+    if (index < this.games.length) {
+      this.showInfo(this.games[index]);
     }
   }
 }
