@@ -1,6 +1,6 @@
 import { Component, OnDestroy  } from '@angular/core';
 import { AlertsService, AlertType } from './alerts.service';
-import { Subscription, timer, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-alerts',
@@ -9,10 +9,10 @@ import { Subscription, timer, Observable } from 'rxjs';
 })
 export class AlertsComponent implements OnDestroy {
 
-  alertMessage: string = "";
-  alertClass: string = "";
-  subscription: Subscription;
-  waitTimer: Observable<number> = timer(5000);
+  private alertMessage: string = "";
+  private alertClass: string = "";
+  private subscription: Subscription;
+  private timer: NodeJS.Timer = null;
 
   constructor(private alertService: AlertsService) {
     this.subscription = this.alertService.getAlert().subscribe(alert => {
@@ -29,9 +29,12 @@ export class AlertsComponent implements OnDestroy {
   }
 
   private startTimer() {
-    this.waitTimer.subscribe(val => {
+    if (this.timer != null) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(() => {
       this.resetFields();
-    });
+    }, 5000);
   }
 
   private resetFields() {

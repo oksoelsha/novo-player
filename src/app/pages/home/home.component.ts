@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   transparent1: string = "";
   transparent2: string = "transparent";
 
-  selectedGame: Game = null;
+  selectedGame: Game;
   selectedGameMedium: Promise<string>;
   lastRemovedGame: Game = null;
 
@@ -126,6 +126,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialize();
     this.gamesTable = document.getElementById("games-table-data");
 
     if(sessionStorage.getItem('lastRemovedGame') != null) {
@@ -151,6 +152,7 @@ export class HomeComponent implements OnInit {
       if (removed) {
         this.alertService.success("Game was removed");
         this.lastRemovedGame = game;
+        this.initialize();
         sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
         this.games.splice(this.games.indexOf(game), 1);
       } else {
@@ -328,6 +330,12 @@ export class HomeComponent implements OnInit {
       }
     }
     return displayString;
+  }
+
+  private initialize() {
+    this.selectedGame = null;
+    this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
+    this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
   }
 
   private adjustScrollForSelectedGame(game: Game) {
