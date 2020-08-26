@@ -94,16 +94,17 @@ export class HomeComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (event.key.length == 1 &&
-      ((event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') || (event.key >= 'A' && event.key <= 'Z'))) {
-        if (this.quickTypeTimer != null) {
-          clearTimeout(this.quickTypeTimer);
-        }
-        this.gameQuickSearch += event.key;
-        this.quickTypeTimer = setTimeout(() => {
-          this.jumpToNearestGame(this.gameQuickSearch);
-          this.gameQuickSearch = "";
-        }, 300)
+    if (event.key.length == 1 && (
+       (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
+       (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
+      if (this.quickTypeTimer != null) {
+        clearTimeout(this.quickTypeTimer);
+      }
+      this.gameQuickSearch += event.key;
+      this.quickTypeTimer = setTimeout(() => {
+        this.jumpToNearestGame(this.gameQuickSearch);
+        this.gameQuickSearch = "";
+      }, 600)
     }
     else if (this.selectedGame != null) {
       if (event.key == 'ArrowUp') {
@@ -152,7 +153,9 @@ export class HomeComponent implements OnInit {
       if (removed) {
         this.alertService.success("Game was removed");
         this.lastRemovedGame = game;
-        this.initialize();
+        if (game.sha1Code == this.selectedGame.sha1Code) {
+          this.initialize();
+        }
         sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
         this.games.splice(this.games.indexOf(game), 1);
       } else {
