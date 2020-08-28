@@ -29,18 +29,18 @@ export class HomeComponent implements OnInit {
   private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
-  games: Game[] = [];
-  screenshot_a_1: ScreenshotData;
-  screenshot_a_2: ScreenshotData;
-  screenshot_b_1: ScreenshotData;
-  screenshot_b_2: ScreenshotData;
-  toggle: boolean = false;
-  transparent1: string = "";
-  transparent2: string = "transparent";
+  private games: Game[] = [];
+  private screenshot_a_1: ScreenshotData;
+  private screenshot_a_2: ScreenshotData;
+  private screenshot_b_1: ScreenshotData;
+  private screenshot_b_2: ScreenshotData;
+  private toggle: boolean = false;
+  private transparent1: string = "";
+  private transparent2: string = "transparent";
 
-  selectedGame: Game;
-  selectedGameMedium: Promise<string>;
-  lastRemovedGame: Game = null;
+  private selectedGame: Game;
+  private selectedGameMedium: Promise<string>;
+  private lastRemovedGame: Game = null;
 
   private gamesTable: Element;
 

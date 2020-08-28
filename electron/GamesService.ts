@@ -82,6 +82,7 @@ export class GamesService {
                     let repositoryData: RepositoryData = self.repositoryInfo.get(entry._id)
                     if (repositoryData != null) {
                         game.setTitle(repositoryData.title)
+                        game.setSystem(repositoryData.system)
                         game.setCompany(repositoryData.company)
                         game.setYear(repositoryData.year)
                         game.setCountry(repositoryData.country)
