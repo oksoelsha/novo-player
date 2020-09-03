@@ -153,7 +153,7 @@ export class HomeComponent implements OnInit {
       if (removed) {
         this.alertService.success("Game was removed");
         this.lastRemovedGame = game;
-        if (game.sha1Code == this.selectedGame.sha1Code) {
+        if (this.selectedGame != null && game.sha1Code == this.selectedGame.sha1Code) {
           this.initialize();
         }
         sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
@@ -170,6 +170,7 @@ export class HomeComponent implements OnInit {
         if (added) {
           this.alertService.success("Game was added back");
           this.addGameToSortedList(this.lastRemovedGame);
+          sessionStorage.removeItem('lastRemovedGame');
           this.lastRemovedGame = null;
         } else {
           this.alertService.failure("Game was not added back!");
