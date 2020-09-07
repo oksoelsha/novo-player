@@ -98,5 +98,6 @@
 </ng-template>
 
 <ng-template #gameDetailGenerationMSXLink>
-  <a href="#" (click)="openGenerationMSXInBrowser(selectedGame.generationMSXId)">{{ selectedGame.generationMSXId }}</a>
+  <a *ngIf="selectedGame.generationMSXId < 10000; else generationMSXNotAvailable" href="#" (click)="openGenerationMSXInBrowser(selectedGame.generationMSXId)">{{ selectedGame.generationMSXId }}</a>
+  <ng-template #generationMSXNotAvailable>Not added yet</ng-template>
 </ng-template>
