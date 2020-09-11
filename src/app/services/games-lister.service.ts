@@ -35,6 +35,15 @@ export class GamesListerService {
     this.ipc.send("launchGame", game);
   }
 
+  async getMachines(): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+      this.ipc.once("getMachinesResponse", (event, arg) => {
+        resolve(arg);
+      });
+      this.ipc.send("getMachines");
+    });
+  }
+
   async saveGame(game: Game) {
     return new Promise<boolean>((resolve, reject) => {
       this.ipc.once("saveGameResponse", (event, removed: boolean) => {

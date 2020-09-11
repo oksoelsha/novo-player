@@ -6,6 +6,7 @@ import { ScannerService } from 'src/app/services/scanner.service';
 import { GameUtils } from 'src/app/models/game-utils';
 import { Remote } from 'electron';
 import { AlertsService } from 'src/app/shared/alerts/alerts.service';
+import { ScanParametersComponent, ScanParameters } from 'src/app/popups/scan-parameters/scan-parameters.component';
 
 @Component({
   selector: 'app-home',
@@ -23,13 +24,18 @@ export class HomeComponent implements OnInit {
   @ViewChild('gameDetailGenres') private gameDetailGenres: TemplateRef<object>;
   @ViewChild('gameDetailGenerationMSXLink') private gameDetailGenerationMSXLink: TemplateRef<object>;
 
-  private remote: Remote = (<any>window).require('electron').remote;
+  @ViewChild(ScanParametersComponent) private scanParameters: ScanParametersComponent;
+
+  private readonly remote: Remote = (<any>window).require('electron').remote;
 
   private readonly noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
   private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
   private games: Game[] = [];
+  private selectedGame: Game;
+  private selectedGameMedium: Promise<string>;
+  private lastRemovedGame: Game = null;
   private screenshot_a_1: ScreenshotData;
   private screenshot_a_2: ScreenshotData;
   private screenshot_b_1: ScreenshotData;
@@ -37,12 +43,9 @@ export class HomeComponent implements OnInit {
   private toggle: boolean = false;
   private transparent1: string = "";
   private transparent2: string = "transparent";
-
-  private selectedGame: Game;
-  private selectedGameMedium: Promise<string>;
-  private lastRemovedGame: Game = null;
-
   private gamesTable: Element;
+  private gameQuickSearch: string = ""
+  private quickTypeTimer: NodeJS.Timer = null;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -64,7 +67,7 @@ export class HomeComponent implements OnInit {
     { name: "Generation-MSX ID", value: "generationMSXId", blockName: "gameDetailGenerationMSXLink" },
   ]
 
-  private readonly countryFlags: Map<string,string>  = new Map([
+  private readonly countryFlags: Map<string, string> = new Map([
     ["BR", "pt_BR"],
     ["DE", "de_DE"],
     ["ES", "es_ES"],
@@ -85,18 +88,15 @@ export class HomeComponent implements OnInit {
     ["TW", "zh_TW"],
     ["CA", "CA"],
     ["EU", "EU"]
-    ]);
+  ]);
 
   constructor(private gamesLister: GamesListerService, private scanner: ScannerService, private alertService: AlertsService) { }
-
-  private gameQuickSearch: string = ""
-  private quickTypeTimer: NodeJS.Timer = null;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key.length == 1 && (
-       (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
-       (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
+      (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
+      (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
       if (this.quickTypeTimer != null) {
         clearTimeout(this.quickTypeTimer);
       }
@@ -130,11 +130,11 @@ export class HomeComponent implements OnInit {
     this.initialize();
     this.gamesTable = document.getElementById("games-table-data");
 
-    if(sessionStorage.getItem('lastRemovedGame') != null) {
+    if (sessionStorage.getItem('lastRemovedGame') != null) {
       this.lastRemovedGame = JSON.parse(sessionStorage.getItem('lastRemovedGame'));
     }
 
-    this.gamesLister.getGames().then((data:Game[]) => this.games = data);
+    this.gamesLister.getGames().then((data: Game[]) => this.games = data);
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
   }
@@ -218,26 +218,16 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  scanForGames() {
-    this.startScan([
-      'C:\\Games\\MSX System\\Software\\roms',
-      'C:\\Games\\MSX System\\Software\\OS',
-      'C:\\Games\\MSX System\\Software\\DSK',
-      'C:\\Games\\MSX various game files\\cas',
-//      'C:\\Games\\MSX-Laserdisc\\Astron Belt',
-    ])
-  }
-
-  startScan(folders: string[]) {
+  startScan(parameters: ScanParameters) {
     this.alertService.info("Started scanning process...")
-    this.scanner.scan(folders).then(result => {
+    this.scanner.scan(parameters).then(result => {
       this.alertService.info("Total games added = " + result)
-      this.gamesLister.getGames().then((data:Game[]) => this.games = data);
+      this.gamesLister.getGames().then((data: Game[]) => this.games = data);
     });
   }
 
   selectedGameClass(game: Game): string {
-    if(this.selectedGame != null && game.sha1Code == this.selectedGame.sha1Code) {
+    if (this.selectedGame != null && game.sha1Code == this.selectedGame.sha1Code) {
       return "selected-game";
     } else {
       return "";
@@ -247,7 +237,7 @@ export class HomeComponent implements OnInit {
   getSelectedGameFiles(): string[] {
     var files: string[] = []
 
-    for(let fileField of this.fileFields) {
+    for (let fileField of this.fileFields) {
       if (this.selectedGame[fileField] != null) {
         files.push(this.selectedGame[fileField]);
       }

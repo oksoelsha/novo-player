@@ -40,7 +40,7 @@ export class FilesService {
             } else {
                 screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b' + suffix + '.png')
             }
-                try {
+            try {
                 data2 = this.imageDataPrefix + fs.readFileSync(screenshotsPath2).toString('base64');
             } catch (err) {
                 data2 = "";

@@ -25,13 +25,11 @@ export class ScanService {
         this.repositoryInfo = emulatorRepositoryService.getRepositoryInfo()
     }
 
-    init() {
-        ipcMain.on('scan', (event, arg: string[]) => {
+    start(directories: string[], machine: string) {
             //before scanning, first get total files in given folders
-            this.totalFilesToScan = this.countTotalFilesToScan(arg)
+            this.totalFilesToScan = this.countTotalFilesToScan(directories)
 
-            this.startScan(arg)
-        })
+            this.scan(directories, machine)
     }
 
     private countTotalFilesToScan(folderList: string[]): number {
@@ -54,25 +52,25 @@ export class ScanService {
         return count
     }
 
-    private startScan(folderList: string[]) {
+    private scan(folderList: string[], machine: string) {
         for (const folder of folderList) {
-            this.readFolder(folder)
+            this.readFolder(folder, machine)
         }
     }
 
-    private readFolder(folder: string) {
+    private readFolder(folder: string, machine: string) {
         var currentDirectory = fs.readdirSync(folder, 'utf8');
         currentDirectory.forEach(file => {
             var fullPath: string = path.join(folder, file)
             if (fs.statSync(fullPath).isFile()) {
                 if(FileTypeUtils.isMSXFile(fullPath)) {
-                    this.processFile(fullPath)
+                    this.processFile(fullPath, machine)
                 } else {
                     //a file that wasn't processed was still scanned
                     this.scannedFilesCounter++;
                 }
             } else {
-                this.readFolder(fullPath);
+                this.readFolder(fullPath, machine);
             }
         })
     }
@@ -97,14 +95,14 @@ export class ScanService {
         }
     }
 
-    private processFile(filename: string) {
+    private processFile(filename: string, machine: string) {
         var sha1 = this.getSha1(filename);
         sha1.then((data: any) => {
             var extraData: ExtraData = this.extraDataInfo.get(data.hash)
             var game: Game = new Game(this.getGameName(data.hash, data.filename), data.hash, data.size)
 
             this.setMainFileForGame(game, filename, data.filename)
-            game.setMachine('Boosted_MSX2_EN')
+            game.setMachine(machine)
 
             if (extraData != null) {
                 game.setGenerationMSXId(extraData.generationMSXID)
@@ -187,14 +185,10 @@ export class ScanService {
             if (repositoryData != null) {
                 return repositoryData.title
             } else {
-                return this.getFilenameWithoutExt(path.basename(file))
+                return FileTypeUtils.getFilenameWithoutExt(path.basename(file))
             }
         } else {
-            return this.getFilenameWithoutExt(path.basename(file))
+            return FileTypeUtils.getFilenameWithoutExt(path.basename(file))
         }
-    }
-
-    private getFilenameWithoutExt(filename: string): string {
-        return filename.substring(0, filename.lastIndexOf('.'));
     }
 }

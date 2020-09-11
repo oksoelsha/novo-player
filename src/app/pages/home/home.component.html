@@ -2,7 +2,7 @@
   <div class="area-on-the-left">
     <div class="table-buttons">
       <span>Total = {{ games.length  }} </span>
-      <button type="button" class="btn btn-secondary btn-sm" (click)="scanForGames()">Scan</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="scanParameters.open()">Scan</button>
       <button type="button" class="btn btn-secondary btn-sm" (click)="undoRemove()" [disabled]="lastRemovedGame == null">Undo</button>
     </div>
     <div id="games-table">
@@ -101,3 +101,5 @@
   <a *ngIf="selectedGame.generationMSXId < 10000; else generationMSXNotAvailable" href="#" (click)="openGenerationMSXInBrowser(selectedGame.generationMSXId)">{{ selectedGame.generationMSXId }}</a>
   <ng-template #generationMSXNotAvailable>Not added yet</ng-template>
 </ng-template>
+
+<app-scan-parameters (parameters)="startScan($event)"></app-scan-parameters>

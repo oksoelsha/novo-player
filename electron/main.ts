@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { ipcMain, app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import { SettingsService} from './SettingsService'
@@ -8,6 +8,7 @@ import { FilesService } from './FilesService'
 import { EmulatorRepositoryService } from './EmulatorRepositoryService'
 import { ExtraDataService } from './ExtraDataService'
 import { ScanService } from './ScanService'
+import { EmulatorMachinesService } from './EmulatorMachinesService'
 
 let win: BrowserWindow
 let settingsService: SettingsService
@@ -16,7 +17,7 @@ let emulatorLaunchService: EmulatorLaunchService
 let filesService: FilesService
 let emulatorRepositoryService: EmulatorRepositoryService
 let extraDataService: ExtraDataService
-let scanService: ScanService
+let emulatorMachinesService: EmulatorMachinesService;
 
 app.on('ready', startApp)
 
@@ -83,6 +84,12 @@ function initializeServices() {
     filesService = new FilesService(win, settingsService);
     filesService.init();
 
-    scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService);
-    scanService.init();
+    ipcMain.on('scan', (event, directories: string[], machine: string) => {
+        let scanService: ScanService;
+        scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService);
+        scanService.start(directories, machine);
+    })
+
+    emulatorMachinesService = new EmulatorMachinesService(win, settingsService);
+    emulatorMachinesService.init();
 }

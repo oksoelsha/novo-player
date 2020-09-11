@@ -12,6 +12,7 @@ import { FileSystemChooserComponent } from './shared/fs-chooser/fs-chooser.compo
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmLeaveComponent } from './shared/confirm-leave/confirm-leave.component';
 import { AlertsComponent } from './shared/alerts/alerts.component';
+import { ScanParametersComponent } from './popups/scan-parameters/scan-parameters.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AlertsComponent } from './shared/alerts/alerts.component';
     HelpComponent,
     FileSystemChooserComponent,
     ConfirmLeaveComponent,
-    AlertsComponent
+    AlertsComponent,
+    ScanParametersComponent
   ],
   imports: [
     BrowserModule,

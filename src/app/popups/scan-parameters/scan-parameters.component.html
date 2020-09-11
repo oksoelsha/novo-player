@@ -1,0 +1,23 @@
+<div id="scan-parameters-component" class="scan-parameters">
+  <div class="scan-parameters-content">
+    <div>Scan Parameters</div>
+    <div (click)="close()" class="close">&times;</div>
+    <form id="scanParametersForm" #scanParametersForm="ngForm" (ngSubmit)="submitParameters(scanParametersForm.form)">
+      <div>
+        <app-fs-chooser directory-mode=true (onChosen)="directories.push($event)"></app-fs-chooser>
+        <div *ngFor="let directory of directories">
+          {{ directory }}
+        </div>
+      </div>
+      <div>
+        <label>Machines: </label>
+        <select (change)="selectedMachine = $event.target.value">
+          <option *ngFor="let machine of machines" value="{{ machine }}">
+            {{ machine }}
+          </option>
+        </select>
+      </div>
+      <button class="btn btn-primary" [disabled]="directories.length == 0">Start</button>
+    </form>
+  </div>
+</div>

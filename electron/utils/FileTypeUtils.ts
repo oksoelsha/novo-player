@@ -8,6 +8,7 @@ export class FileTypeUtils {
     private static readonly harddiskExtensions: Array<string> = ["dsk", "hdd"]
     private static readonly laserdiscExtensions: Array<string> = ["ogv"]
     private static readonly zipExtensions: Array<string> = ["zip", "gz"]
+    private static readonly xmlExtensions: Array<string> = ["xml"]
 
     static isMSXFile(filename: string): boolean {
         return this.isROM(filename) || this.isZip(filename) || this.isDisk(filename) || this.isTape(filename) ||
@@ -36,6 +37,14 @@ export class FileTypeUtils {
 
     static isZip(filename: string): boolean {
         return this.isType(filename, this.zipExtensions);
+    }
+
+    static isXML(filename: string): boolean {
+        return this.isType(filename, this.xmlExtensions);
+    }
+
+    static getFilenameWithoutExt(filename: string): string {
+        return filename.substring(0, filename.lastIndexOf('.'));
     }
 
     private static isType(filename: string, typeList: Array<string>) {

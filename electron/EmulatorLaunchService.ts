@@ -15,6 +15,7 @@ export class EmulatorLaunchService {
         ["tape", "cassetteplayer"],
         ["harddisk", "hda"],
         ["extensionRom", "ext"],
+        ["laserdisc", "laserdisc"],
     ];
 
     constructor(private settingsService: SettingsService) { }
