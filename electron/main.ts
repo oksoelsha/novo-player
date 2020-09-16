@@ -11,13 +11,6 @@ import { ScanService } from './ScanService'
 import { EmulatorMachinesService } from './EmulatorMachinesService'
 
 let win: BrowserWindow
-let settingsService: SettingsService
-let gamesService: GamesService
-let emulatorLaunchService: EmulatorLaunchService
-let filesService: FilesService
-let emulatorRepositoryService: EmulatorRepositoryService
-let extraDataService: ExtraDataService
-let emulatorMachinesService: EmulatorMachinesService;
 
 app.on('ready', startApp)
 
@@ -66,30 +59,30 @@ function createWindow() {
 }
 
 function initializeServices() {
-    settingsService = new SettingsService(win);
+    let settingsService = new SettingsService(win);
     settingsService.init();
 
-    extraDataService = new ExtraDataService();
+    let extraDataService = new ExtraDataService();
     extraDataService.init();
 
-    emulatorRepositoryService = new EmulatorRepositoryService(settingsService)
+    let emulatorRepositoryService = new EmulatorRepositoryService(settingsService)
     emulatorRepositoryService.init();
 
-    gamesService = new GamesService(win, emulatorRepositoryService);
+    let gamesService = new GamesService(win, emulatorRepositoryService);
     gamesService.init();
 
-    emulatorLaunchService = new EmulatorLaunchService(settingsService);
-    emulatorLaunchService.init();
-
-    filesService = new FilesService(win, settingsService);
+    let filesService = new FilesService(win, settingsService);
     filesService.init();
 
+    let emulatorLaunchService = new EmulatorLaunchService(settingsService);
+    emulatorLaunchService.init();
+
+    let emulatorMachinesService = new EmulatorMachinesService(win, settingsService);
+    emulatorMachinesService.init();
+
+    //services that are rare to execute and have internal state -> create new instance per request
     ipcMain.on('scan', (event, directories: string[], machine: string) => {
-        let scanService: ScanService;
-        scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService);
+        let scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService);
         scanService.start(directories, machine);
     })
-
-    emulatorMachinesService = new EmulatorMachinesService(win, settingsService);
-    emulatorMachinesService.init();
 }

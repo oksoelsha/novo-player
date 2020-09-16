@@ -11,7 +11,7 @@ export class ScanParametersComponent implements OnInit {
   @Output() parameters: EventEmitter<any> = new EventEmitter<any>();
 
   private topNode: HTMLElement;
-  private directories: string[] = [];
+  private items: string[] = [];
   private machines: string[] = [];
   private selectedMachine: string = ""
 
@@ -37,13 +37,17 @@ export class ScanParametersComponent implements OnInit {
   }
 
   close(): void {
-    this.directories = [];
+    this.items = [];
     document.removeEventListener('keyup', this.handleKeyEvents);
     this.topNode.style.display = "none";
   }
 
+  removeItem(index: number) {
+    this.items.splice(index, 1);
+  }
+
   submitParameters(form: any): void {
-    this.parameters.emit(new ScanParameters(this.directories, this.selectedMachine));
+    this.parameters.emit(new ScanParameters(this.items, this.selectedMachine));
     this.close();
   }
 

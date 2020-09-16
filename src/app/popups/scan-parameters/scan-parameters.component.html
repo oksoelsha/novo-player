@@ -1,23 +1,35 @@
 <div id="scan-parameters-component" class="scan-parameters">
   <div class="scan-parameters-content">
-    <div>Scan Parameters</div>
-    <div (click)="close()" class="close">&times;</div>
+    <div class="scan-title-bar">
+      <div class="scan-title">Scan Parameters</div>
+      <div (click)="close()" class="scan-close">&times;</div>
+    </div>
     <form id="scanParametersForm" #scanParametersForm="ngForm" (ngSubmit)="submitParameters(scanParametersForm.form)">
-      <div>
-        <app-fs-chooser directory-mode=true (onChosen)="directories.push($event)"></app-fs-chooser>
-        <div *ngFor="let directory of directories">
-          {{ directory }}
+      <div class="parameters-part">
+        <div class="add-buttons">
+          <app-fs-chooser directory-mode=true label="+Directory" (onChosen)="items.push($event)"></app-fs-chooser>
         </div>
+        <div class="add-buttons">
+          <app-fs-chooser label="+File" (onChosen)="items.push($event)"></app-fs-chooser>
+        </div>
+        <div class="files-and-directories-table">
+          <ng-container *ngFor="let item of items; let i = index">
+            <div class="table-row">
+              <div class="table-item">{{ item }}</div>
+              <div class="table-item-delete" (click)="removeItem(i)">&times;</div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="machines">
+          <label>Machines: </label>
+          <select (change)="selectedMachine = $event.target.value">
+            <option *ngFor="let machine of machines" value="{{ machine }}">
+              {{ machine }}
+            </option>
+          </select>
+        </div>
+        <button class="btn btn-primary" [disabled]="items.length == 0">Start</button>
       </div>
-      <div>
-        <label>Machines: </label>
-        <select (change)="selectedMachine = $event.target.value">
-          <option *ngFor="let machine of machines" value="{{ machine }}">
-            {{ machine }}
-          </option>
-        </select>
-      </div>
-      <button class="btn btn-primary" [disabled]="directories.length == 0">Start</button>
     </form>
   </div>
 </div>

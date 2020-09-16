@@ -39,7 +39,7 @@ export class SettingsService {
         }
     }
 
-    saveSettings(settings: Settings) {
+    private saveSettings(settings: Settings) {
         let data = JSON.stringify(settings);
         fs.writeFileSync(this.settingsFile, data);
         this.settings = settings;

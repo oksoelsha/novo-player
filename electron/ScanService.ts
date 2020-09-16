@@ -25,54 +25,69 @@ export class ScanService {
         this.repositoryInfo = emulatorRepositoryService.getRepositoryInfo()
     }
 
-    start(directories: string[], machine: string) {
-            //before scanning, first get total files in given folders
-            this.totalFilesToScan = this.countTotalFilesToScan(directories)
+    start(items: string[], machine: string) {
+            //before scanning, first get total files in given file and directories
+            this.totalFilesToScan = this.countTotalFilesToScan(items)
 
-            this.scan(directories, machine)
+            this.scan(items, machine)
     }
 
-    private countTotalFilesToScan(folderList: string[]): number {
+    private countTotalFilesToScan(items: string[]): number {
         var count: number = 0
-        for (const folder of folderList) {
-            count += this.getTotalPerFolder(folder)
+        for (const item of items) {
+            count += this.getTotalFiles(item);
         }
         return count;
     }
 
-    private getTotalPerFolder(folder: string): number {
-        var contents = fs.readdirSync(folder, 'utf8');
-        var count: number = contents.length
-        contents.forEach(folderName => {
-            var fullPath: string = path.join(folder, folderName)
-            if (fs.statSync(fullPath).isDirectory()) {
-                count += this.getTotalPerFolder(fullPath) - 1
-            }
-        })
-        return count
-    }
-
-    private scan(folderList: string[], machine: string) {
-        for (const folder of folderList) {
-            this.readFolder(folder, machine)
+    private getTotalFiles(item: string): number {
+        if (fs.statSync(item).isDirectory()) {
+            var contents: string[] = fs.readdirSync(item, 'utf8');
+            var count: number = contents.length;
+            contents.forEach(one => {
+                var fullPath: string = path.join(item, one)
+                if (fs.statSync(fullPath).isDirectory()) {
+                    count += this.getTotalFiles(fullPath) - 1;
+                }
+            })
+            return count;
+        } else if (FileTypeUtils.isMSXFile(item)) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 
-    private readFolder(folder: string, machine: string) {
-        var currentDirectory = fs.readdirSync(folder, 'utf8');
-        currentDirectory.forEach(file => {
-            var fullPath: string = path.join(folder, file)
-            if (fs.statSync(fullPath).isFile()) {
-                if(FileTypeUtils.isMSXFile(fullPath)) {
-                    this.processFile(fullPath, machine)
+    private scan(items: string[], machine: string) {
+        for (const item of items) {
+            this.readFolder(item, machine)
+        }
+    }
+
+    private readFolder(item: string, machine: string) {
+        if (fs.statSync(item).isDirectory()) {
+            var currentDirectory = fs.readdirSync(item, 'utf8');
+            currentDirectory.forEach(file => {
+                var fullPath: string = path.join(item, file)
+                if (fs.statSync(fullPath).isFile()) {
+                    if(FileTypeUtils.isMSXFile(fullPath)) {
+                        this.processFile(fullPath, machine)
+                    } else {
+                        //a file that wasn't processed was still scanned
+                        this.scannedFilesCounter++;
+                    }
                 } else {
-                    //a file that wasn't processed was still scanned
-                    this.scannedFilesCounter++;
+                    this.readFolder(fullPath, machine);
                 }
+            })
+        } else {
+            if(FileTypeUtils.isMSXFile(item)) {
+                this.processFile(item, machine)
             } else {
-                this.readFolder(fullPath, machine);
+                //a file that wasn't processed was still scanned
+                this.scannedFilesCounter++;
             }
-        })
+        }
     }
 
     private setMainFileForGame(game: Game, filename: string, realFilename: string ) {
@@ -114,6 +129,7 @@ export class ScanService {
             }
 
             this.scannedFilesCounter++
+
             if (this.scannedFilesCounter == this.totalFilesToScan) {
                 this.gamesService.saveGameInBatch(game, this.finishScan, this);
             } else {

@@ -9,6 +9,7 @@ import { Remote } from 'electron';
 export class FileSystemChooserComponent implements OnInit {
 
   @Input ('directory-mode') directoryMode: boolean;
+  @Input ('label') label: string;
   @Output() onChosen: EventEmitter<any> = new EventEmitter<any>();
   private remote: Remote = (<any>window).require('electron').remote;
 
