@@ -26,7 +26,7 @@ export class ScannerService {
       this.ipc.once("scanResponse", (event, totalAddedToDatabase) => {
         resolve(totalAddedToDatabase);
       });
-      this.ipc.send("scan", parameters.directories, parameters.machine);
+      this.ipc.send("scan", parameters.items, parameters.machine);
     });
   }
 

@@ -57,11 +57,11 @@ export class ScanParametersComponent implements OnInit {
 }
 
 export class ScanParameters {
-  directories: string[];
+  items: string[];
   machine: string;
 
-  constructor(directories: string[], machine:string) {
-    this.directories = directories;
+  constructor(items: string[], machine:string) {
+    this.items = items;
     this.machine = machine;
   }
 }

@@ -10,6 +10,7 @@ export class FileSystemChooserComponent implements OnInit {
 
   @Input ('directory-mode') directoryMode: boolean;
   @Input ('label') label: string;
+  @Input ('multi-selections') multiSelections: boolean;
   @Output() onChosen: EventEmitter<any> = new EventEmitter<any>();
   private remote: Remote = (<any>window).require('electron').remote;
 
@@ -20,21 +21,31 @@ export class FileSystemChooserComponent implements OnInit {
 
   browse(clicked: any) {
     var self = this;
-    var options: Object;
+    var properties: string[];
+
+    if (this.multiSelections) {
+      properties = ['multiSelections'];
+    } else {
+      properties = [];
+    }
 
     if (this.directoryMode) {
-      options = {
-        properties: ['openDirectory']
-      }
+      properties.push('openDirectory');
     } else {
-      options = {
-        properties: ['openFile']
-      }
+      properties.push('openFile');
+    }
+
+    var options: Object = {
+      "properties": properties
     }
 
     this.remote.dialog.showOpenDialog(options).then((value) => {
       if (!value.canceled) {
-        self.onChosen.emit(value.filePaths[0]);
+        if (this.multiSelections) {
+          self.onChosen.emit(value.filePaths);
+        } else {
+          self.onChosen.emit(value.filePaths[0]);
+        }
       }
     })
   }

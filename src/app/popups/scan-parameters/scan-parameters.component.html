@@ -7,10 +7,10 @@
     <form id="scanParametersForm" #scanParametersForm="ngForm" (ngSubmit)="submitParameters(scanParametersForm.form)">
       <div class="parameters-part">
         <div class="add-buttons">
-          <app-fs-chooser directory-mode=true label="+Directory" (onChosen)="items.push($event)"></app-fs-chooser>
+          <app-fs-chooser directory-mode=true multi-selections=true label="+Directory" (onChosen)="items = items.concat($event)"></app-fs-chooser>
         </div>
         <div class="add-buttons">
-          <app-fs-chooser label="+File" (onChosen)="items.push($event)"></app-fs-chooser>
+          <app-fs-chooser label="+File" multi-selections=true (onChosen)="items = items.concat($event)"></app-fs-chooser>
         </div>
         <div class="files-and-directories-table">
           <ng-container *ngFor="let item of items; let i = index">
@@ -20,8 +20,8 @@
             </div>
           </ng-container>
         </div>
-        <div class="machines">
-          <label>Machines: </label>
+        <div class="machine">
+          <label>Machine: </label>
           <select (change)="selectedMachine = $event.target.value">
             <option *ngFor="let machine of machines" value="{{ machine }}">
               {{ machine }}
