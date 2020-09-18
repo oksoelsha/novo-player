@@ -64,10 +64,10 @@ export class GamesListerService {
 
   getScreenshot(game: Game): Promise<ScreenshotData> {
     return new Promise<ScreenshotData>((resolve, reject) => {
-      this.ipc.once("getScreenshotResponse", (event, arg) => {
+      this.ipc.once("getScreenshotResponse" + game.sha1Code, (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getScreenshot", game.generationMSXId, game.screenshotSuffix);
+      this.ipc.send("getScreenshot", game.sha1Code, game.generationMSXId, game.screenshotSuffix);
     });
   }
 }

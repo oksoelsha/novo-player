@@ -1,19 +1,21 @@
-import * as crypto from 'crypto';
-import { ipcMain, BrowserWindow } from 'electron';
-import { ExtraData, ExtraDataService } from 'ExtraDataService';
-import * as fs from 'fs';
-import * as path from 'path';
-import { Stream } from 'stream';
-import { FileTypeUtils } from './utils/FileTypeUtils';
+import * as crypto from 'crypto'
+import { ipcMain, BrowserWindow } from 'electron'
+import { ExtraData, ExtraDataService } from 'ExtraDataService'
+import * as fs from 'fs'
+import * as path from 'path'
+import { Stream } from 'stream'
+import { FileTypeUtils } from './utils/FileTypeUtils'
 import { Game } from '../src/app/models/game'
-import { EmulatorRepositoryService, RepositoryData } from 'EmulatorRepositoryService';
-import { GamesService } from 'GamesService';
+import { EmulatorRepositoryService, RepositoryData } from 'EmulatorRepositoryService'
+import { GamesService } from 'GamesService'
 
 export class ScanService {
     private extraDataInfo: Map<string, ExtraData>;
     private repositoryInfo: Map<string, RepositoryData>;
-    private totalFilesToScan: number = 0
-    private scannedFilesCounter: number = 0
+    private totalFilesToScan: number = 0;
+    private scannedFilesCounter: number = 0;
+    private smallFileScanBatchSize: any;
+    private largeFileScanBatchSize: any;
 
     constructor(
         private win: BrowserWindow,
@@ -21,19 +23,23 @@ export class ScanService {
         private emulatorRepositoryService: EmulatorRepositoryService,
         private gamesService: GamesService) {
 
-        this.extraDataInfo = extraDataService.getExtraDataInfo()
-        this.repositoryInfo = emulatorRepositoryService.getRepositoryInfo()
+        this.extraDataInfo = extraDataService.getExtraDataInfo();
+        this.repositoryInfo = emulatorRepositoryService.getRepositoryInfo();
+
+        const pLimit = require('p-limit');
+        this.smallFileScanBatchSize = pLimit(50);
+        this.largeFileScanBatchSize = pLimit(1);
     }
 
     start(items: string[], machine: string) {
             //before scanning, first get total files in given file and directories
-            this.totalFilesToScan = this.countTotalFilesToScan(items)
+            this.totalFilesToScan = this.countTotalFilesToScan(items);
 
-            this.scan(items, machine)
+            this.scan(items, machine);
     }
 
     private countTotalFilesToScan(items: string[]): number {
-        var count: number = 0
+        var count: number = 0;
         for (const item of items) {
             count += this.getTotalFiles(item);
         }
@@ -45,7 +51,7 @@ export class ScanService {
             var contents: string[] = fs.readdirSync(item, 'utf8');
             var count: number = contents.length;
             contents.forEach(one => {
-                var fullPath: string = path.join(item, one)
+                var fullPath: string = path.join(item, one);
                 if (fs.statSync(fullPath).isDirectory()) {
                     count += this.getTotalFiles(fullPath) - 1;
                 }
@@ -60,29 +66,29 @@ export class ScanService {
 
     private scan(items: string[], machine: string) {
         for (const item of items) {
-            this.readFolder(item, machine)
+            this.readItem(item, machine);
         }
     }
 
-    private readFolder(item: string, machine: string) {
+    private readItem(item: string, machine: string) {
         if (fs.statSync(item).isDirectory()) {
             var currentDirectory = fs.readdirSync(item, 'utf8');
             currentDirectory.forEach(file => {
-                var fullPath: string = path.join(item, file)
+                var fullPath: string = path.join(item, file);
                 if (fs.statSync(fullPath).isFile()) {
                     if(FileTypeUtils.isMSXFile(fullPath)) {
-                        this.processFile(fullPath, machine)
+                        this.processFile(fullPath, machine);
                     } else {
                         //a file that wasn't processed was still scanned
                         this.scannedFilesCounter++;
                     }
                 } else {
-                    this.readFolder(fullPath, machine);
+                    this.readItem(fullPath, machine);
                 }
             })
         } else {
             if(FileTypeUtils.isMSXFile(item)) {
-                this.processFile(item, machine)
+                this.processFile(item, machine);
             } else {
                 //a file that wasn't processed was still scanned
                 this.scannedFilesCounter++;
@@ -92,54 +98,64 @@ export class ScanService {
 
     private setMainFileForGame(game: Game, filename: string, realFilename: string ) {
         if (FileTypeUtils.isROM(realFilename)) {
-            game.setRomA(filename)
+            game.setRomA(filename);
         } else if (FileTypeUtils.isDisk(realFilename)) {
             if (game.size <= FileTypeUtils.MAX_DISK_FILE_SIZE) {
-                game.setDiskA(filename)
+                game.setDiskA(filename);
             } else {
                 game.setHarddisk(filename);
                 game.setExtensionRom(FileTypeUtils.EXTENSION_ROM_IDE);
             }
         } else if (FileTypeUtils.isTape(realFilename)) {
-            game.setTape(filename)
+            game.setTape(filename);
         } else if (FileTypeUtils.isHarddisk(realFilename)) {
-            game.setHarddisk(filename)
+            game.setHarddisk(filename);
             game.setExtensionRom(FileTypeUtils.EXTENSION_ROM_IDE);
         } else if (FileTypeUtils.isLaserdisc(realFilename)) {
-            game.setLaserdisc(filename)
+            game.setLaserdisc(filename);
         }
     }
 
     private processFile(filename: string, machine: string) {
-        var sha1 = this.getSha1(filename);
+        var sha1: Promise<any>;
+        if (FileTypeUtils.isLaserdisc(filename)) {
+            sha1 = this.largeFileScanBatchSize(() => this.getSha1(filename))
+        } else {
+            sha1 = this.smallFileScanBatchSize(() => this.getSha1(filename))
+        }
         sha1.then((data: any) => {
-            var extraData: ExtraData = this.extraDataInfo.get(data.hash)
-            var game: Game = new Game(this.getGameName(data.hash, data.filename), data.hash, data.size)
+            this.scannedFilesCounter++;
+            if (data != null) {
+                var extraData: ExtraData = this.extraDataInfo.get(data.hash);
+                var game: Game = new Game(this.getGameName(data.hash, data.filename), data.hash, data.size);
 
-            this.setMainFileForGame(game, filename, data.filename)
-            game.setMachine(machine)
+                this.setMainFileForGame(game, filename, data.filename);
+                game.setMachine(machine);
 
-            if (extraData != null) {
-                game.setGenerationMSXId(extraData.generationMSXID)
-                game.setScreenshotSuffix(extraData.suffix)
-                game.setGenerations(extraData.generations)
-                game.setSounds(extraData.soundChips)
-                game.setGenre1(extraData.genre1)
-                game.setGenre2(extraData.genre2)
-            }
+                if (extraData != null) {
+                    game.setGenerationMSXId(extraData.generationMSXID);
+                    game.setScreenshotSuffix(extraData.suffix);
+                    game.setGenerations(extraData.generations);
+                    game.setSounds(extraData.soundChips);
+                    game.setGenre1(extraData.genre1);
+                    game.setGenre2(extraData.genre2);
+                }
 
-            this.scannedFilesCounter++
-
-            if (this.scannedFilesCounter == this.totalFilesToScan) {
-                this.gamesService.saveGameInBatch(game, this.finishScan, this);
+                if (this.scannedFilesCounter == this.totalFilesToScan) {
+                    this.gamesService.saveGameInBatch(game, this.finishScan, this);
+                } else {
+                    this.gamesService.saveGameInBatch(game);
+                }
             } else {
-                this.gamesService.saveGameInBatch(game);
+                if (this.scannedFilesCounter == this.totalFilesToScan) {
+                    this.gamesService.finishScan(this.finishScan, this);
+                }
             }
-        });
+        }).catch(error => console.log(filename + " - " + error));
     }
 
     private finishScan(totalAddedToDatabase: number, ref: any) {
-        ref.win.webContents.send('scanResponse', totalAddedToDatabase)
+        ref.win.webContents.send('scanResponse', totalAddedToDatabase);
     }
 
     private getSha1(filename: string): Promise<any> {
@@ -157,16 +173,16 @@ export class ScanService {
                     if (msxFileIndex < entries.length) {
                         zip.stream(entries[msxFileIndex].name, function (err: string, stm: Stream) {
                             stm.on('data', function (data) {
-                                shasum.update(data)
+                                shasum.update(data);
                             })
                             stm.on('end', function () {
                                 const hash = shasum.digest('hex')
-                                zip.close()
+                                zip.close();
                                 return resolve({"hash": hash, "size": entries[msxFileIndex].size, "filename": entries[msxFileIndex].name});
                             })
                         })
                     } else {
-                        return resolve({});
+                        return resolve(null);
                     }
                 });
             });
@@ -174,10 +190,10 @@ export class ScanService {
             return new Promise<any>((resolve, reject) => {
                 let s: fs.ReadStream = fs.createReadStream(filename)
                 s.on('data', function (data) {
-                    shasum.update(data)
+                    shasum.update(data);
                 })
                 s.on('end', function () {
-                    const hash = shasum.digest('hex')
+                    const hash = shasum.digest('hex');
                     return resolve({"hash": hash, "size": fs.statSync(filename)["size"], "filename": filename});
                 })
             });
@@ -197,14 +213,15 @@ export class ScanService {
  
     private getGameName(hash: string, file: string): string {
         if (this.repositoryInfo != null) {
-            let repositoryData: RepositoryData = this.repositoryInfo.get(hash)
+            let repositoryData: RepositoryData = this.repositoryInfo.get(hash);
             if (repositoryData != null) {
-                return repositoryData.title
+                //force game title to be string for account for game names that are numbers (e.g. 1942)
+                return repositoryData.title.toString();
             } else {
-                return FileTypeUtils.getFilenameWithoutExt(path.basename(file))
+                return FileTypeUtils.getFilenameWithoutExt(path.basename(file));
             }
         } else {
-            return FileTypeUtils.getFilenameWithoutExt(path.basename(file))
+            return FileTypeUtils.getFilenameWithoutExt(path.basename(file));
         }
     }
 }

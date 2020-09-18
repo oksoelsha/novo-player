@@ -11,9 +11,9 @@ export class FilesService {
     constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
 
     init() {
-        ipcMain.on('getScreenshot', (event, genMsxId, suffix) => {
+        ipcMain.on('getScreenshot', (event, sha1Code, genMsxId, suffix) => {
             var screenshotData = this.getScreenshotData(genMsxId, suffix);
-            this.win.webContents.send('getScreenshotResponse', screenshotData)
+            this.win.webContents.send('getScreenshotResponse' + sha1Code, screenshotData)
         })
     }
 

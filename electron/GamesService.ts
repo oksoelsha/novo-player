@@ -49,6 +49,11 @@ export class GamesService {
         });
     }
 
+    finishScan(reportResult: any, ref: any) {
+        reportResult(this.totalAddedToDatabase, ref);
+        this.totalAddedToDatabase = 0;
+    }
+
     private saveGame(game: Game) {
         var self = this;
         var gameDO: GameDO = new GameDO(game);
