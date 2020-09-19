@@ -33,13 +33,13 @@ export class ScanParametersComponent implements OnInit {
   open(): void {
     //intercept key board events to prevent them from propagating to the parent window
     document.addEventListener('keyup', this.handleKeyEvents);
-    this.topNode.style.display = "block";
+    this.topNode.classList.add('scan-parameters-fade');
   }
 
   close(): void {
     this.items = [];
     document.removeEventListener('keyup', this.handleKeyEvents);
-    this.topNode.style.display = "none";
+    this.topNode.classList.remove('scan-parameters-fade');
   }
 
   removeItem(index: number) {
