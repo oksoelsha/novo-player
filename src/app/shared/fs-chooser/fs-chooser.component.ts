@@ -39,7 +39,7 @@ export class FileSystemChooserComponent implements OnInit {
       "properties": properties
     }
 
-    this.remote.dialog.showOpenDialog(options).then((value) => {
+    this.remote.dialog.showOpenDialog(this.remote.getCurrentWindow(), options).then((value) => {
       if (!value.canceled) {
         if (this.multiSelections) {
           self.onChosen.emit(value.filePaths);
