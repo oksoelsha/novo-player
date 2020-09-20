@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
   private gamesTable: Element;
   private gameQuickSearch: string = ""
   private quickTypeTimer: NodeJS.Timer = null;
+  private scanRunning: boolean = false;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -219,10 +220,12 @@ export class HomeComponent implements OnInit {
   }
 
   startScan(parameters: ScanParameters) {
-    this.alertService.info("Started scanning process...")
+    this.alertService.info("Started scanning process...");
+    this.scanRunning = true;
     this.scanner.scan(parameters).then(result => {
       this.alertService.info("Total games added = " + result)
       this.gamesLister.getGames().then((data: Game[]) => this.games = data);
+      this.scanRunning = false;
     });
   }
 

@@ -125,6 +125,8 @@ export class ScanService {
         }
         sha1.then((data: any) => {
             this.scannedFilesCounter++;
+            this.win.setProgressBar(this.scannedFilesCounter / this.totalFilesToScan);
+
             if (data != null) {
                 var extraData: ExtraData = this.extraDataInfo.get(data.hash);
                 var game: Game = new Game(this.getGameName(data.hash, data.filename), data.hash, data.size);
@@ -155,6 +157,7 @@ export class ScanService {
     }
 
     private finishScan(totalAddedToDatabase: number, ref: any) {
+        ref.win.setProgressBar(0);
         ref.win.webContents.send('scanResponse', totalAddedToDatabase);
     }
 

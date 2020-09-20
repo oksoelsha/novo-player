@@ -2,7 +2,7 @@
   <div class="area-on-the-left">
     <div class="table-buttons">
       <span>Total = {{ games.length  }} </span>
-      <button type="button" class="btn btn-secondary btn-sm" (click)="scanParameters.open()">Scan</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="scanParameters.open()" [disabled]="scanRunning">Scan</button>
       <button type="button" class="btn btn-secondary btn-sm" (click)="undoRemove()" [disabled]="lastRemovedGame == null">Undo</button>
     </div>
     <div id="games-table">
