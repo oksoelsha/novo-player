@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { FileSystemChooserComponent } from 'src/app/shared/fs-chooser/fs-chooser.component';
 
 import { ScanParametersComponent } from './scan-parameters.component';
 
@@ -8,7 +10,13 @@ describe('ScanParametersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScanParametersComponent ]
+      imports: [
+        FormsModule
+      ],
+      declarations: [
+        ScanParametersComponent,
+        FileSystemChooserComponent
+      ]
     })
     .compileComponents();
   }));

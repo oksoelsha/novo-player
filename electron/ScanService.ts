@@ -118,10 +118,11 @@ export class ScanService {
 
     private processFile(filename: string, machine: string) {
         var sha1: Promise<any>;
-        if (FileTypeUtils.isLaserdisc(filename)) {
-            sha1 = this.largeFileScanBatchSize(() => this.getSha1(filename))
+        if (fs.statSync(filename)["size"] > 10485760) {
+            //any files larger than 10Mb are considered large that we need to send them to the more limited promise batch size
+            sha1 = this.largeFileScanBatchSize(() => this.getSha1(filename));
         } else {
-            sha1 = this.smallFileScanBatchSize(() => this.getSha1(filename))
+            sha1 = this.smallFileScanBatchSize(() => this.getSha1(filename));
         }
         sha1.then((data: any) => {
             this.scannedFilesCounter++;

@@ -1,4 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { ScanParametersComponent } from 'src/app/popups/scan-parameters/scan-parameters.component';
+import { FileSystemChooserComponent } from 'src/app/shared/fs-chooser/fs-chooser.component';
 
 import { HomeComponent } from './home.component';
 
@@ -8,9 +11,16 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      imports: [
+        FormsModule
+      ],
+      declarations: [
+        HomeComponent,
+        ScanParametersComponent,
+        FileSystemChooserComponent
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
