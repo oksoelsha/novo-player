@@ -95,7 +95,7 @@ export class HomeComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (event.key.length == 1 && (
+    if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
       (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
       (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
       if (this.quickTypeTimer != null) {
