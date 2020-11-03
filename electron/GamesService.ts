@@ -1,10 +1,10 @@
-import { BrowserWindow, ipcMain } from 'electron'
-import { Game } from '../src/app/models/game'
-import { EmulatorRepositoryService, RepositoryData } from './EmulatorRepositoryService';
-import * as Datastore from 'nedb'
+import { BrowserWindow, ipcMain } from 'electron';
+import * as Datastore from 'nedb';
 import * as os from 'os';
-import * as path from 'path'
+import * as path from 'path';
+import { Game } from '../src/app/models/game';
 import { GameDO } from './data/game-do';
+import { EmulatorRepositoryService, RepositoryData } from './EmulatorRepositoryService';
 import { PersistenceUtils } from './utils/PersistenceUtils';
 
 export class GamesService {
@@ -22,8 +22,12 @@ export class GamesService {
     }
 
     init() {
-        ipcMain.on('getGames', (event, arg) => {
-            this.getGames();
+        ipcMain.on('getListings', (event, arg) => {
+            this.getListings();
+        });
+
+        ipcMain.on('getGames', (event, listing: string) => {
+            this.getGames(listing);
         });
 
         ipcMain.on('saveGame', (event, game: Game) => {
@@ -69,10 +73,26 @@ export class GamesService {
         });
     }
 
-    private getGames() {
+    private getListings() {
         var self = this;
-        let games: Game[] = []
+        let listings: string[] = [];
+        let tempSet = new Set();
         this.database.find({}, function (err: any, entries: any) {
+            for (var entry of entries) {
+                if (!tempSet.has(entry.listing)) {
+                    tempSet.add(entry.listing);
+                    listings.push(entry.listing);
+                }
+            }
+
+            self.win.webContents.send('getListingsResponse', listings)
+        });
+    }
+
+    private getGames(listing: string) {
+        var self = this;
+        let games: Game[] = [];
+        this.database.find({ listing: listing }, function (err: any, entries: any) {
             for (var entry of entries) {
                 let gameDO: GameDO = new GameDO(entry);
                 let game: Game = new Game(entry.name, entry._id, entry.size);

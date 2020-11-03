@@ -30,6 +30,8 @@ export class Game {
     genre2: number;
     screenshotSuffix: string;
 
+    listing: string;
+
     public readonly MASK_GENERATION_MSX = 1;
     public readonly MASK_GENERATION_MSX2 = 2;
     public readonly MASK_GENERATION_MSX2PLUS = 4;
@@ -144,5 +146,9 @@ export class Game {
 
     setGenre2(genre2: number) {
         this.genre2 = genre2;
+    }
+
+    setListing(listing: string) {
+        this.listing = listing;
     }
 }

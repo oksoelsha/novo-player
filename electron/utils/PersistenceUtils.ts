@@ -17,6 +17,7 @@ export class PersistenceUtils {
         'sounds',
         'genre1',
         'genre2',
-        'screenshotSuffix'
+        'screenshotSuffix',
+        'listing'
     ]
 }

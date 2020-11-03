@@ -23,6 +23,8 @@ export class GameDO {
     genre2: number;
     screenshotSuffix: string;
 
+    listing: string;
+
     constructor(game: Game) {
         for (var field of PersistenceUtils.fieldsToPersist) {
             if (game[field] != null ) {

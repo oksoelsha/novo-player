@@ -4,6 +4,12 @@
       <span>Total = {{ games.length  }} </span>
       <button type="button" class="btn btn-secondary btn-sm" (click)="scanParameters.open()" [disabled]="scanRunning">Scan</button>
       <button type="button" class="btn btn-secondary btn-sm" (click)="undoRemove()" [disabled]="lastRemovedGame == null">Undo</button>
+      <label>Listing</label>:
+      <select (change)="getGames($event.target.value)">
+        <option *ngFor="let listing of listings" value="{{ listing }}" [selected]="listing == selectedListing">
+          {{ listing }}
+        </option>
+      </select>
     </div>
     <div id="games-table">
       <table *ngIf="games">

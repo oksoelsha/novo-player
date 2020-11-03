@@ -21,13 +21,23 @@ export class GamesListerService {
     }
   }
 
-  async getGames(): Promise<Game[]> {
+  async getListings(): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+      this.ipc.once("getListingsResponse", (event, listings) => {
+        listings.sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        resolve(listings);
+      });
+      this.ipc.send("getListings");
+    });
+  }
+
+  async getGames(listing: string): Promise<Game[]> {
     return new Promise<Game[]>((resolve, reject) => {
       this.ipc.once("getGamesResponse", (event, games) => {
         games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
         resolve(games);
       });
-      this.ipc.send("getGames");
+      this.ipc.send("getGames", listing);
     });
   }
 

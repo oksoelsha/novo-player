@@ -4,6 +4,7 @@ import { SettingsService } from '../../services/settings.service'
 import { DeactivateComponent } from '../../guards/deactivate-guard.service';
 import { Settings } from 'src/app/models/settings';
 import { AlertsService } from '../../shared/alerts/alerts.service';
+import { GamesListerService } from 'src/app/services/games-lister.service';
 
 @Component({
   selector: 'app-settings',
@@ -15,15 +16,19 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
 
   openmsxPath: string = "";
   screenshotsPath: string = "";
+  defaultListing: string = "";
   submitDisabled: boolean = true;
+  private listings: string[] = [];
 
-  constructor(private settingsService: SettingsService, private alertService: AlertsService) { }
+  constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesLister: GamesListerService) { }
 
   ngOnInit() {
     var self = this;
+    this.gamesLister.getListings().then((data: string[]) => this.listings = data);
     this.settingsService.getSettings().then((settings: Settings) => {
       self.openmsxPath = settings.openmsxPath;
       self.screenshotsPath = settings.screenshotsPath;
+      self.defaultListing = settings.defaultListing;
     })
   }
 
@@ -45,7 +50,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   }
 
   submitSettings(form: any) {
-    let settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path']);
+    let settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path'], form.value['default-listing']);
     this.settingsService.saveSettings(settings);
     this.submitDisabled = true;
     this.alertService.success('Settings saved successfully');

@@ -81,8 +81,8 @@ function initializeServices() {
     emulatorMachinesService.init();
 
     //services that are rare to execute and have internal state -> create new instance per request
-    ipcMain.on('scan', (event, directories: string[], machine: string) => {
+    ipcMain.on('scan', (event, directories: string[], listing: string, machine: string) => {
         let scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService);
-        scanService.start(directories, machine);
+        scanService.start(directories, listing, machine);
     })
 }

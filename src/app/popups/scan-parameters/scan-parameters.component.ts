@@ -13,6 +13,7 @@ export class ScanParametersComponent implements OnInit {
   private topNode: HTMLElement;
   private items: string[] = [];
   private machines: string[] = [];
+  private listing: string = null;
   private selectedMachine: string = ""
 
   constructor(private gamesLister: GamesListerService) {}
@@ -47,7 +48,7 @@ export class ScanParametersComponent implements OnInit {
   }
 
   submitParameters(form: any): void {
-    this.parameters.emit(new ScanParameters(this.items, this.selectedMachine));
+    this.parameters.emit(new ScanParameters(this.items, this.listing, this.selectedMachine));
     this.close();
   }
 
@@ -58,10 +59,12 @@ export class ScanParametersComponent implements OnInit {
 
 export class ScanParameters {
   items: string[];
+  listing: string;
   machine: string;
 
-  constructor(items: string[], machine:string) {
+  constructor(items: string[], listing: string, machine:string) {
     this.items = items;
+    this.listing = listing;
     this.machine = machine;
   }
 }

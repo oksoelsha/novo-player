@@ -31,11 +31,11 @@ export class ScanService {
         this.largeFileScanBatchSize = pLimit(1);
     }
 
-    start(items: string[], machine: string) {
+    start(items: string[], listing:string, machine: string) {
             //before scanning, first get total files in given file and directories
             this.totalFilesToScan = this.countTotalFilesToScan(items);
 
-            this.scan(items, machine);
+            this.scan(items, listing, machine);
     }
 
     private countTotalFilesToScan(items: string[]): number {
@@ -64,31 +64,31 @@ export class ScanService {
         }
     }
 
-    private scan(items: string[], machine: string) {
+    private scan(items: string[], listing:string, machine: string) {
         for (const item of items) {
-            this.readItem(item, machine);
+            this.readItem(item, listing, machine);
         }
     }
 
-    private readItem(item: string, machine: string) {
+    private readItem(item: string, listing:string, machine: string) {
         if (fs.statSync(item).isDirectory()) {
             var currentDirectory = fs.readdirSync(item, 'utf8');
             currentDirectory.forEach(file => {
                 var fullPath: string = path.join(item, file);
                 if (fs.statSync(fullPath).isFile()) {
                     if(FileTypeUtils.isMSXFile(fullPath)) {
-                        this.processFile(fullPath, machine);
+                        this.processFile(fullPath, listing, machine);
                     } else {
                         //a file that wasn't processed was still scanned
                         this.scannedFilesCounter++;
                     }
                 } else {
-                    this.readItem(fullPath, machine);
+                    this.readItem(fullPath, listing, machine);
                 }
             })
         } else {
             if(FileTypeUtils.isMSXFile(item)) {
-                this.processFile(item, machine);
+                this.processFile(item, listing, machine);
             } else {
                 //a file that wasn't processed was still scanned
                 this.scannedFilesCounter++;
@@ -116,7 +116,7 @@ export class ScanService {
         }
     }
 
-    private processFile(filename: string, machine: string) {
+    private processFile(filename: string, listing:string, machine: string) {
         var sha1: Promise<any>;
         if (fs.statSync(filename)["size"] > 10485760) {
             //any files larger than 10Mb are considered large that we need to send them to the more limited promise batch size
@@ -134,6 +134,7 @@ export class ScanService {
 
                 this.setMainFileForGame(game, filename, data.filename);
                 game.setMachine(machine);
+                game.setListing(listing);
 
                 if (extraData != null) {
                     game.setGenerationMSXId(extraData.generationMSXID);

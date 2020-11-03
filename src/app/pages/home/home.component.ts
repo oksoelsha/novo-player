@@ -7,6 +7,8 @@ import { GameUtils } from 'src/app/models/game-utils';
 import { Remote } from 'electron';
 import { AlertsService } from 'src/app/shared/alerts/alerts.service';
 import { ScanParametersComponent, ScanParameters } from 'src/app/popups/scan-parameters/scan-parameters.component';
+import { SettingsService } from 'src/app/services/settings.service';
+import { Settings } from 'src/app/models/settings';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +49,8 @@ export class HomeComponent implements OnInit {
   private gameQuickSearch: string = ""
   private quickTypeTimer: NodeJS.Timer = null;
   private scanRunning: boolean = false;
+  private listings: string[] = [];
+  private selectedListing: string = ""
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -91,7 +95,10 @@ export class HomeComponent implements OnInit {
     ["EU", "EU"]
   ]);
 
-  constructor(private gamesLister: GamesListerService, private scanner: ScannerService, private alertService: AlertsService) { }
+  constructor(private gamesLister: GamesListerService,
+    private scanner: ScannerService,
+    private alertService: AlertsService,
+    private settingsService: SettingsService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -135,9 +142,25 @@ export class HomeComponent implements OnInit {
       this.lastRemovedGame = JSON.parse(sessionStorage.getItem('lastRemovedGame'));
     }
 
-    this.gamesLister.getGames().then((data: Game[]) => this.games = data);
+    this.getListings();
+
+    var self = this;
+    this.settingsService.getSettings().then((settings: Settings) => {
+      self.selectedListing = settings.defaultListing;
+      self.getGames(self.selectedListing);
+    })
+
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
+  }
+
+  getListings() {
+    this.gamesLister.getListings().then((data: string[]) => this.listings = data);
+  }
+
+  getGames(listing: string) {
+    this.selectedListing = listing;
+    this.gamesLister.getGames(this.selectedListing).then((data: Game[]) => this.games = data);
   }
 
   getFilteredGameDetails() {
@@ -169,8 +192,10 @@ export class HomeComponent implements OnInit {
     if (this.lastRemovedGame != null) {
       this.gamesLister.saveGame(this.lastRemovedGame).then((added: boolean) => {
         if (added) {
-          this.alertService.success("Game was added back");
-          this.addGameToSortedList(this.lastRemovedGame);
+          this.alertService.success("Game was added back - " + this.lastRemovedGame.name);
+          if (this.lastRemovedGame.listing == this.selectedListing) {
+            this.addGameToSortedList(this.lastRemovedGame);
+          }
           sessionStorage.removeItem('lastRemovedGame');
           this.lastRemovedGame = null;
         } else {
@@ -224,7 +249,9 @@ export class HomeComponent implements OnInit {
     this.scanRunning = true;
     this.scanner.scan(parameters).then(result => {
       this.alertService.info("Total games added = " + result)
-      this.gamesLister.getGames().then((data: Game[]) => this.games = data);
+
+      this.getListings();
+      this.getGames(this.selectedListing);
       this.scanRunning = false;
     });
   }

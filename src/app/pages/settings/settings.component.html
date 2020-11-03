@@ -16,5 +16,16 @@
     </div>
   </div>
 
+  <div class="form-group">
+    <label for="inputDefaultListing">Default Listing</label>
+    <div class="input-group">
+      <select id="inputDefaultListing" name="default-listing" [(ngModel)]="defaultListing">
+        <option *ngFor="let listing of listings" value="{{ listing }}" [selected]="listing == defaultListing">
+          {{ listing }}
+        </option>
+      </select>
+    </div>
+  </div>
+
   <button class="btn btn-primary" [disabled]="submitDisabled">Save</button>
 </form>

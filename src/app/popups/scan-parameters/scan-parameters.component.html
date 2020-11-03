@@ -7,10 +7,12 @@
     <form id="scanParametersForm" #scanParametersForm="ngForm" (ngSubmit)="submitParameters(scanParametersForm.form)">
       <div class="parameters-part">
         <div class="add-buttons">
-          <app-fs-chooser directory-mode=true multi-selections=true label="+Directory" (onChosen)="items = items.concat($event)"></app-fs-chooser>
+          <app-fs-chooser directory-mode=true multi-selections=true label="+Directory"
+            (onChosen)="items = items.concat($event)"></app-fs-chooser>
         </div>
         <div class="add-buttons">
-          <app-fs-chooser label="+File" multi-selections=true (onChosen)="items = items.concat($event)"></app-fs-chooser>
+          <app-fs-chooser label="+File" multi-selections=true (onChosen)="items = items.concat($event)">
+          </app-fs-chooser>
         </div>
         <div class="files-and-directories-table">
           <ng-container *ngFor="let item of items; let i = index">
@@ -20,14 +22,22 @@
             </div>
           </ng-container>
         </div>
-        <div class="machine">
-          <label>Machine: </label>
-          <select (change)="selectedMachine = $event.target.value">
-            <option *ngFor="let machine of machines" value="{{ machine }}">
-              {{ machine }}
-            </option>
-          </select>
-        </div>
+        <table class="fields">
+          <tr>
+            <td><label>Listing</label>:</td>
+            <td><input type="text" placeholder="Enter listing" name="listing" [(ngModel)]="listing" /></td>
+          </tr>
+          <tr>
+            <td><label>Machine</label>:</td>
+            <td>
+              <select (change)="selectedMachine = $event.target.value">
+                <option *ngFor="let machine of machines" value="{{ machine }}">
+                  {{ machine }}
+                </option>
+              </select>
+            </td>
+          </tr>
+        </table>
         <button class="btn btn-primary" [disabled]="items.length == 0">Start</button>
       </div>
     </form>
