@@ -23,20 +23,22 @@ export class EmulatorMachinesService {
         var machinesPath = path.join(openMSXPath, "share\\machines"); //On Windows for now
         var machines: string[] = [];
 
-        var machinesDirectory = fs.readdirSync(machinesPath, 'utf8');
-        machinesDirectory.forEach(file => {
-            var machineFullPath: string = path.join(machinesPath, file)
-            if (fs.statSync(machineFullPath).isFile()) {
-                if (FileTypeUtils.isXML(machineFullPath)) {
-                    machines.push(FileTypeUtils.getFilenameWithoutExt(path.basename(machineFullPath)));
+        if (fs.existsSync(machinesPath)) {
+            var machinesDirectory = fs.readdirSync(machinesPath, 'utf8');
+            machinesDirectory.forEach(file => {
+                var machineFullPath: string = path.join(machinesPath, file)
+                if (fs.statSync(machineFullPath).isFile()) {
+                    if (FileTypeUtils.isXML(machineFullPath)) {
+                        machines.push(FileTypeUtils.getFilenameWithoutExt(path.basename(machineFullPath)));
+                    }
+                } else {
+                    var hardwareConfigFile: string = path.join(machineFullPath, this.HARDWARE_CONFIG_FILENAME);
+                    if (fs.existsSync(hardwareConfigFile)) {
+                        machines.push(path.basename(machineFullPath));
+                    }
                 }
-            } else {
-                var hardwareConfigFile: string = path.join(machineFullPath, this.HARDWARE_CONFIG_FILENAME);
-                if (fs.existsSync(hardwareConfigFile)) {
-                    machines.push(path.basename(machineFullPath));
-                }
-            }
-        })
+            })    
+        }
 
         return machines;
     }
