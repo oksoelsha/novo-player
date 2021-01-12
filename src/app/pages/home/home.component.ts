@@ -142,20 +142,23 @@ export class HomeComponent implements OnInit {
       this.lastRemovedGame = JSON.parse(sessionStorage.getItem('lastRemovedGame'));
     }
 
-    this.getListings();
-
     var self = this;
     this.settingsService.getSettings().then((settings: Settings) => {
-      self.selectedListing = settings.defaultListing;
-      self.getGames(self.selectedListing);
+      this.gamesLister.getListings().then((data: string[]) => {
+        this.listings = data;
+        if (settings.defaultListing == null || settings.defaultListing.trim() == "") {
+          if (data.length > 0) {
+            self.selectedListing = data[0];
+          }
+        } else {
+          self.selectedListing = settings.defaultListing;
+        }
+        self.getGames(this.selectedListing);
+      });
     })
 
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
-  }
-
-  getListings() {
-    this.gamesLister.getListings().then((data: string[]) => this.listings = data);
   }
 
   getGames(listing: string) {
@@ -250,7 +253,7 @@ export class HomeComponent implements OnInit {
     this.scanner.scan(parameters).then(result => {
       this.alertService.info("Total games added = " + result)
 
-      this.getListings();
+      this.gamesLister.getListings().then((data: string[]) => this.listings = data);
       this.getGames(this.selectedListing);
       this.scanRunning = false;
     });
