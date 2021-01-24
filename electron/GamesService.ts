@@ -3,6 +3,7 @@ import * as Datastore from 'nedb';
 import * as os from 'os';
 import * as path from 'path';
 import { Game } from '../src/app/models/game';
+import { Stats } from '../src/app/models/stats';
 import { GameDO } from './data/game-do';
 import { EmulatorRepositoryService, RepositoryData } from './EmulatorRepositoryService';
 import { PersistenceUtils } from './utils/PersistenceUtils';
@@ -36,6 +37,10 @@ export class GamesService {
 
         ipcMain.on('removeGame', (event, game: Game) => {
             this.removeGame(game);
+        });
+
+        ipcMain.on('getStats', (event, arg) => {
+            this.getStats();
         });
     }
 
@@ -120,6 +125,43 @@ export class GamesService {
             }
 
             self.win.webContents.send('getGamesResponse', games)
+        });
+    }
+
+    private getStats() {
+        var self = this;
+        let stats: Stats;
+        let totalGames:number = 0;
+        let totalListings:number = 0;
+        let totalRoms:number = 0;
+        let totalDisks:number = 0;
+        let totalTapes:number = 0;
+        let totalHarddisks:number = 0;
+        let totalLaserdiscs:number = 0;
+        let tempSet = new Set();
+        this.database.find({}, function (err: any, entries: any) {
+            totalGames = entries.length;
+            for (var entry of entries) {
+                if (!tempSet.has(entry.listing)) {
+                    tempSet.add(entry.listing);
+                    totalListings++;
+                }
+
+                if (entry.romA != null) {
+                    totalRoms++;
+                } else if (entry.diskA != null) {
+                    totalDisks++;
+                } else if (entry.tape != null) {
+                    totalTapes++;
+                } else if (entry.harddisk != null) {
+                    totalHarddisks++;
+                } else if (entry.laserdisc != null) {
+                    totalLaserdiscs++;
+                }
+            }
+            stats = new Stats(totalGames, totalListings, totalRoms, totalDisks, totalTapes, totalHarddisks, totalLaserdiscs);
+
+            self.win.webContents.send('getStatsResponse', stats)
         });
     }
 }

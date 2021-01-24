@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IpcRenderer } from 'electron';
 import { Game } from '../models/game';
 import { ScreenshotData } from '../models/screenshot-data';
+import { Stats } from '../models/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +79,15 @@ export class GamesListerService {
         resolve(arg);
       });
       this.ipc.send("getScreenshot", game.sha1Code, game.generationMSXId, game.screenshotSuffix);
+    });
+  }
+
+  async getStats(): Promise<Stats> {
+    return new Promise<Stats>((resolve, reject) => {
+      this.ipc.once("getStatsResponse", (event, arg) => {
+        resolve(arg);
+      });
+      this.ipc.send("getStats");
     });
   }
 }

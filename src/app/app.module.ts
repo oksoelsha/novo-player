@@ -13,6 +13,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmLeaveComponent } from './shared/confirm-leave/confirm-leave.component';
 import { AlertsComponent } from './shared/alerts/alerts.component';
 import { ScanParametersComponent } from './popups/scan-parameters/scan-parameters.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ScanParametersComponent } from './popups/scan-parameters/scan-parameter
     FileSystemChooserComponent,
     ConfirmLeaveComponent,
     AlertsComponent,
-    ScanParametersComponent
+    ScanParametersComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
