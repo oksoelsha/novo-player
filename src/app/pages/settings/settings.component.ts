@@ -4,7 +4,7 @@ import { SettingsService } from '../../services/settings.service'
 import { DeactivateComponent } from '../../guards/deactivate-guard.service';
 import { Settings } from 'src/app/models/settings';
 import { AlertsService } from '../../shared/alerts/alerts.service';
-import { GamesListerService } from 'src/app/services/games-lister.service';
+import { GamesService } from 'src/app/services/games.service';
 
 @Component({
   selector: 'app-settings',
@@ -20,11 +20,11 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   submitDisabled: boolean = true;
   private listings: string[] = [];
 
-  constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesLister: GamesListerService) { }
+  constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesService: GamesService) { }
 
   ngOnInit() {
     var self = this;
-    this.gamesLister.getListings().then((data: string[]) => this.listings = data);
+    this.gamesService.getListings().then((data: string[]) => this.listings = data);
     this.settingsService.getSettings().then((settings: Settings) => {
       self.openmsxPath = settings.openmsxPath;
       self.screenshotsPath = settings.screenshotsPath;

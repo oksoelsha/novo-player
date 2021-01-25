@@ -7,7 +7,7 @@ import { Stats } from '../models/stats';
 @Injectable({
   providedIn: 'root'
 })
-export class GamesListerService {
+export class GamesService {
   private ipc: IpcRenderer
 
   constructor() {

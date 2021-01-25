@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef, HostListener } from '@angular/core';
 import { Game } from 'src/app/models/game';
-import { GamesListerService } from 'src/app/services/games-lister.service';
+import { GamesService } from 'src/app/services/games.service';
 import { ScreenshotData } from 'src/app/models/screenshot-data';
 import { ScannerService } from 'src/app/services/scanner.service';
 import { GameUtils } from 'src/app/models/game-utils';
@@ -95,7 +95,7 @@ export class HomeComponent implements OnInit {
     ["EU", "EU"]
   ]);
 
-  constructor(private gamesLister: GamesListerService,
+  constructor(private gamesService: GamesService,
     private scanner: ScannerService,
     private alertService: AlertsService,
     private settingsService: SettingsService) { }
@@ -144,7 +144,7 @@ export class HomeComponent implements OnInit {
 
     var self = this;
     this.settingsService.getSettings().then((settings: Settings) => {
-      this.gamesLister.getListings().then((data: string[]) => {
+      this.gamesService.getListings().then((data: string[]) => {
         this.listings = data;
         if (settings.defaultListing == null || settings.defaultListing.trim() == "") {
           if (data.length > 0) {
@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit {
 
   getGames(listing: string) {
     this.selectedListing = listing;
-    this.gamesLister.getGames(this.selectedListing).then((data: Game[]) => this.games = data);
+    this.gamesService.getGames(this.selectedListing).then((data: Game[]) => this.games = data);
   }
 
   getFilteredGameDetails() {
@@ -172,11 +172,11 @@ export class HomeComponent implements OnInit {
   }
 
   launch(game: Game) {
-    this.gamesLister.launchGame(game);
+    this.gamesService.launchGame(game);
   }
 
   remove(game: Game) {
-    this.gamesLister.removeGame(game).then((removed: boolean) => {
+    this.gamesService.removeGame(game).then((removed: boolean) => {
       if (removed) {
         this.alertService.success("Game was removed");
         this.lastRemovedGame = game;
@@ -193,7 +193,7 @@ export class HomeComponent implements OnInit {
 
   undoRemove() {
     if (this.lastRemovedGame != null) {
-      this.gamesLister.saveGame(this.lastRemovedGame).then((added: boolean) => {
+      this.gamesService.saveGame(this.lastRemovedGame).then((added: boolean) => {
         if (added) {
           this.alertService.success("Game was added back - " + this.lastRemovedGame.name);
           if (this.lastRemovedGame.listing == this.selectedListing) {
@@ -213,7 +213,7 @@ export class HomeComponent implements OnInit {
     this.setSelectedGameMedium();
     this.adjustScrollForSelectedGame(game);
 
-    this.gamesLister.getScreenshot(game).then((screenshots) => {
+    this.gamesService.getScreenshot(game).then((screenshots) => {
       if (this.toggle) {
         this.screenshot_a_1 = this.getScreenshot1Data(screenshots);
         this.screenshot_b_1 = this.getScreenshot2Data(screenshots);
@@ -253,7 +253,7 @@ export class HomeComponent implements OnInit {
     this.scanner.scan(parameters).then(result => {
       this.alertService.info("Total games added = " + result)
 
-      this.gamesLister.getListings().then((data: string[]) => this.listings = data);
+      this.gamesService.getListings().then((data: string[]) => this.listings = data);
       this.getGames(this.selectedListing);
       this.scanRunning = false;
     });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Stats } from 'src/app/models/stats';
-import { GamesListerService } from 'src/app/services/games-lister.service';
+import { GamesService } from 'src/app/services/games.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,10 +11,10 @@ export class DashboardComponent implements OnInit {
 
   private stats = [];
 
-  constructor(private gamesLister: GamesListerService) { }
+  constructor(private gamesService: GamesService) { }
 
   ngOnInit() {
-    this.gamesLister.getStats().then((data: Stats) => {
+    this.gamesService.getStats().then((data: Stats) => {
       this.stats = [
         { name: "Total Listings", value: data.totalListings },
         { name: "Total Games", value: data.totalGames },

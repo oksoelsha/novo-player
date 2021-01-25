@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
-import { GamesListerService } from 'src/app/services/games-lister.service';
+import { GamesService } from 'src/app/services/games.service';
 
 @Component({
   selector: 'app-scan-parameters',
@@ -16,7 +16,7 @@ export class ScanParametersComponent implements OnInit {
   private listing: string = null;
   private selectedMachine: string = ""
 
-  constructor(private gamesLister: GamesListerService) {}
+  constructor(private gamesService: GamesService) {}
 
   ngOnInit() {
     let self = this;
@@ -28,7 +28,7 @@ export class ScanParametersComponent implements OnInit {
       }
     });
 
-    this.gamesLister.getMachines().then((data: string[]) => { this.machines = data; this.selectedMachine = data[0] }); //Keep that for the bootstrap dropdown
+    this.gamesService.getMachines().then((data: string[]) => { this.machines = data; this.selectedMachine = data[0] }); //Keep that for the bootstrap dropdown
   }
 
   open(): void {
