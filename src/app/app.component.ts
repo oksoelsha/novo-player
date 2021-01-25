@@ -25,10 +25,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.links = [
-      new Link("/", "assets/images/navigation/ic_home_white_24dp.png"),
-      new Link("/dashboard", "assets/images/navigation/ic_dashboard_white_24dp.png"),
-      new Link("/settings", "assets/images/navigation/ic_settings_applications_white_24dp.png", true),
-      new Link("/help", "assets/images/navigation/ic_help_white_24dp.png"),
+      new Link("/", "assets/images/navigation/ic_home_white_24dp.png", "Main Screen"),
+      new Link("/dashboard", "assets/images/navigation/ic_dashboard_white_24dp.png", "Dashboard"),
+      new Link("/settings", "assets/images/navigation/ic_settings_applications_white_24dp.png", "Settings", true),
+      new Link("/help", "assets/images/navigation/ic_help_white_24dp.png", "About"),
     ];
   }
 
@@ -41,11 +41,13 @@ export class AppComponent implements OnInit {
 class Link {
   route: string;
   image: string;
+  tooltip:string;
   splitTopFromBottom: boolean;
 
-  constructor(route: string, image: string, splitTopFromBottom: boolean = false) {
+  constructor(route: string, image: string, tooltip: string, splitTopFromBottom: boolean = false) {
     this.route = route;
     this.image = image;
+    this.tooltip = tooltip;
     this.splitTopFromBottom = splitTopFromBottom;
   }
 }
