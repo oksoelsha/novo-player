@@ -32,6 +32,7 @@ module.exports = function (config) {
         base: 'Electron',
         browserWindowOptions: {
           webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true
           }
         }
