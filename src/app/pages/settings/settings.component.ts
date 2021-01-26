@@ -12,7 +12,7 @@ import { GamesService } from 'src/app/services/games.service';
   styleUrls: ['./settings.component.sass']
 })
 export class SettingsComponent implements OnInit, AfterViewInit, DeactivateComponent {
-  @ViewChild('settingsForm') settingsForm: NgForm;
+  @ViewChild('settingsForm', { static: true }) settingsForm: NgForm;
 
   openmsxPath: string = "";
   screenshotsPath: string = "";

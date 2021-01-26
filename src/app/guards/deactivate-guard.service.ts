@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { CanDeactivate } from '@angular/router/src/utils/preactivation';
+import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { merge, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,7 +12,7 @@ export interface DeactivateComponent {
 @Injectable({
   providedIn: 'root'
 })
-export class DeactivateGuardService implements CanDeactivate {
+export class DeactivateGuardService implements CanDeactivate<DeactivateComponent> {
   component: Object;
   route: ActivatedRouteSnapshot;
 

@@ -16,17 +16,17 @@ import { Settings } from 'src/app/models/settings';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('gameDetailSimpleText') private gameDetailSimpleText: TemplateRef<object>;
-  @ViewChild('gameDetailFiles') private gameDetailFiles: TemplateRef<object>;
-  @ViewChild('gameDetailMedium') private gameDetailMedium: TemplateRef<object>;
-  @ViewChild('gameDetailSize') private gameDetailSize: TemplateRef<object>;
-  @ViewChild('gameDetailCountry') private gameDetailCountry: TemplateRef<object>;
-  @ViewChild('gameDetailGenerations') private gameDetailGenerations: TemplateRef<object>;
-  @ViewChild('gameDetailSounds') private gameDetailSounds: TemplateRef<object>;
-  @ViewChild('gameDetailGenres') private gameDetailGenres: TemplateRef<object>;
-  @ViewChild('gameDetailGenerationMSXLink') private gameDetailGenerationMSXLink: TemplateRef<object>;
+  @ViewChild('gameDetailSimpleText', { static: true }) private gameDetailSimpleText: TemplateRef<object>;
+  @ViewChild('gameDetailFiles', { static: true }) private gameDetailFiles: TemplateRef<object>;
+  @ViewChild('gameDetailMedium', { static: true }) private gameDetailMedium: TemplateRef<object>;
+  @ViewChild('gameDetailSize', { static: true }) private gameDetailSize: TemplateRef<object>;
+  @ViewChild('gameDetailCountry', { static: true }) private gameDetailCountry: TemplateRef<object>;
+  @ViewChild('gameDetailGenerations', { static: true }) private gameDetailGenerations: TemplateRef<object>;
+  @ViewChild('gameDetailSounds', { static: true }) private gameDetailSounds: TemplateRef<object>;
+  @ViewChild('gameDetailGenres', { static: true }) private gameDetailGenres: TemplateRef<object>;
+  @ViewChild('gameDetailGenerationMSXLink', { static: true }) private gameDetailGenerationMSXLink: TemplateRef<object>;
 
-  @ViewChild(ScanParametersComponent) private scanParameters: ScanParametersComponent;
+  @ViewChild(ScanParametersComponent, { static: true }) private scanParameters: ScanParametersComponent;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
 
