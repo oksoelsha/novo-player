@@ -9,10 +9,11 @@ import { Subscription } from 'rxjs';
 })
 export class AlertsComponent implements OnDestroy {
 
-  private alertMessage: string = "";
-  private alertClass: string = "";
   private subscription: Subscription;
   private timer: NodeJS.Timer = null;
+
+  alertMessage: string = "";
+  alertClass: string = "";
 
   constructor(private alertService: AlertsService) {
     this.subscription = this.alertService.getAlert().subscribe(alert => {

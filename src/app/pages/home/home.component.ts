@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('gameDetailGenres', { static: true }) private gameDetailGenres: TemplateRef<object>;
   @ViewChild('gameDetailGenerationMSXLink', { static: true }) private gameDetailGenerationMSXLink: TemplateRef<object>;
 
-  @ViewChild(ScanParametersComponent, { static: true }) private scanParameters: ScanParametersComponent;
+  @ViewChild(ScanParametersComponent, { static: true }) scanParameters: ScanParametersComponent;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
 
@@ -34,23 +34,24 @@ export class HomeComponent implements OnInit {
   private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
-  private games: Game[] = [];
-  private selectedGame: Game;
   private selectedGameMedium: Promise<string>;
-  private lastRemovedGame: Game = null;
-  private screenshot_a_1: ScreenshotData;
-  private screenshot_a_2: ScreenshotData;
-  private screenshot_b_1: ScreenshotData;
-  private screenshot_b_2: ScreenshotData;
   private toggle: boolean = false;
-  private transparent1: string = "";
-  private transparent2: string = "transparent";
   private gamesTable: Element;
   private gameQuickSearch: string = ""
   private quickTypeTimer: NodeJS.Timer = null;
-  private scanRunning: boolean = false;
-  private listings: string[] = [];
   private selectedListing: string = ""
+
+  games: Game[] = [];
+  selectedGame: Game;
+  lastRemovedGame: Game = null;
+  screenshot_a_1: ScreenshotData;
+  screenshot_a_2: ScreenshotData;
+  screenshot_b_1: ScreenshotData;
+  screenshot_b_2: ScreenshotData;
+  transparent1: string = "";
+  transparent2: string = "transparent";
+  scanRunning: boolean = false;
+  listings: string[] = [];
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },

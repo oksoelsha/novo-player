@@ -18,7 +18,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   screenshotsPath: string = "";
   defaultListing: string = "";
   submitDisabled: boolean = true;
-  private listings: string[] = [];
+  listings: string[] = [];
 
   constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesService: GamesService) { }
 

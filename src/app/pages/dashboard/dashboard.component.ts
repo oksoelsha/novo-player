@@ -9,7 +9,7 @@ import { GamesService } from 'src/app/services/games.service';
 })
 export class DashboardComponent implements OnInit {
 
-  private stats = [];
+  stats = [];
 
   constructor(private gamesService: GamesService) { }
 

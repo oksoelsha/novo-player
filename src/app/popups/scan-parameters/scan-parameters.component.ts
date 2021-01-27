@@ -11,10 +11,11 @@ export class ScanParametersComponent implements OnInit {
   @Output() parameters: EventEmitter<any> = new EventEmitter<any>();
 
   private topNode: HTMLElement;
-  private items: string[] = [];
-  private machines: string[] = [];
-  private listing: string = null;
-  private selectedMachine: string = ""
+
+  items: string[] = [];
+  machines: string[] = [];
+  listing: string = null;
+  selectedMachine: string = ""
 
   constructor(private gamesService: GamesService) {}
 
