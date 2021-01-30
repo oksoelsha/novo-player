@@ -39,8 +39,8 @@ export class HomeComponent implements OnInit {
   private gamesTable: Element;
   private gameQuickSearch: string = ""
   private quickTypeTimer: NodeJS.Timer = null;
-  private selectedListing: string = ""
 
+  selectedListing: string = ""
   games: Game[] = [];
   selectedGame: Game;
   lastRemovedGame: Game = null;

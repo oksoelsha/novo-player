@@ -1,15 +1,24 @@
 <div class="entire-area">
   <div class="area-on-the-left">
     <div class="table-buttons">
-      <span>Total = {{ games.length  }} </span>
-      <button type="button" class="btn btn-secondary btn-sm" (click)="scanParameters.open()" [disabled]="scanRunning">Scan</button>
-      <button type="button" class="btn btn-secondary btn-sm" (click)="undoRemove()" [disabled]="lastRemovedGame == null">Undo</button>
+      <span>Total = {{ games.length }} </span>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="scanParameters.open()"
+        [disabled]="scanRunning">Scan</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="undoRemove()"
+        [disabled]="lastRemovedGame == null">Undo</button>
       <label>Listing</label>:
-      <select (change)="getGames($event.target.value)">
-        <option *ngFor="let listing of listings" value="{{ listing }}" [selected]="listing == selectedListing">
-          {{ listing }}
-        </option>
-      </select>
+      <div class="dropdown listings-dropdown">
+        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          {{ selectedListing }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
+            (click)="selectedListing = listing; getGames(listing)">
+            {{ listing }}
+          </button>
+        </div>
+      </div>
     </div>
     <div id="games-table">
       <table *ngIf="games">
@@ -21,8 +30,9 @@
       </table>
       <div id="games-table-data" tabindex="0" (keydown)="$event.preventDefault()">
         <table>
-          <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}" class="{{ selectedGameClass(game) }}">
-            <td class="medium-img"><img src="{{ getGameMedium(game) }}"/></td>
+          <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}"
+            class="{{ selectedGameClass(game) }}">
+            <td class="medium-img"><img src="{{ getGameMedium(game) }}" /></td>
             <td class="name">{{ game.name }}</td>
             <td class="company">{{ game.company }}</td>
             <td class="year">{{ game.year }}</td>
@@ -56,7 +66,8 @@
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>
             <td class="game-detail-value">
-              <ng-container [ngTemplateOutlet]="this[detail.blockName]" [ngTemplateOutletContext]="{ $implicit: detail }"></ng-container>
+              <ng-container [ngTemplateOutlet]="this[detail.blockName]"
+                [ngTemplateOutletContext]="{ $implicit: detail }"></ng-container>
             </td>
           </tr>
         </table>
@@ -83,17 +94,18 @@
 
 <ng-template #gameDetailCountry>
   <div id="game-detail-country">
-    <img *ngIf="countryFlags.get(selectedGame.country)" src="assets/images/flags/{{ countryFlags.get(selectedGame.country) }}.png"/>
+    <img *ngIf="countryFlags.get(selectedGame.country)"
+      src="assets/images/flags/{{ countryFlags.get(selectedGame.country) }}.png" />
     {{ selectedGame.country }}
   </div>
 </ng-template>
 
 <ng-template #gameDetailGenerations>
   <div id="game-detail-generations">
-    <img *ngIf="isGenerationMSX()" src="assets/images/generations/msx.png"/>
-    <img *ngIf="isGenerationMSX2()" src="assets/images/generations/msx2.png"/>
-    <img *ngIf="isGenerationMSX2Plus()" src="assets/images/generations/msx2p.png"/>
-    <img *ngIf="isGenerationTurboR()" src="assets/images/generations/msxturbor.png"/>
+    <img *ngIf="isGenerationMSX()" src="assets/images/generations/msx.png" />
+    <img *ngIf="isGenerationMSX2()" src="assets/images/generations/msx2.png" />
+    <img *ngIf="isGenerationMSX2Plus()" src="assets/images/generations/msx2p.png" />
+    <img *ngIf="isGenerationTurboR()" src="assets/images/generations/msxturbor.png" />
   </div>
 </ng-template>
 
@@ -106,7 +118,8 @@
 </ng-template>
 
 <ng-template #gameDetailGenerationMSXLink>
-  <a *ngIf="selectedGame.generationMSXId < 10000; else generationMSXNotAvailable" href="#" (click)="openGenerationMSXInBrowser(selectedGame.generationMSXId)">{{ selectedGame.generationMSXId }}</a>
+  <a *ngIf="selectedGame.generationMSXId < 10000; else generationMSXNotAvailable" href="#"
+    (click)="openGenerationMSXInBrowser(selectedGame.generationMSXId)">{{ selectedGame.generationMSXId }}</a>
   <ng-template #generationMSXNotAvailable>Not added yet</ng-template>
 </ng-template>
 
