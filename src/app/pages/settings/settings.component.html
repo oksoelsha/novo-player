@@ -18,12 +18,17 @@
 
   <div class="form-group">
     <label for="inputDefaultListing">Default Listing</label>
-    <div class="input-group">
-      <select id="inputDefaultListing" name="default-listing" [(ngModel)]="defaultListing">
-        <option *ngFor="let listing of listings" value="{{ listing }}" [selected]="listing == defaultListing">
+    <div class="dropdown">
+      <button id="inputDefaultListing" class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        {{ defaultListing }}
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
+          (click)="updateListing(listing)">
           {{ listing }}
-        </option>
-      </select>
+        </button>
+      </div>
     </div>
   </div>
 

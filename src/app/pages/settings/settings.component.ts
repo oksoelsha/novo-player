@@ -49,8 +49,15 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
     }
   }
 
+  updateListing(listing: string) {
+    if (listing != this.defaultListing) {
+      this.defaultListing = listing;
+      this.submitDisabled = false;
+    }
+  }
+
   submitSettings(form: any) {
-    let settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path'], form.value['default-listing']);
+    let settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path'], this.defaultListing);
     this.settingsService.saveSettings(settings);
     this.submitDisabled = true;
     this.alertService.success('Settings saved successfully');
