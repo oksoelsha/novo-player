@@ -3,7 +3,7 @@
   <div class="form-group">
     <label for="inputOpenmsxPath">openMSX Path</label>
     <div class="input-group">
-      <input type="text" id="inputOpenmsxPath" class="form-control form-control-sm" name="openmsx-path" [(ngModel)]="openmsxPath" />
+      <input type="text" class="form-control form-control-sm" name="openmsx-path" [(ngModel)]="openmsxPath" />
       <app-fs-chooser directory-mode=true label="Browse" (onChosen)="updateControl('openmsx-path', $event)"></app-fs-chooser>
     </div>
   </div>
@@ -11,7 +11,7 @@
   <div class="form-group">
     <label for="inputScreenshotsPath">Screenshots Path</label>
     <div class="input-group">
-      <input type="text" id="inputScreenshotsPath" class="form-control form-control-sm" name="screenshots-path" [(ngModel)]="screenshotsPath" />
+      <input type="text" class="form-control form-control-sm" name="screenshots-path" [(ngModel)]="screenshotsPath" />
       <app-fs-chooser directory-mode=true label="Browse" (onChosen)="updateControl('screenshots-path', $event)"></app-fs-chooser>
     </div>
   </div>
@@ -25,7 +25,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
-          (click)="updateListing(listing)">
+          (click)="updateField('defaultListing', listing)">
           {{ listing }}
         </button>
       </div>

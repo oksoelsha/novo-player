@@ -49,9 +49,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
     }
   }
 
-  updateListing(listing: string) {
-    if (listing != this.defaultListing) {
-      this.defaultListing = listing;
+  updateField(field: string, value: any) {
+    if (value != this[field]) {
+      this[field] = value;
       this.submitDisabled = false;
     }
   }
