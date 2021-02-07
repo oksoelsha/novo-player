@@ -1,16 +1,26 @@
 <div class="entire-area">
   <div class="area-on-the-left">
     <div class="table-buttons">
-      <span>Total = {{ games.length }} </span>
-      <button type="button" class="btn btn-secondary btn-sm" (click)="scanParameters.open()"
-        [disabled]="scanRunning">Scan</button>
-      <button type="button" class="btn btn-secondary btn-sm" (click)="undoRemove()"
-        [disabled]="lastRemovedGame == null">Undo</button>
-      <label>Listing</label>:
-      <div class="dropdown listings-dropdown">
+      <div class="dropdown inline-dropdown">
+        <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="assets/images/navigation/menu.png">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <button class="dropdown-item btn-sm" type="button" (click)="undoRemove()" [disabled]="lastRemovedGame == null">
+            Restore last deleted game
+          </button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item btn-sm" type="button" (click)="scanParameters.open()" [disabled]="scanRunning">
+            Scan physical media for MSX software
+          </button>
+        </div>
+      </div>
+      <div *ngIf="listings.length > 0" class="dropdown inline-dropdown">
         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           {{ selectedListing }}
+          <span class="badge badge-light">{{ games.length }}</span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
           <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
