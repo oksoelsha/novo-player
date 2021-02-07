@@ -24,17 +24,51 @@
         </div>
         <table class="fields">
           <tr>
-            <td><label>Listing</label>:</td>
-            <td><input type="text" placeholder="Enter listing" name="listing" [(ngModel)]="listing" /></td>
+            <td>Listing: </td>
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ selectedOrEnteredListingDisplay }}
+                </button>
+                <div id="listings-dropdown" class="dropdown-menu listings-dropdown" aria-labelledby="dropdownMenu2">
+                  <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
+                    (click)="setSelectedListing(listing)">
+                    {{ listing }}
+                  </button>
+                  <div *ngIf="listings.length > 0" class="dropdown-divider"></div>
+                  <div class="dropdown">
+                    <h6 class="dropdown-header">New Listing</h6>
+                  </div>
+                  <div class="dropdown pl-4 pr-4">
+                    <div class="input-group input-group-sm mb-3">
+                      <input type="text" class="form-control" name="listing" (keyup.enter)="setEnteredListing()"
+                        [(ngModel)]="enteredListing" />
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button"
+                          (click)="setEnteredListing()">&gt;</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
           </tr>
           <tr>
-            <td><label>Machine</label>:</td>
+            <td>Machine: </td>
             <td>
-              <select (change)="selectedMachine = $event.target.value">
-                <option *ngFor="let machine of machines" value="{{ machine }}">
-                  {{ machine }}
-                </option>
-              </select>
+              <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ selectedMachine }}
+                </button>
+                <div class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu2">
+                  <button *ngFor="let machine of machines" class="dropdown-item btn-sm" type="button"
+                    (click)="selectedMachine = machine">
+                    {{ machine }}
+                  </button>
+                </div>
+              </div>
             </td>
           </tr>
         </table>
