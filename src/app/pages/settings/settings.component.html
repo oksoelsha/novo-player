@@ -18,10 +18,14 @@
 
   <div class="form-group">
     <label for="inputDefaultListing">Default Listing</label>
-    <div class="dropdown">
-      <button id="inputDefaultListing" class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+    <span *ngIf="listings.length == 0">
+      : No listings defined yet
+    </span>
+    <div *ngIf="listings.length > 0" class="dropdown">
+      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        {{ defaultListing }}
+        <span *ngIf="!defaultListing">Select a listing</span>
+        <span *ngIf="defaultListing">{{ defaultListing }}</span>
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
