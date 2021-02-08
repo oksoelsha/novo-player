@@ -254,8 +254,14 @@ export class HomeComponent implements OnInit {
     this.scanner.scan(parameters).then(result => {
       this.alertService.info("Total games added = " + result)
 
-      this.gamesService.getListings().then((data: string[]) => this.listings = data);
-      this.getGames(this.selectedListing);
+      this.gamesService.getListings().then((data: string[]) => {
+        this.listings = data;
+        if (!this.selectedListing) {
+          //this can happen after a scan that adds the first listing
+          this.selectedListing = this.listings[0];
+        }
+        this.getGames(this.selectedListing);
+      });
       this.scanRunning = false;
     });
   }

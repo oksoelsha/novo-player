@@ -74,7 +74,7 @@ export class ScanParametersComponent implements OnInit {
     document.getElementById("listings-dropdown").classList.remove("show");
   }
 
-  submitParameters(form: any): void {
+  submitParameters(): void {
     this.parameters.emit(new ScanParameters(this.items, this.selectedOrEnteredListing, this.selectedMachine));
     this.close();
   }

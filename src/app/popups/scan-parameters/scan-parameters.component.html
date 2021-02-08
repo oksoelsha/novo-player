@@ -4,7 +4,7 @@
       <div class="scan-title">Scan Parameters</div>
       <div (click)="close()" class="scan-close">&times;</div>
     </div>
-    <form id="scanParametersForm" #scanParametersForm="ngForm" (ngSubmit)="submitParameters(scanParametersForm.form)">
+    <form id="scanParametersForm" #scanParametersForm="ngForm" (keydown.enter)="$event.preventDefault()">
       <div class="parameters-part">
         <div class="add-buttons">
           <app-fs-chooser directory-mode=true multi-selections=true label="+Directory"
@@ -29,7 +29,8 @@
               <div class="dropdown">
                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{ selectedOrEnteredListingDisplay }}
+                  <span *ngIf="!selectedOrEnteredListingDisplay">Enter a listing</span>
+                  <span *ngIf="selectedOrEnteredListingDisplay">{{ selectedOrEnteredListingDisplay }}</span>
                 </button>
                 <div id="listings-dropdown" class="dropdown-menu listings-dropdown" aria-labelledby="dropdownMenu2">
                   <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
@@ -72,7 +73,8 @@
             </td>
           </tr>
         </table>
-        <button class="btn btn-primary" [disabled]="items.length == 0">Start</button>
+        <button class="btn btn-primary" [disabled]="items.length == 0 || !selectedOrEnteredListing" (click)="submitParameters()"
+          (keyup.enter)="submitParameters()">Start</button>
       </div>
     </form>
   </div>
