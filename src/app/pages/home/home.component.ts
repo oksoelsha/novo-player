@@ -203,12 +203,14 @@ export class HomeComponent implements OnInit {
   }
 
   processNewGameName(event: any) {
-    let renamedGame: Game = Object.assign({}, this.selectedGame);
-    renamedGame.name = this.editedGameName;
-    this.update(this.selectedGame, renamedGame);
-    event.stopPropagation();
-    this.editedGameName = "";
-    this.gamesEditMode.set(this.selectedGame.sha1Code, false);
+    if (this.editedGameName && !this.editedGameName.startsWith(' ')) {
+      let renamedGame: Game = Object.assign({}, this.selectedGame);
+      renamedGame.name = this.editedGameName.trim();
+      this.update(this.selectedGame, renamedGame);
+      event.stopPropagation();
+      this.editedGameName = "";
+      this.gamesEditMode.set(this.selectedGame.sha1Code, false);
+    }
   }
 
   cancelEditMode() {
@@ -216,7 +218,8 @@ export class HomeComponent implements OnInit {
     this.editedGameName = "";
   }
 
-  remove(game: Game) {
+  remove(event: any, game: Game) {
+    event.stopPropagation();
     this.gamesService.removeGame(game).then((removed: boolean) => {
       if (removed) {
         this.alertService.success("Game was removed");

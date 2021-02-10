@@ -41,12 +41,12 @@
       </table>
       <div id="games-table-data" tabindex="0" (keydown)="processKeyEventsOnTable($event)">
         <table>
-          <tr *ngFor="let game of games; let i = index" (click)="showInfo(game)" id="{{ game.sha1Code }}"
+          <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}"
             class="{{ selectedGameClass(game) }}">
             <td class="medium-img"><img src="{{ getGameMedium(game) }}" /></td>
             <td *ngIf="!gamesEditMode.get(game.sha1Code)" class="name">{{ game.name }}</td>
             <td *ngIf="gamesEditMode.get(game.sha1Code)" class="name">
-              <input #gameNameEditInput type="text" [(ngModel)]="editedGameName"
+              <input id="gameNameEditInput" #gameNameEditInput type="text" [(ngModel)]="editedGameName"
                 (keyup.enter)="processNewGameName($event)" (keyup.escape)="cancelEditMode()"
                 (focusout)="cancelEditMode()" />
             </td>
@@ -55,7 +55,7 @@
             <td>
               <span>
                 <img src="assets/images/operations/play.png" (click)="launch(game)">
-                <img src="assets/images/operations/remove.png" (click)="$event.stopPropagation(); remove(game)">
+                <img src="assets/images/operations/remove.png" (click)="remove($event, game)">
               </span>
             </td>
           </tr>
