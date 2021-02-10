@@ -2,12 +2,13 @@
   <div class="area-on-the-left">
     <div class="table-buttons">
       <div class="dropdown inline-dropdown">
-        <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2"
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           <img src="assets/images/navigation/menu.png">
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button class="dropdown-item btn-sm" type="button" (click)="undoRemove()" [disabled]="lastRemovedGame == null">
+          <button class="dropdown-item btn-sm" type="button" (click)="undoRemove()"
+            [disabled]="lastRemovedGame == null">
             Restore last deleted game
           </button>
           <div class="dropdown-divider"></div>
@@ -38,12 +39,17 @@
           <th class="year-title">Year</th>
         </tr>
       </table>
-      <div id="games-table-data" tabindex="0" (keydown)="$event.preventDefault()">
+      <div id="games-table-data" tabindex="0" (keydown)="processKeyEventsOnTable($event)">
         <table>
-          <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}"
+          <tr *ngFor="let game of games; let i = index" (click)="showInfo(game)" id="{{ game.sha1Code }}"
             class="{{ selectedGameClass(game) }}">
             <td class="medium-img"><img src="{{ getGameMedium(game) }}" /></td>
-            <td class="name">{{ game.name }}</td>
+            <td *ngIf="!gamesEditMode.get(game.sha1Code)" class="name">{{ game.name }}</td>
+            <td *ngIf="gamesEditMode.get(game.sha1Code)" class="name">
+              <input #gameNameEditInput type="text" [(ngModel)]="editedGameName"
+                (keyup.enter)="processNewGameName($event)" (keyup.escape)="cancelEditMode()"
+                (focusout)="cancelEditMode()" />
+            </td>
             <td class="company">{{ game.company }}</td>
             <td class="year">{{ game.year }}</td>
             <td>
@@ -57,7 +63,6 @@
       </div>
     </div>
   </div>
-
   <div class="area-on-the-right">
     <div>
       <div class="screenshot">
@@ -71,7 +76,8 @@
       </div>
 
       <div class="additional-info" *ngIf="selectedGame">
-        <button type="button" class="btn btn-secondary btn-sm" (click)="launch(selectedGame)">Launch</button>
+        <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="launch(selectedGame)">Launch</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="edit(selectedGame)">Edit</button>
         <table>
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>

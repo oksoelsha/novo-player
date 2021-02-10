@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, HostListener, ElementRef } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { GamesService } from 'src/app/services/games.service';
 import { ScreenshotData } from 'src/app/models/screenshot-data';
@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('gameDetailGenres', { static: true }) private gameDetailGenres: TemplateRef<object>;
   @ViewChild('gameDetailGenerationMSXLink', { static: true }) private gameDetailGenerationMSXLink: TemplateRef<object>;
 
+  @ViewChild('gameNameEditInput', { static: false }) private gameNameEdit: ElementRef;
   @ViewChild(ScanParametersComponent, { static: true }) scanParameters: ScanParametersComponent;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
@@ -42,6 +43,8 @@ export class HomeComponent implements OnInit {
 
   selectedListing: string = ""
   games: Game[] = [];
+  gamesEditMode: Map<string, boolean> = new Map();
+  editedGameName: string;
   selectedGame: Game;
   lastRemovedGame: Game = null;
   screenshot_a_1: ScreenshotData;
@@ -70,7 +73,7 @@ export class HomeComponent implements OnInit {
     { name: "Mapper", value: "mapper", blockName: "gameDetailSimpleText" },
     { name: "Start", value: "start", blockName: "gameDetailSimpleText" },
     { name: "Remark", value: "remark", blockName: "gameDetailSimpleText" },
-    { name: "Generation-MSX ID", value: "generationMSXId", blockName: "gameDetailGenerationMSXLink" },
+    { name: "Generation-MSX", value: "generationMSXId", blockName: "gameDetailGenerationMSXLink" },
   ]
 
   private readonly countryFlags: Map<string, string> = new Map([
@@ -103,35 +106,37 @@ export class HomeComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
-      (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
-      (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
-      if (this.quickTypeTimer != null) {
-        clearTimeout(this.quickTypeTimer);
-      }
-      this.gameQuickSearch += event.key;
-      this.quickTypeTimer = setTimeout(() => {
-        this.jumpToNearestGame(this.gameQuickSearch);
-        this.gameQuickSearch = "";
-      }, 600)
-    }
-    else if (this.selectedGame != null) {
-      if (event.key == 'ArrowUp') {
-        var index = this.games.indexOf(this.selectedGame);
-        if (index > 0) {
-          this.showInfo(this.games[index - 1]);
+    if (!this.isEditMode()) {
+      if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
+        (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
+        (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
+        if (this.quickTypeTimer != null) {
+          clearTimeout(this.quickTypeTimer);
         }
-      } else if (event.key == 'ArrowDown') {
-        var index = this.games.indexOf(this.selectedGame);
-        if (index < (this.games.length - 1)) {
-          this.showInfo(this.games[index + 1]);
-        }
-      } else if (event.key == 'Enter') {
-        this.launch(this.selectedGame);
+        this.gameQuickSearch += event.key;
+        this.quickTypeTimer = setTimeout(() => {
+          this.jumpToNearestGame(this.gameQuickSearch);
+          this.gameQuickSearch = "";
+        }, 600)
       }
-    } else if (this.selectedGame == null && event.key == 'ArrowDown' && this.games.length > 0) {
-      this.selectedGame = this.games[0];
-      this.showInfo(this.games[0]);
+      else if (this.selectedGame != null) {
+        if (event.key == 'ArrowUp') {
+          var index = this.games.indexOf(this.selectedGame);
+          if (index > 0) {
+            this.showInfo(this.games[index - 1]);
+          }
+        } else if (event.key == 'ArrowDown') {
+          var index = this.games.indexOf(this.selectedGame);
+          if (index < (this.games.length - 1)) {
+            this.showInfo(this.games[index + 1]);
+          }
+        } else if (event.key == 'Enter') {
+          this.launch(this.selectedGame);
+        }
+      } else if (this.selectedGame == null && event.key == 'ArrowDown' && this.games.length > 0) {
+        this.selectedGame = this.games[0];
+        this.showInfo(this.games[0]);
+      }
     }
   }
 
@@ -164,7 +169,13 @@ export class HomeComponent implements OnInit {
 
   getGames(listing: string) {
     this.selectedListing = listing;
-    this.gamesService.getGames(this.selectedListing).then((data: Game[]) => this.games = data);
+    this.gamesService.getGames(this.selectedListing).then((data: Game[]) => {
+      this.games = data;
+      this.gamesEditMode.clear();
+      for (let game of data) {
+        this.gamesEditMode.set(game.sha1Code, false);
+      }
+    });
   }
 
   getFilteredGameDetails() {
@@ -176,6 +187,35 @@ export class HomeComponent implements OnInit {
     this.gamesService.launchGame(game);
   }
 
+  processKeyEventsOnTable(event: any) {
+    if (!this.isEditMode()) {
+      event.preventDefault();
+    }
+  }
+
+  edit(game: Game) {
+    this.editedGameName = game.name;
+    this.gamesEditMode.set(game.sha1Code, true);
+    setTimeout(() => {
+      this.gameNameEdit.nativeElement.focus();
+      this.gameNameEdit.nativeElement.select();
+    },0);
+  }
+
+  processNewGameName(event: any) {
+    let renamedGame: Game = Object.assign({}, this.selectedGame);
+    renamedGame.name = this.editedGameName;
+    this.update(this.selectedGame, renamedGame);
+    event.stopPropagation();
+    this.editedGameName = "";
+    this.gamesEditMode.set(this.selectedGame.sha1Code, false);
+  }
+
+  cancelEditMode() {
+    this.gamesEditMode.set(this.selectedGame.sha1Code, false);
+    this.editedGameName = "";
+  }
+
   remove(game: Game) {
     this.gamesService.removeGame(game).then((removed: boolean) => {
       if (removed) {
@@ -185,7 +225,7 @@ export class HomeComponent implements OnInit {
           this.initialize();
         }
         sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
-        this.games.splice(this.games.indexOf(game), 1);
+        this.removeGameFromList(game);
       } else {
         this.alertService.failure("Game was not removed!");
       }
@@ -207,6 +247,19 @@ export class HomeComponent implements OnInit {
         }
       });
     }
+  }
+
+  update(oldGame: Game, newGame: Game) {
+    this.gamesService.updateGame(oldGame, newGame).then(() => {
+      this.alertService.success("Game was updated - " + newGame.name);
+      if (oldGame.name != newGame.name) {
+        this.removeGameFromList(oldGame);
+        this.addGameToSortedList(newGame);
+        setTimeout(() => {
+          this.showInfo(newGame);
+        },0);
+      }
+    });
   }
 
   showInfo(game: Game) {
@@ -401,6 +454,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  private removeGameFromList(game: Game) {
+    this.games.splice(this.games.indexOf(game), 1);
+  }
+
   private addGameToSortedList(game: Game) {
     let index: number;
     for (index = 0; index < this.games.length && this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++);
@@ -417,5 +474,9 @@ export class HomeComponent implements OnInit {
     if (index < this.games.length) {
       this.showInfo(this.games[index]);
     }
+  }
+
+  private isEditMode(): boolean {
+    return this.selectedGame && this.gamesEditMode.get(this.selectedGame.sha1Code);
   }
 }

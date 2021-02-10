@@ -73,6 +73,15 @@ export class GamesService {
     });
   }
 
+  async updateGame(oldGame: Game, newGame: Game) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once("updateGameResponse", (event, arg) => {
+        resolve(arg);
+      });
+      this.ipc.send("updateGame", oldGame, newGame);
+    });
+  }
+
   getScreenshot(game: Game): Promise<ScreenshotData> {
     return new Promise<ScreenshotData>((resolve, reject) => {
       this.ipc.once("getScreenshotResponse" + game.sha1Code, (event, arg) => {

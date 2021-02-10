@@ -39,6 +39,10 @@ export class GamesService {
             this.removeGame(game);
         });
 
+        ipcMain.on('updateGame', (event, oldGame: Game, newGame: Game) => {
+            this.updateGame(oldGame, newGame);
+        });
+
         ipcMain.on('getStats', (event, arg) => {
             this.getStats();
         });
@@ -125,6 +129,14 @@ export class GamesService {
             }
 
             self.win.webContents.send('getGamesResponse', games)
+        });
+    }
+
+    private updateGame(oldGame: Game, newGame: Game) {
+        var self = this;
+        var gameDO: GameDO = new GameDO(newGame);
+        this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
+            self.win.webContents.send('updateGameResponse');
         });
     }
 
