@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
+import { EmulatorService } from 'src/app/services/emulator.service';
 import { GamesService } from 'src/app/services/games.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { GamesService } from 'src/app/services/games.service';
 })
 export class ScanParametersComponent implements OnInit {
 
-  @Output() parameters: EventEmitter<any> = new EventEmitter<any>();
+  @Output() parameters: EventEmitter<ScanParameters> = new EventEmitter<ScanParameters>();
 
   private topNode: HTMLElement;
 
@@ -21,7 +22,7 @@ export class ScanParametersComponent implements OnInit {
   enteredListing: string;
   selectedMachine: string = "";
 
-  constructor(private gamesService: GamesService) {}
+  constructor(private gamesService: GamesService, private emulatorService: EmulatorService) {}
 
   ngOnInit() {
     let self = this;
@@ -40,7 +41,7 @@ export class ScanParametersComponent implements OnInit {
     this.topNode.classList.add('scan-parameters-fade');
 
     this.gamesService.getListings().then((data: string[]) => { this.listings = data; this.setSelectedListingAndAdjustForDisplay(data[0]); });
-    this.gamesService.getMachines().then((data: string[]) => {
+    this.emulatorService.getMachines().then((data: string[]) => {
       this.machines = data;
       if (this.selectedMachine == "") {
         this.selectedMachine = data[0];

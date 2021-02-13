@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Game } from 'src/app/models/game';
-import { GamesService } from 'src/app/services/games.service';
+import { EmulatorService } from 'src/app/services/emulator.service';
 
 @Component({
   selector: 'app-media-edit',
@@ -26,7 +26,7 @@ export class MediaEditComponent implements OnInit {
   extensions: string[] = [];
   extensionRomDisplay: string = "";
 
-  constructor(private gamesService: GamesService) {}
+  constructor(private emulatorService: EmulatorService) {}
 
   ngOnInit(): void {
     let self = this;
@@ -53,7 +53,7 @@ export class MediaEditComponent implements OnInit {
     this.harddisk = this.game.harddisk;
     this.laserdisc = this.game.laserdisc;
 
-    this.gamesService.getExtensions().then((data: string[]) => {
+    this.emulatorService.getExtensions().then((data: string[]) => {
       this.extensions = data;
       if (this.extensionRom) {
         this.extensionRomDisplay = this.extensionRom;
