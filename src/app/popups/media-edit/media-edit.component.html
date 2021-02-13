@@ -1,0 +1,120 @@
+<div id="media-edit-component" class="media-edit">
+  <div class="media-edit-content pl-2 pr-2">
+    <div class="media-edit-title-bar">
+      <div class="media-edit-title">Media Edit</div>
+      <div (click)="close()" class="media-edit-close">&times;</div>
+    </div>
+
+    <form>
+      <table class="fields-table">
+        <tr>
+          <td class="medium">ROM A</td>
+          <td class="medium-input">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" id="romA" [(ngModel)]="romA"
+                [ngModelOptions]="{standalone: true}">
+              <app-fs-chooser label="Browse" (onChosen)="romA = $event"></app-fs-chooser>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="medium">ROM B</td>
+          <td class="medium-input">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" id="romB" [(ngModel)]="romB"
+                [ngModelOptions]="{standalone: true}">
+              <app-fs-chooser label="Browse" (onChosen)="romB = $event"></app-fs-chooser>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="medium">Extension</td>
+          <td class="medium-input">
+            <div class="dropdown d-inline">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ extensionRomDisplay }}
+              </button>
+              <div class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu2">
+                <button *ngFor="let extension of extensions" class="dropdown-item btn-sm" type="button"
+                  (click)="extensionRom = extension; extensionRomDisplay = extension">
+                  {{ extension }}
+                </button>
+              </div>
+            </div>
+            <div class="d-inline ml-2">
+              <button class="btn btn-secondary btn-sm" type="button"
+                aria-haspopup="true" aria-expanded="false" [disabled]="!extensionRom" (click)="resetExtensionRomSelection()">
+                Remove
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <p></p>
+        </tr>
+        <tr>
+          <td class="medium">Disk A</td>
+          <td class="medium-input">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" id="diskA" [(ngModel)]="diskA"
+                [ngModelOptions]="{standalone: true}">
+              <app-fs-chooser label="Browse" (onChosen)="diskA = $event"></app-fs-chooser>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="medium">Disk B</td>
+          <td class="medium-input">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" id="diskB" [(ngModel)]="diskB"
+                [ngModelOptions]="{standalone: true}">
+              <app-fs-chooser label="Browse" (onChosen)="diskB = $event"></app-fs-chooser>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <p></p>
+        </tr>
+        <tr>
+          <td class="medium">Tape</td>
+          <td class="medium-input">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" id="tape" [(ngModel)]="tape"
+                [ngModelOptions]="{standalone: true}">
+              <app-fs-chooser label="Browse" (onChosen)="tape = $event"></app-fs-chooser>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <p></p>
+        </tr>
+        <tr>
+          <td class="medium">Harddisk</td>
+          <td class="medium-input">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" id="harddisk" [(ngModel)]="harddisk"
+                [ngModelOptions]="{standalone: true}">
+              <app-fs-chooser label="Browse" (onChosen)="harddisk = $event"></app-fs-chooser>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <p></p>
+        </tr>
+        <tr>
+          <td class="medium">Laserdisc</td>
+          <td class="medium-input">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" id="laserdisc" [(ngModel)]="laserdisc"
+                [ngModelOptions]="{standalone: true}">
+              <app-fs-chooser label="Browse" (onChosen)="laserdisc = $event"></app-fs-chooser>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <button class="btn btn-primary" (click)="save()"
+      (keyup.enter)="save()">Save</button>
+    </form>
+  </div>
+</div>

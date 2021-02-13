@@ -77,7 +77,20 @@
 
       <div class="additional-info" *ngIf="selectedGame">
         <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="launch(selectedGame)">Launch</button>
-        <button type="button" class="btn btn-secondary btn-sm" (click)="edit(selectedGame)">Edit</button>
+        <div class="dropdown inline-dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Edit
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item btn-sm" type="button" (click)="edit(selectedGame)">
+              Name
+            </button>
+            <button class="dropdown-item btn-sm" type="button" (click)="mediaEdit.open()">
+              Media
+            </button>
+          </div>
+        </div>
         <table>
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>
@@ -140,3 +153,5 @@
 </ng-template>
 
 <app-scan-parameters (parameters)="startScan($event)"></app-scan-parameters>
+
+<app-media-edit [game]="selectedGame" (updatedGame)="update(selectedGame, $event)"></app-media-edit>

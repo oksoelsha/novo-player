@@ -9,6 +9,7 @@ import { AlertsService } from 'src/app/shared/alerts/alerts.service';
 import { ScanParametersComponent, ScanParameters } from 'src/app/popups/scan-parameters/scan-parameters.component';
 import { SettingsService } from 'src/app/services/settings.service';
 import { Settings } from 'src/app/models/settings';
+import { MediaEditComponent } from 'src/app/popups/media-edit/media-edit.component';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('gameNameEditInput', { static: false }) private gameNameEdit: ElementRef;
   @ViewChild(ScanParametersComponent, { static: true }) scanParameters: ScanParametersComponent;
+  @ViewChild(MediaEditComponent, { static: true }) mediaEdit: MediaEditComponent;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
 
@@ -255,13 +257,11 @@ export class HomeComponent implements OnInit {
   update(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then(() => {
       this.alertService.success("Game was updated - " + newGame.name);
-      if (oldGame.name != newGame.name) {
-        this.removeGameFromList(oldGame);
-        this.addGameToSortedList(newGame);
-        setTimeout(() => {
-          this.showInfo(newGame);
-        },0);
-      }
+      this.removeGameFromList(oldGame);
+      this.addGameToSortedList(newGame);
+      setTimeout(() => {
+        this.showInfo(newGame);
+      },0);
     });
   }
 

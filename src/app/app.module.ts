@@ -14,6 +14,7 @@ import { ConfirmLeaveComponent } from './shared/confirm-leave/confirm-leave.comp
 import { AlertsComponent } from './shared/alerts/alerts.component';
 import { ScanParametersComponent } from './popups/scan-parameters/scan-parameters.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { MediaEditComponent } from './popups/media-edit/media-edit.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     ConfirmLeaveComponent,
     AlertsComponent,
     ScanParametersComponent,
-    DashboardComponent
+    DashboardComponent,
+    MediaEditComponent
   ],
   imports: [
     BrowserModule,

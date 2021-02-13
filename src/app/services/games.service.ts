@@ -55,6 +55,15 @@ export class GamesService {
     });
   }
 
+  async getExtensions(): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+      this.ipc.once("getExtensionsResponse", (event, arg) => {
+        resolve(arg);
+      });
+      this.ipc.send("getExtensions");
+    });
+  }
+
   async saveGame(game: Game) {
     return new Promise<boolean>((resolve, reject) => {
       this.ipc.once("saveGameResponse", (event, removed: boolean) => {

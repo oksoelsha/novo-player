@@ -12,15 +12,20 @@ export class EmulatorMachinesService {
 
     init() {
         ipcMain.on('getMachines', (event, arg) => {
-            var machines = this.getMachines();
+            var machines = this.getFromEmulator("machines");
             this.win.webContents.send('getMachinesResponse', machines)
+        })
+
+        ipcMain.on('getExtensions', (event, arg) => {
+            var extensions = this.getFromEmulator("extensions");
+            this.win.webContents.send('getExtensionsResponse', extensions)
         })
     }
 
-    private getMachines(): string[] {
+    private getFromEmulator(what: string): string[] {
         var self = this;
         var openMSXPath = this.settingsService.getSettings().openmsxPath;
-        var machinesPath = path.join(openMSXPath, "share\\machines"); //On Windows for now
+        var machinesPath = path.join(openMSXPath, "share\\" + what); //On Windows for now
         var machines: string[] = [];
 
         if (fs.existsSync(machinesPath)) {
