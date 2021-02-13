@@ -8,7 +8,7 @@ import { FilesService } from './FilesService'
 import { EmulatorRepositoryService } from './EmulatorRepositoryService'
 import { ExtraDataService } from './ExtraDataService'
 import { ScanService } from './ScanService'
-import { EmulatorMachinesService } from './EmulatorMachinesService'
+import { EmulatorHardwareService } from './EmulatorHardwareService'
 
 let win: BrowserWindow
 
@@ -78,8 +78,8 @@ function initializeServices() {
     let emulatorLaunchService = new EmulatorLaunchService(settingsService);
     emulatorLaunchService.init();
 
-    let emulatorMachinesService = new EmulatorMachinesService(win, settingsService);
-    emulatorMachinesService.init();
+    let emulatorHardwareService = new EmulatorHardwareService(win, settingsService);
+    emulatorHardwareService.init();
 
     //services that are rare to execute and have internal state -> create new instance per request
     ipcMain.on('scan', (event, directories: string[], listing: string, machine: string) => {

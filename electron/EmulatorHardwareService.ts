@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import { SettingsService } from 'SettingsService'
 import { FileTypeUtils } from './utils/FileTypeUtils';
 
-export class EmulatorMachinesService {
+export class EmulatorHardwareService {
 
     private readonly HARDWARE_CONFIG_FILENAME: string = "hardwareconfig.xml";
 
@@ -22,29 +22,29 @@ export class EmulatorMachinesService {
         })
     }
 
-    private getFromEmulator(what: string): string[] {
+    private getFromEmulator(hardware: string): string[] {
         var self = this;
         var openMSXPath = this.settingsService.getSettings().openmsxPath;
-        var machinesPath = path.join(openMSXPath, "share\\" + what); //On Windows for now
-        var machines: string[] = [];
+        var hardwarePath = path.join(openMSXPath, "share\\" + hardware); //On Windows for now
+        var hardwareList: string[] = [];
 
-        if (fs.existsSync(machinesPath)) {
-            var machinesDirectory = fs.readdirSync(machinesPath, 'utf8');
-            machinesDirectory.forEach(file => {
-                var machineFullPath: string = path.join(machinesPath, file)
-                if (fs.statSync(machineFullPath).isFile()) {
-                    if (FileTypeUtils.isXML(machineFullPath)) {
-                        machines.push(FileTypeUtils.getFilenameWithoutExt(path.basename(machineFullPath)));
+        if (fs.existsSync(hardwarePath)) {
+            var hardwareDirectory = fs.readdirSync(hardwarePath, 'utf8');
+            hardwareDirectory.forEach(file => {
+                var hardwareFullPath: string = path.join(hardwarePath, file)
+                if (fs.statSync(hardwareFullPath).isFile()) {
+                    if (FileTypeUtils.isXML(hardwareFullPath)) {
+                        hardwareList.push(FileTypeUtils.getFilenameWithoutExt(path.basename(hardwareFullPath)));
                     }
                 } else {
-                    var hardwareConfigFile: string = path.join(machineFullPath, this.HARDWARE_CONFIG_FILENAME);
+                    var hardwareConfigFile: string = path.join(hardwareFullPath, this.HARDWARE_CONFIG_FILENAME);
                     if (fs.existsSync(hardwareConfigFile)) {
-                        machines.push(path.basename(machineFullPath));
+                        hardwareList.push(path.basename(hardwareFullPath));
                     }
                 }
             })    
         }
 
-        return machines;
+        return hardwareList;
     }
 }
