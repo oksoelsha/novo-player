@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Remote } from 'electron';
+import { FileTypeUtils } from 'electron/utils/FileTypeUtils';
 
 @Component({
   selector: 'app-fs-chooser',
@@ -10,9 +11,18 @@ export class FileSystemChooserComponent implements OnInit {
 
   @Input ('directory-mode') directoryMode: boolean;
   @Input ('label') label: string;
+  @Input ('filters-type') filtersType: string;
   @Input ('multi-selections') multiSelections: boolean;
   @Output() onChosen: EventEmitter<any> = new EventEmitter<any>();
   private remote: Remote = (<any>window).require('electron').remote;
+
+  private static extensionsMap: Map<string,any> = new Map([
+    ["ROM", { name: 'ROM Images', extensions: FileTypeUtils.getRomExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ["Disk", { name: 'Disk Images', extensions: FileTypeUtils.getDiskExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ["Tape", { name: 'Tape Images', extensions: FileTypeUtils.getTapeExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ["Harddisk", { name: 'Harddisk Images', extensions: FileTypeUtils.getHarddiskExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ["Laserdisc", { name: 'Laserdisc Images', extensions: FileTypeUtils.getLaserdiscExtensions().concat(FileTypeUtils.getZipExtensions())}]
+  ]);
 
   constructor() { }
 
@@ -35,8 +45,18 @@ export class FileSystemChooserComponent implements OnInit {
       properties.push('openFile');
     }
 
+    var filters: object[];
+    if (this.filtersType) {
+      filters = [
+        FileSystemChooserComponent.extensionsMap.get(this.filtersType)
+      ];
+    } else {
+      filters = [];
+    }
+
     var options: Object = {
-      "properties": properties
+      properties: properties,
+      filters: filters
     }
 
     this.remote.dialog.showOpenDialog(this.remote.getCurrentWindow(), options).then((value) => {

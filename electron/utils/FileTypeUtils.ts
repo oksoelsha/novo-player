@@ -47,6 +47,30 @@ export class FileTypeUtils {
         return filename.substring(0, filename.lastIndexOf('.'));
     }
 
+    static getRomExtensions(): Array<string> {
+        return this.romExtensions;
+    }
+
+    static getDiskExtensions(): Array<string> {
+        return this.diskExtensions;
+    }
+
+    static getTapeExtensions(): Array<string> {
+        return this.tapeExtensions;
+    }
+
+    static getHarddiskExtensions(): Array<string> {
+        return this.harddiskExtensions;
+    }
+
+    static getLaserdiscExtensions(): Array<string> {
+        return this.laserdiscExtensions;
+    }
+
+    static getZipExtensions(): Array<string> {
+        return this.zipExtensions;
+    }
+
     private static isType(filename: string, typeList: Array<string>) {
         var ext = filename.substr(filename.lastIndexOf('.') + 1).toLowerCase();
         return typeList.indexOf(ext) > -1;
