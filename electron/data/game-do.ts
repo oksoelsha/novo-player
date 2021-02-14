@@ -27,7 +27,7 @@ export class GameDO {
 
     constructor(game: Game) {
         for (var field of PersistenceUtils.fieldsToPersist) {
-            if (game[field] != null ) {
+            if (game[field]) {
                 this[field] = game[field]
             }
          }

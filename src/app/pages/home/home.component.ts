@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit {
     this.settingsService.getSettings().then((settings: Settings) => {
       this.gamesService.getListings().then((data: string[]) => {
         this.listings = data;
-        if (settings.defaultListing == null || settings.defaultListing.trim() == "") {
+        if (!settings.defaultListing || !settings.defaultListing.trim()) {
           if (data.length > 0) {
             self.selectedListing = data[0];
           }
@@ -442,7 +442,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {
-    if (screenshots.screenshot1 == "") {
+    if (!screenshots.screenshot1) {
       return this.noScreenshot1;
     } else {
       return screenshots;
@@ -450,7 +450,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getScreenshot2Data(screenshots: ScreenshotData): ScreenshotData {
-    if (screenshots.screenshot2 == "") {
+    if (!screenshots.screenshot2) {
       return this.noScreenshot2;
     } else {
       return screenshots;

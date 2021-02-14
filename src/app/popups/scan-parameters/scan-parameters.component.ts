@@ -40,10 +40,13 @@ export class ScanParametersComponent implements OnInit {
     document.addEventListener('keyup', this.handleKeyEvents);
     this.topNode.classList.add('scan-parameters-fade');
 
-    this.gamesService.getListings().then((data: string[]) => { this.listings = data; this.setSelectedListingAndAdjustForDisplay(data[0]); });
+    this.gamesService.getListings().then((data: string[]) => {
+      this.listings = data;
+      this.setSelectedListingAndAdjustForDisplay(data[0]);
+    });
     this.emulatorService.getMachines().then((data: string[]) => {
       this.machines = data;
-      if (this.selectedMachine == "") {
+      if (!this.selectedMachine) {
         this.selectedMachine = data[0];
       }
     });
@@ -67,7 +70,7 @@ export class ScanParametersComponent implements OnInit {
   }
 
   setEnteredListing() {
-    if( this.enteredListing.trim() != "") {
+    if (this.enteredListing.trim()) {
       this.setSelectedListingAndAdjustForDisplay(this.enteredListing, true);
     } else {
       this.enteredListing = "";

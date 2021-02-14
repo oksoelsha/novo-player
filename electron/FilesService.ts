@@ -33,7 +33,7 @@ export class FilesService {
         }
 
         var data2: string;
-        if (data1 != "") {
+        if (data1) {
             var screenshotsPath2: string;
             if (suffix == null) {
                 screenshotsPath2 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'b.png')

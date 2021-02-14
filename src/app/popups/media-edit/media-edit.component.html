@@ -30,24 +30,8 @@
         <tr>
           <td class="medium">Extension</td>
           <td class="medium-input">
-            <div class="dropdown d-inline">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ extensionRomDisplay }}
-              </button>
-              <div class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu2">
-                <button *ngFor="let extension of extensions" class="dropdown-item btn-sm" type="button"
-                  (click)="extensionRom = extension; extensionRomDisplay = extension">
-                  {{ extension }}
-                </button>
-              </div>
-            </div>
-            <div class="d-inline ml-2">
-              <button class="btn btn-secondary btn-sm" type="button"
-                aria-haspopup="true" aria-expanded="false" [disabled]="!extensionRom" (click)="resetExtensionRomSelection()">
-                Remove
-              </button>
-            </div>
+            <app-drop-down [list]="extensions" default-label="Select extension" [selected-item]="extensionRom"
+              reset-button=true (selection)="extensionRom = $event"></app-drop-down>
           </td>
         </tr>
         <tr>

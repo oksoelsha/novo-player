@@ -15,6 +15,7 @@ import { AlertsComponent } from './shared/alerts/alerts.component';
 import { ScanParametersComponent } from './popups/scan-parameters/scan-parameters.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { MediaEditComponent } from './popups/media-edit/media-edit.component';
+import { DropDownComponent } from './shared/drop-down/drop-down.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MediaEditComponent } from './popups/media-edit/media-edit.component';
     AlertsComponent,
     ScanParametersComponent,
     DashboardComponent,
-    MediaEditComponent
+    MediaEditComponent,
+    DropDownComponent
   ],
   imports: [
     BrowserModule,

@@ -37,7 +37,7 @@ export class EmulatorLaunchService {
 
     private getArguments(game: Game): string {
         return EmulatorLaunchService.fieldsToArgs
-            .filter(e => game[e[0]] != null)
+            .filter(e => game[e[0]])
             .map(e => '-' + e[1] + ' "' + game[e[0]] + '"')
             .join(' ');
     }

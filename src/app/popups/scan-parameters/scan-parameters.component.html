@@ -58,18 +58,7 @@
           <tr>
             <td>Machine: </td>
             <td>
-              <div class="dropdown">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{ selectedMachine }}
-                </button>
-                <div class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu2">
-                  <button *ngFor="let machine of machines" class="dropdown-item btn-sm" type="button"
-                    (click)="selectedMachine = machine">
-                    {{ machine }}
-                  </button>
-                </div>
-              </div>
+              <app-drop-down [list]="machines" [selected-item]="machines[0]" (selection)="selectedMachine = $event"></app-drop-down>
             </td>
           </tr>
         </table>

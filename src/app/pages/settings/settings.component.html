@@ -21,19 +21,8 @@
     <span *ngIf="listings.length == 0">
       : No listings defined yet
     </span>
-    <div *ngIf="listings.length > 0" class="dropdown">
-      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        <span *ngIf="!defaultListing">Select a listing</span>
-        <span *ngIf="defaultListing">{{ defaultListing }}</span>
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
-          (click)="updateField('defaultListing', listing)">
-          {{ listing }}
-        </button>
-      </div>
-    </div>
+    <app-drop-down [list]="listings" [selected-item]="defaultListing" default-label="Select a listing"
+      (selection)="updateField('defaultListing', $event)"></app-drop-down>
   </div>
 
   <button class="btn btn-primary" [disabled]="submitDisabled">Save</button>
