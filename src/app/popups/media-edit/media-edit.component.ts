@@ -1,18 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { EmulatorService } from 'src/app/services/emulator.service';
+import { PopupComponent } from '../popup.component';
 
 @Component({
   selector: 'app-media-edit',
   templateUrl: './media-edit.component.html',
   styleUrls: ['./media-edit.component.sass']
 })
-export class MediaEditComponent implements OnInit {
+export class MediaEditComponent extends PopupComponent {
 
+  @Input () popupId: string;
   @Input ('game') game: Game;
   @Output() updatedGame: EventEmitter<Game> = new EventEmitter<Game>();
-
-  private topNode: HTMLElement;
 
   romA: string;
   romB: string;
@@ -26,23 +26,12 @@ export class MediaEditComponent implements OnInit {
   extensions: string[] = [];
   extensionRomDisplay: string = "";
 
-  constructor(private emulatorService: EmulatorService) {}
-
-  ngOnInit(): void {
-    let self = this;
-    this.topNode = document.getElementById('media-edit-component');
-
-    window.addEventListener('click', function (e: any) {
-      if (e.target == self.topNode) {
-        self.close();
-      }
-    });
+  constructor(private emulatorService: EmulatorService) {
+    super();
   }
 
   open(): void {
-    //intercept key board events to prevent them from propagating to the parent window
-    document.addEventListener('keyup', this.handleKeyEvents);
-    this.topNode.classList.add('media-edit-fade');
+    super.open();
 
     this.romA = this.game.romA;
     this.romB = this.game.romB;
@@ -69,8 +58,7 @@ export class MediaEditComponent implements OnInit {
   }
 
   close(): void {
-    document.removeEventListener('keyup', this.handleKeyEvents);
-    this.topNode.classList.remove('media-edit-fade');
+    super.close();
   }
 
   save() {
@@ -87,9 +75,5 @@ export class MediaEditComponent implements OnInit {
 
     this.updatedGame.emit(updatedGame);
     this.close();
-  }
-
-  private handleKeyEvents(event: any): void {
-    event.stopPropagation();
   }
 }

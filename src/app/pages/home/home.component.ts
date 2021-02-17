@@ -28,8 +28,8 @@ export class HomeComponent implements OnInit {
   @ViewChild('gameDetailGenerationMSXLink', { static: true }) private gameDetailGenerationMSXLink: TemplateRef<object>;
 
   @ViewChild('gameNameEditInput', { static: false }) private gameNameEdit: ElementRef;
-  @ViewChild(ScanParametersComponent, { static: true }) scanParameters: ScanParametersComponent;
-  @ViewChild(MediaEditComponent, { static: true }) mediaEdit: MediaEditComponent;
+  @ViewChild('scanParameters') scanParameters: ScanParametersComponent;
+  @ViewChild('mediaEdit') mediaEdit: MediaEditComponent;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
 

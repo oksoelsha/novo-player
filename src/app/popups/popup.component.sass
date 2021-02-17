@@ -1,0 +1,47 @@
+.popup
+  opacity: 0
+  transform: scale(0)
+  transition: all .25s linear
+  position: fixed
+  z-index: 1
+  left: 0
+  top: 0
+  width: 100%
+  height: 100%
+  background-color: rgb(0,0,0)
+  background-color: rgba(0,0,0,0.4)
+  display: flex
+  justify-content: center
+  align-items: baseline
+
+.popup-fade
+  opacity: 1
+  transform: scale(1)
+
+.popup-content
+  background-color: #232323
+  margin-top: 50px
+  padding: 0
+  border: 1px solid #888
+
+.popup-bar
+  margin-bottom: 4px
+
+.popup-title
+  font-size: 14px
+  display: inline
+  padding: 4px 4px 4px 7px
+
+.popup-close
+  color: #aaaaaa
+  float: right
+  font-size: 16px
+  display: inline
+  padding-right: 7px
+  padding-left: 6px
+
+.popup-close:hover, .popup-close:focus
+  color: #ffffff
+  text-decoration: none
+  background-color: red
+  cursor: pointer

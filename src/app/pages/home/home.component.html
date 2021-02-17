@@ -152,6 +152,15 @@
   <ng-template #generationMSXNotAvailable>Not added yet</ng-template>
 </ng-template>
 
-<app-scan-parameters (parameters)="startScan($event)"></app-scan-parameters>
+<app-popup popupId="scan-parameters-id" title="Scan Parameters">
+  <ng-template let-popupId="popupId">
+    <app-scan-parameters [popupId]="popupId" (parameters)="startScan($event)" #scanParameters></app-scan-parameters>
+  </ng-template>
+</app-popup>
 
-<app-media-edit [game]="selectedGame" (updatedGame)="update(selectedGame, $event)"></app-media-edit>
+<app-popup popupId="media-edit-id" title="Media Edit">
+  <ng-template let-popupId="popupId">
+    <app-media-edit [popupId]="popupId" [game]="selectedGame" (updatedGame)="update(selectedGame, $event)" #mediaEdit>
+    </app-media-edit>
+  </ng-template>
+</app-popup>
