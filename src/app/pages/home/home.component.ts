@@ -10,6 +10,7 @@ import { ScanParametersComponent, ScanParameters } from 'src/app/popups/scan-par
 import { SettingsService } from 'src/app/services/settings.service';
 import { Settings } from 'src/app/models/settings';
 import { MediaEditComponent } from 'src/app/popups/media-edit/media-edit.component';
+import { HardwareEditComponent } from 'src/app/popups/hardware-edit/hardware-edit.component';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +31,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('gameNameEditInput', { static: false }) private gameNameEdit: ElementRef;
   @ViewChild('scanParameters') scanParameters: ScanParametersComponent;
   @ViewChild('mediaEdit') mediaEdit: MediaEditComponent;
+  @ViewChild('hardwareEdit') hardwareEdit: HardwareEditComponent;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
 

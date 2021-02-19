@@ -18,6 +18,9 @@ export class PersistenceUtils {
         'genre1',
         'genre2',
         'screenshotSuffix',
-        'listing'
+        'listing',
+        'fddMode',
+        'inputDevice',
+        'connectGFX9000'
     ]
 }

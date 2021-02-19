@@ -4,7 +4,9 @@
             <div class="popup-title">{{ title }}</div>
             <div (click)="close()" class="popup-close">&times;</div>
         </div>
-        <ng-template [ngTemplateOutletContext]='{ popupId: popupId }' [ngTemplateOutlet]="templateVariable">
-        </ng-template>
+        <div class="contents">
+            <ng-template [ngTemplateOutletContext]='{ popupId: popupId }' [ngTemplateOutlet]="templateVariable">
+            </ng-template>
+        </div>
     </div>
 </div>

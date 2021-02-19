@@ -89,6 +89,9 @@
             <button class="dropdown-item btn-sm" type="button" (click)="mediaEdit.open()">
               Media
             </button>
+            <button class="dropdown-item btn-sm" type="button" (click)="hardwareEdit.open()">
+              Hardware
+            </button>
           </div>
         </div>
         <table>
@@ -162,5 +165,12 @@
   <ng-template let-popupId="popupId">
     <app-media-edit [popupId]="popupId" [game]="selectedGame" (updatedGame)="update(selectedGame, $event)" #mediaEdit>
     </app-media-edit>
+  </ng-template>
+</app-popup>
+
+<app-popup popupId="hardware-edit-id" title="Hardware Edit">
+  <ng-template let-popupId="popupId">
+    <app-hardware-edit [popupId]="popupId" [game]="selectedGame" (updatedGame)="update(selectedGame, $event)" #hardwareEdit>
+    </app-hardware-edit>
   </ng-template>
 </app-popup>

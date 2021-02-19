@@ -25,6 +25,10 @@ export class GameDO {
 
     listing: string;
 
+    fddMode: number;
+    inputDevice: number;
+    connectGFX9000: boolean;
+
     constructor(game: Game) {
         for (var field of PersistenceUtils.fieldsToPersist) {
             if (game[field]) {

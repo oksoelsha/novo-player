@@ -32,6 +32,10 @@ export class Game {
 
     listing: string;
 
+    fddMode: number;
+    inputDevice: number;
+    connectGFX9000: boolean;
+
     public readonly MASK_GENERATION_MSX = 1;
     public readonly MASK_GENERATION_MSX2 = 2;
     public readonly MASK_GENERATION_MSX2PLUS = 4;
@@ -150,5 +154,17 @@ export class Game {
 
     setListing(listing: string) {
         this.listing = listing;
+    }
+
+    setFddMode(fddMode: number) {
+        this.fddMode = fddMode;
+    }
+
+    setInputDevice(inputDevice: number) {
+        this.inputDevice = inputDevice;
+    }
+
+    setConnectGFX9000(connectGFX9000: boolean) {
+        this.connectGFX9000 = connectGFX9000;
     }
 }

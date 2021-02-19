@@ -1,0 +1,22 @@
+<form>
+    <table class="fields-table">
+        <tr>
+            <td class="medium">Machine</td>
+            <td class="medium-input">
+                <app-drop-down [list]="machines" [selected-item]="selectedMachine"
+                    (selection)="selectedMachine = $event">
+                </app-drop-down>
+            </td>
+        </tr>
+        <tr>
+            <td class="medium">GFX9000</td>
+            <td class="medium-input">
+                <ng-toggle onText="On" offText="Off" size="sm" [(ngModel)]="connectGFX9000"
+                    [ngModelOptions]="{standalone: true}">
+                    <input type="checkbox" [(ngModel)]="connectGFX9000" [ngModelOptions]="{standalone: true}" />
+                </ng-toggle>
+            </td>
+        </tr>
+    </table>
+    <button class="btn btn-primary" (click)="save()" (keyup.enter)="save()">Save</button>
+</form>

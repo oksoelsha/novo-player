@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
+import { NgToggleModule } from '@nth-cloud/ng-toggle';
 import { HomeComponent } from './pages/home/home.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { WindowControlsComponent } from './shared/window-controls/window-controls.component';
@@ -17,6 +18,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { MediaEditComponent } from './popups/media-edit/media-edit.component';
 import { DropDownComponent } from './shared/drop-down/drop-down.component';
 import { PopupComponent } from './popups/popup.component';
+import { HardwareEditComponent } from './popups/hardware-edit/hardware-edit.component';
 
 @NgModule({
   declarations: [
@@ -32,13 +34,15 @@ import { PopupComponent } from './popups/popup.component';
     DashboardComponent,
     MediaEditComponent,
     DropDownComponent,
-    PopupComponent
+    PopupComponent,
+    HardwareEditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    NgToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent],

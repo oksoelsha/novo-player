@@ -135,6 +135,7 @@ export class GamesService {
     private updateGame(oldGame: Game, newGame: Game) {
         var self = this;
         var gameDO: GameDO = new GameDO(newGame);
+
         this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
             self.win.webContents.send('updateGameResponse');
         });

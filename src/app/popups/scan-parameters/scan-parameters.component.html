@@ -1,62 +1,60 @@
 <form id="scanParametersForm" #scanParametersForm="ngForm" (keydown.enter)="$event.preventDefault()">
-  <div class="parameters-part">
-    <div class="add-buttons">
-      <app-fs-chooser directory-mode=true multi-selections=true label="+Directory"
-        (onChosen)="items = items.concat($event)"></app-fs-chooser>
-    </div>
-    <div class="add-buttons">
-      <app-fs-chooser label="+File" multi-selections=true (onChosen)="items = items.concat($event)">
-      </app-fs-chooser>
-    </div>
-    <div class="files-and-directories-table">
-      <ng-container *ngFor="let item of items; let i = index">
-        <div class="table-row">
-          <div class="table-item">{{ item }}</div>
-          <div class="table-item-delete" (click)="removeItem(i)">&times;</div>
-        </div>
-      </ng-container>
-    </div>
-    <table class="fields">
-      <tr>
-        <td class="pr-2">Listing:</td>
-        <td>
-          <div class="dropdown">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span *ngIf="!selectedOrEnteredListingDisplay">Enter a listing</span>
-              <span *ngIf="selectedOrEnteredListingDisplay">{{ selectedOrEnteredListingDisplay }}</span>
+  <div class="add-buttons">
+    <app-fs-chooser directory-mode=true multi-selections=true label="+Directory"
+      (onChosen)="items = items.concat($event)"></app-fs-chooser>
+  </div>
+  <div class="add-buttons">
+    <app-fs-chooser label="+File" multi-selections=true (onChosen)="items = items.concat($event)">
+    </app-fs-chooser>
+  </div>
+  <div class="files-and-directories-table">
+    <ng-container *ngFor="let item of items; let i = index">
+      <div class="table-row">
+        <div class="table-item">{{ item }}</div>
+        <div class="table-item-delete" (click)="removeItem(i)">&times;</div>
+      </div>
+    </ng-container>
+  </div>
+  <table class="fields">
+    <tr>
+      <td class="pr-2">Listing:</td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span *ngIf="!selectedOrEnteredListingDisplay">Enter a listing</span>
+            <span *ngIf="selectedOrEnteredListingDisplay">{{ selectedOrEnteredListingDisplay }}</span>
+          </button>
+          <div id="listings-dropdown" class="dropdown-menu listings-dropdown" aria-labelledby="dropdownMenu2">
+            <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
+              (click)="setSelectedListing(listing)">
+              {{ listing }}
             </button>
-            <div id="listings-dropdown" class="dropdown-menu listings-dropdown" aria-labelledby="dropdownMenu2">
-              <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
-                (click)="setSelectedListing(listing)">
-                {{ listing }}
-              </button>
-              <div *ngIf="listings.length > 0" class="dropdown-divider"></div>
-              <div class="dropdown">
-                <h6 class="dropdown-header">New Listing</h6>
-              </div>
-              <div class="dropdown pl-4 pr-4">
-                <div class="input-group input-group-sm mb-3">
-                  <input type="text" class="form-control" name="listing" (keyup.enter)="setEnteredListing()"
-                    [(ngModel)]="enteredListing" />
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" (click)="setEnteredListing()">&gt;</button>
-                  </div>
+            <div *ngIf="listings.length > 0" class="dropdown-divider"></div>
+            <div class="dropdown">
+              <h6 class="dropdown-header">New Listing</h6>
+            </div>
+            <div class="dropdown pl-4 pr-4">
+              <div class="input-group input-group-sm mb-3">
+                <input type="text" class="form-control" name="listing" (keyup.enter)="setEnteredListing()"
+                  [(ngModel)]="enteredListing" />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="setEnteredListing()">&gt;</button>
                 </div>
               </div>
             </div>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="pr-2">Machine:</td>
-        <td>
-          <app-drop-down [list]="machines" [selected-item]="machines[0]" (selection)="selectedMachine = $event">
-          </app-drop-down>
-        </td>
-      </tr>
-    </table>
-    <button class="btn btn-primary" [disabled]="items.length == 0 || !selectedOrEnteredListing"
-      (click)="submitParameters()" (keyup.enter)="submitParameters()">Start</button>
-  </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="pr-2">Machine:</td>
+      <td>
+        <app-drop-down [list]="machines" [selected-item]="machines[0]" (selection)="selectedMachine = $event">
+        </app-drop-down>
+      </td>
+    </tr>
+  </table>
+  <button class="btn btn-primary" [disabled]="items.length == 0 || !selectedOrEnteredListing"
+    (click)="submitParameters()" (keyup.enter)="submitParameters()">Start</button>
 </form>

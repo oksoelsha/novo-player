@@ -1,96 +1,94 @@
 <form>
-  <div class="form-part">
-    <table class="fields-table">
-      <tr>
-        <td class="medium">ROM A</td>
-        <td class="medium-input">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" id="romA" [(ngModel)]="romA"
-              [ngModelOptions]="{standalone: true}">
-            <app-fs-chooser label="Browse" filters-type="ROM" (onChosen)="romA = $event"></app-fs-chooser>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="medium">ROM B</td>
-        <td class="medium-input">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" id="romB" [(ngModel)]="romB"
-              [ngModelOptions]="{standalone: true}">
-            <app-fs-chooser label="Browse" filters-type="ROM" (onChosen)="romB = $event"></app-fs-chooser>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="medium">Extension</td>
-        <td class="medium-input">
-          <app-drop-down [list]="extensions" default-label="Select extension" [selected-item]="extensionRom"
-            reset-button=true (selection)="extensionRom = $event"></app-drop-down>
-        </td>
-      </tr>
-      <tr>
-        <p></p>
-      </tr>
-      <tr>
-        <td class="medium">Disk A</td>
-        <td class="medium-input">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" id="diskA" [(ngModel)]="diskA"
-              [ngModelOptions]="{standalone: true}">
-            <app-fs-chooser label="Browse" filters-type="Disk" (onChosen)="diskA = $event"></app-fs-chooser>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="medium">Disk B</td>
-        <td class="medium-input">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" id="diskB" [(ngModel)]="diskB"
-              [ngModelOptions]="{standalone: true}">
-            <app-fs-chooser label="Browse" filters-type="Disk" (onChosen)="diskB = $event"></app-fs-chooser>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <p></p>
-      </tr>
-      <tr>
-        <td class="medium">Tape</td>
-        <td class="medium-input">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" id="tape" [(ngModel)]="tape"
-              [ngModelOptions]="{standalone: true}">
-            <app-fs-chooser label="Browse" filters-type="Tape" (onChosen)="tape = $event"></app-fs-chooser>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <p></p>
-      </tr>
-      <tr>
-        <td class="medium">Harddisk</td>
-        <td class="medium-input">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" id="harddisk" [(ngModel)]="harddisk"
-              [ngModelOptions]="{standalone: true}">
-            <app-fs-chooser label="Browse" filters-type="Harddisk" (onChosen)="harddisk = $event"></app-fs-chooser>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <p></p>
-      </tr>
-      <tr>
-        <td class="medium">Laserdisc</td>
-        <td class="medium-input">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" id="laserdisc" [(ngModel)]="laserdisc"
-              [ngModelOptions]="{standalone: true}">
-            <app-fs-chooser label="Browse" filters-type="Laserdisc" (onChosen)="laserdisc = $event"></app-fs-chooser>
-          </div>
-        </td>
-      </tr>
-    </table>
-    <button class="btn btn-primary" (click)="save()" (keyup.enter)="save()">Save</button>
-  </div>
+  <table class="fields-table">
+    <tr>
+      <td class="medium">ROM A</td>
+      <td class="medium-input">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="romA" [(ngModel)]="romA"
+            [ngModelOptions]="{standalone: true}">
+          <app-fs-chooser label="Browse" filters-type="ROM" (onChosen)="romA = $event"></app-fs-chooser>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="medium">ROM B</td>
+      <td class="medium-input">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="romB" [(ngModel)]="romB"
+            [ngModelOptions]="{standalone: true}">
+          <app-fs-chooser label="Browse" filters-type="ROM" (onChosen)="romB = $event"></app-fs-chooser>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="medium">Extension</td>
+      <td class="medium-input">
+        <app-drop-down [list]="extensions" default-label="Select extension" [selected-item]="extensionRom"
+          reset-button=true (selection)="extensionRom = $event"></app-drop-down>
+      </td>
+    </tr>
+    <tr>
+      <p></p>
+    </tr>
+    <tr>
+      <td class="medium">Disk A</td>
+      <td class="medium-input">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="diskA" [(ngModel)]="diskA"
+            [ngModelOptions]="{standalone: true}">
+          <app-fs-chooser label="Browse" filters-type="Disk" (onChosen)="diskA = $event"></app-fs-chooser>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="medium">Disk B</td>
+      <td class="medium-input">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="diskB" [(ngModel)]="diskB"
+            [ngModelOptions]="{standalone: true}">
+          <app-fs-chooser label="Browse" filters-type="Disk" (onChosen)="diskB = $event"></app-fs-chooser>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <p></p>
+    </tr>
+    <tr>
+      <td class="medium">Tape</td>
+      <td class="medium-input">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="tape" [(ngModel)]="tape"
+            [ngModelOptions]="{standalone: true}">
+          <app-fs-chooser label="Browse" filters-type="Tape" (onChosen)="tape = $event"></app-fs-chooser>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <p></p>
+    </tr>
+    <tr>
+      <td class="medium">Harddisk</td>
+      <td class="medium-input">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="harddisk" [(ngModel)]="harddisk"
+            [ngModelOptions]="{standalone: true}">
+          <app-fs-chooser label="Browse" filters-type="Harddisk" (onChosen)="harddisk = $event"></app-fs-chooser>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <p></p>
+    </tr>
+    <tr>
+      <td class="medium">Laserdisc</td>
+      <td class="medium-input">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="laserdisc" [(ngModel)]="laserdisc"
+            [ngModelOptions]="{standalone: true}">
+          <app-fs-chooser label="Browse" filters-type="Laserdisc" (onChosen)="laserdisc = $event"></app-fs-chooser>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <button class="btn btn-primary" (click)="save()" (keyup.enter)="save()">Save</button>
 </form>
