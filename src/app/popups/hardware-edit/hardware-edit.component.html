@@ -9,6 +9,22 @@
             </td>
         </tr>
         <tr>
+            <td class="medium">FDD Mode</td>
+            <td class="medium-input">
+                <app-drop-down [list]="fddModes" [selected-item]="selectedFDDMode"
+                    (selection)="selectedFDDMode = $event">
+                </app-drop-down>
+            </td>
+        </tr>
+        <tr>
+            <td class="medium">Input Device</td>
+            <td class="medium-input">
+                <app-drop-down [list]="inputDevices" [selected-item]="selectedInputDevice"
+                    (selection)="selectedInputDevice = $event">
+                </app-drop-down>
+            </td>
+        </tr>
+        <tr>
             <td class="medium">GFX9000</td>
             <td class="medium-input">
                 <ng-toggle onText="On" offText="Off" size="sm" [(ngModel)]="connectGFX9000"

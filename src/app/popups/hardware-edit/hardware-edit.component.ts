@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FDDMode } from 'src/app/models/fdd-mode';
 import { Game } from 'src/app/models/game';
+import { InputDevice } from 'src/app/models/input-device';
 import { EmulatorService } from 'src/app/services/emulator.service';
 import { PopupComponent } from '../popup.component';
 
@@ -16,6 +18,10 @@ export class HardwareEditComponent extends PopupComponent {
 
   machines: string[] = [];
   selectedMachine: string = "";
+  fddModes: string[] = [];
+  selectedFDDMode: string = "";
+  inputDevices: string[] = [];
+  selectedInputDevice: string = "";
   connectGFX9000: boolean = false;
 
   constructor(private emulatorService: EmulatorService) { 
@@ -30,6 +36,20 @@ export class HardwareEditComponent extends PopupComponent {
       this.selectedMachine = this.game.machine;
     });
 
+    this.fddModes = FDDMode.map(f => f.label);
+    if (this.game.fddMode) {
+      this.selectedFDDMode = FDDMode[this.game.fddMode].label;
+    } else {
+      this.selectedFDDMode = FDDMode[0].label;
+    }
+
+    this.inputDevices = InputDevice.map(f => f.label);
+    if (this.game.inputDevice) {
+      this.selectedInputDevice = InputDevice[this.game.inputDevice].label;
+    } else {
+      this.selectedInputDevice = InputDevice[0].label;
+    }
+
     this.connectGFX9000 = this.game.connectGFX9000;
   }
 
@@ -41,9 +61,12 @@ export class HardwareEditComponent extends PopupComponent {
     let updatedGame: Game = Object.assign({}, this.game);
 
     updatedGame.machine = this.selectedMachine;
+    updatedGame.fddMode = FDDMode.find(i => i.label == this.selectedFDDMode).value;
+    updatedGame.inputDevice = InputDevice.find(i => i.label == this.selectedInputDevice).value;
     updatedGame.connectGFX9000 = this.connectGFX9000;
 
     this.updatedGame.emit(updatedGame);
+
     this.close();
   }
 }
