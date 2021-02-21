@@ -2,7 +2,7 @@ import { GameUtils } from './game-utils';
 import { Game } from './game';
 
 describe('GameUtils', () => {
-  it('Generation functions shoould return true if corresponding bit is set', () => {
+  it('Generation functions should return true if corresponding bit is set', () => {
     var game: Game = new Game("name", "123abc", 32);
     game.setGenerations(15);
     expect(GameUtils.isMSX(game)).toBeTruthy();
@@ -13,7 +13,7 @@ describe('GameUtils', () => {
 });
 
 describe('GameUtils', () => {
-  it('Generation functions shoould return false if corresponding bit is not set', () => {
+  it('Generation functions should return false if corresponding bit is not set', () => {
     var game: Game = new Game("name", "123abc", 64);
     game.setGenerations(0);
     expect(GameUtils.isMSX(game)).toBeFalsy();
@@ -24,7 +24,7 @@ describe('GameUtils', () => {
 });
 
 describe('GameUtils', () => {
-  it('Sound functions shoould return true if corresponding bit is set', () => {
+  it('Sound functions should return true if corresponding bit is set', () => {
     var game: Game = new Game("name", "123abc", 64);
     game.setSounds(255);
     expect(GameUtils.isPSG(game)).toBeTruthy();
@@ -39,7 +39,7 @@ describe('GameUtils', () => {
 });
 
 describe('GameUtils', () => {
-  it('Sound functions shoould return false if corresponding bit is not set', () => {
+  it('Sound functions should return false if corresponding bit is not set', () => {
     var game: Game = new Game("name", "123abc", 256);
     game.setSounds(0);
     expect(GameUtils.isPSG(game)).toBeFalsy();
