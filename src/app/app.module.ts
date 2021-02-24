@@ -19,6 +19,7 @@ import { MediaEditComponent } from './popups/media-edit/media-edit.component';
 import { DropDownComponent } from './shared/drop-down/drop-down.component';
 import { PopupComponent } from './popups/popup.component';
 import { HardwareEditComponent } from './popups/hardware-edit/hardware-edit.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { HardwareEditComponent } from './popups/hardware-edit/hardware-edit.comp
     AppRoutingModule,
     FormsModule,
     ModalModule.forRoot(),
-    NgToggleModule
+    NgToggleModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent],

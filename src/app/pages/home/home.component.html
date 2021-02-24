@@ -1,30 +1,30 @@
 <div class="entire-area">
   <div class="area-on-the-left">
     <div class="table-buttons">
-      <div class="dropdown inline-dropdown">
-        <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
+      <div ngbDropdown class="d-inline-block mr-2" (openChange)="openMenu = $event">
+        <button class="btn btn-secondary btn-sm" type="button" id="menuDropdownButton" ngbDropdownToggle
           aria-haspopup="true" aria-expanded="false">
           <img src="assets/images/navigation/menu.png">
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button class="dropdown-item btn-sm" type="button" (click)="undoRemove()"
+        <div ngbDropdownMenu aria-labelledby="dropdownMenu2">
+          <button ngbDropdownItem type="button" (click)="undoRemove()"
             [disabled]="lastRemovedGame == null">
             Restore last deleted game
           </button>
           <div class="dropdown-divider"></div>
-          <button class="dropdown-item btn-sm" type="button" (click)="scanParameters.open()" [disabled]="scanRunning">
+          <button ngbDropdownItem type="button" (click)="scanParameters.open()" [disabled]="scanRunning">
             Scan physical media for MSX software
           </button>
         </div>
       </div>
-      <div *ngIf="listings.length > 0" class="dropdown inline-dropdown">
-        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+      <div *ngIf="listings.length > 0" ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
+        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle
           aria-haspopup="true" aria-expanded="false">
           {{ selectedListing }}
           <span class="badge badge-light">{{ games.length }}</span>
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
+        <div ngbDropdownMenu aria-labelledby="dropdownMenu2">
+          <button *ngFor="let listing of listings" ngbDropdownItem type="button"
             (click)="selectedListing = listing; getGames(listing)">
             {{ listing }}
           </button>
@@ -74,22 +74,21 @@
         <img src="{{ screenshot_b_1.screenshot2 }}" class="{{ transparent1 }}">
         <img src="{{ screenshot_b_2.screenshot2 }}" class="{{ transparent2 }}">
       </div>
-
       <div class="additional-info" *ngIf="selectedGame">
         <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="launch(selectedGame)">Launch</button>
-        <div class="dropdown inline-dropdown">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+        <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
+          <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button" aria-haspopup="true"
+            aria-expanded="false">
             Edit
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item btn-sm" type="button" (click)="edit(selectedGame)">
+          <div ngbDropdownMenu aria-labelledby="dropdownMenu2">
+            <button ngbDropdownItem type="button" (click)="edit(selectedGame)">
               Name
             </button>
-            <button class="dropdown-item btn-sm" type="button" (click)="mediaEdit.open()">
+            <button ngbDropdownItem type="button" (click)="mediaEdit.open()">
               Media
             </button>
-            <button class="dropdown-item btn-sm" type="button" (click)="hardwareEdit.open()">
+            <button ngbDropdownItem type="button" (click)="hardwareEdit.open()">
               Hardware
             </button>
           </div>
@@ -98,8 +97,8 @@
           <tr *ngFor="let detail of getFilteredGameDetails()">
             <td class="game-detail-name">{{ detail.name }}</td>
             <td class="game-detail-value">
-              <ng-container [ngTemplateOutlet]="this[detail.blockName]"
-                [ngTemplateOutletContext]="{ $implicit: detail }"></ng-container>
+              <ng-container [ngTemplateOutlet]="this[detail.blockName]" [ngTemplateOutletContext]="{ $implicit: detail }">
+              </ng-container>
             </td>
           </tr>
         </table>

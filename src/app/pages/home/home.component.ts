@@ -59,6 +59,7 @@ export class HomeComponent implements OnInit {
   transparent2: string = "transparent";
   scanRunning: boolean = false;
   listings: string[] = [];
+  openMenu: boolean = false;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -110,7 +111,7 @@ export class HomeComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (!this.isEditMode()) {
+    if (!this.isEditMode() && !this.openMenu) {
       if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
         (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
         (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {

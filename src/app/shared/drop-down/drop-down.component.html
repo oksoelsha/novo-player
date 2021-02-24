@@ -1,11 +1,11 @@
-<div *ngIf="list && list.length > 0" class="dropdown">
-    <button class="btn btn-secondary btn-sm dropdown-toggle d-inline" type="button" id="dropdownMenu" data-toggle="dropdown"
+<div *ngIf="list && list.length > 0" ngbDropdown class="d-inline-block">
+    <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button"
         aria-haspopup="true" aria-expanded="false">
         <span *ngIf="!selectedItem">{{ mainButtonDisplay }}</span>
         <span *ngIf="selectedItem">{{ selectedItem }}</span>
     </button>
-    <div class="dropdown-menu dropdown-scroll" aria-labelledby="dropdownMenu">
-        <button *ngFor="let item of list" class="dropdown-item btn-sm" type="button"
+    <div ngbDropdownMenu class="dropdown-scroll" aria-labelledby="dropdownMenu">
+        <button *ngFor="let item of list" ngbDropdownItem type="button"
             (click)="handleSelection(item)">
             {{ item }}
         </button>

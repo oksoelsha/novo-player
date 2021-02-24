@@ -1,10 +1,10 @@
 <form id="settingsForm" #settingsForm="ngForm" (ngSubmit)="submitSettings(settingsForm.form)">
-
   <div class="form-group">
     <label for="inputOpenmsxPath">openMSX Path</label>
     <div class="input-group">
       <input type="text" class="form-control form-control-sm" name="openmsx-path" [(ngModel)]="openmsxPath" />
-      <app-fs-chooser directory-mode=true label="Browse" (onChosen)="updateControl('openmsx-path', $event)"></app-fs-chooser>
+      <app-fs-chooser directory-mode=true label="Browse" (onChosen)="updateControl('openmsx-path', $event)">
+      </app-fs-chooser>
     </div>
   </div>
 
@@ -12,7 +12,8 @@
     <label for="inputScreenshotsPath">Screenshots Path</label>
     <div class="input-group">
       <input type="text" class="form-control form-control-sm" name="screenshots-path" [(ngModel)]="screenshotsPath" />
-      <app-fs-chooser directory-mode=true label="Browse" (onChosen)="updateControl('screenshots-path', $event)"></app-fs-chooser>
+      <app-fs-chooser directory-mode=true label="Browse" (onChosen)="updateControl('screenshots-path', $event)">
+      </app-fs-chooser>
     </div>
   </div>
 
@@ -21,8 +22,10 @@
     <span *ngIf="listings.length == 0">
       : No listings defined yet
     </span>
-    <app-drop-down [list]="listings" [selected-item]="defaultListing" default-label="Select a listing"
-      (selection)="updateField('defaultListing', $event)"></app-drop-down>
+    <div>
+      <app-drop-down [list]="listings" [selected-item]="defaultListing" default-label="Select a listing"
+        (selection)="updateField('defaultListing', $event)"></app-drop-down>
+    </div>
   </div>
 
   <button class="btn btn-primary" [disabled]="submitDisabled">Save</button>
