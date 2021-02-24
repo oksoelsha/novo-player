@@ -21,6 +21,18 @@ export class DropDownComponent implements OnInit {
     this.mainButtonDisplay = this.defaultLabel;
   }
 
+  processKeyup(event: KeyboardEvent) {
+    if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
+      (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
+      (event.key >= 'A' && event.key <= 'Z'))) {
+        let index: number;
+        for (index = 0; index < this.list.length && !this.list[index].toLowerCase().startsWith(event.key); index++);
+        if (index < this.list.length) {
+          document.getElementById(this.getIdFromItemName(this.list[index])).focus();
+        }
+      }
+  }
+
   handleSelection(selection: string) {
     this.selectedItem = selection;
     this.selection.emit(selection);
@@ -30,5 +42,9 @@ export class DropDownComponent implements OnInit {
     this.selectedItem = "";
     this.mainButtonDisplay = this.defaultLabel;
     this.selection.emit("");
+  }
+
+  private getIdFromItemName(itemName: string): string {
+    return itemName.split(' ').join('_');
   }
 }

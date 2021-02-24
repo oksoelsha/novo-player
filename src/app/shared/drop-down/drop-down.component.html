@@ -1,4 +1,4 @@
-<div *ngIf="list && list.length > 0" ngbDropdown class="d-inline-block">
+<div *ngIf="list && list.length > 0" ngbDropdown class="d-inline-block" (keyup)="processKeyup($event)">
     <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button"
         aria-haspopup="true" aria-expanded="false">
         <span *ngIf="!selectedItem">{{ mainButtonDisplay }}</span>
@@ -6,7 +6,7 @@
     </button>
     <div ngbDropdownMenu class="dropdown-scroll" aria-labelledby="dropdownMenu">
         <button *ngFor="let item of list" ngbDropdownItem type="button"
-            (click)="handleSelection(item)">
+            (click)="handleSelection(item)" [id]="getIdFromItemName(item)">
             {{ item }}
         </button>
     </div>
