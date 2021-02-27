@@ -58,13 +58,14 @@ export class ScanParametersComponent extends PopupComponent {
     this.enteredListing = "";
   }
 
-  setEnteredListing() {
+  setEnteredListing(event: KeyboardEvent) {
     if (this.enteredListing.trim()) {
       this.setSelectedListingAndAdjustForDisplay(this.enteredListing, true);
     } else {
       this.enteredListing = "";
     }
     document.getElementById("listings-dropdown").classList.remove("show");
+    event.preventDefault();
   }
 
   submitParameters(): void {

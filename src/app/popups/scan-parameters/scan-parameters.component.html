@@ -1,4 +1,4 @@
-<form id="scanParametersForm" #scanParametersForm="ngForm" (keydown.enter)="$event.preventDefault()">
+<form id="scanParametersForm" #scanParametersForm="ngForm">
   <div class="add-buttons">
     <app-fs-chooser directory-mode=true multi-selections=true label="+Directory"
       (onChosen)="items = items.concat($event)"></app-fs-chooser>
@@ -36,10 +36,10 @@
             </div>
             <div class="dropdown pl-4 pr-4">
               <div class="input-group input-group-sm mb-3">
-                <input type="text" class="form-control" name="listing" (keyup.enter)="setEnteredListing()"
+                <input type="text" class="form-control" name="listing" (keydown.enter)="setEnteredListing($event)"
                   [(ngModel)]="enteredListing" />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button" (click)="setEnteredListing()">&gt;</button>
+                  <button class="btn btn-outline-secondary" type="button" (click)="setEnteredListing($event)">&gt;</button>
                 </div>
               </div>
             </div>
@@ -56,5 +56,5 @@
     </tr>
   </table>
   <button class="btn btn-primary" [disabled]="items.length == 0 || !selectedOrEnteredListing"
-    (click)="submitParameters()" (keyup.enter)="submitParameters()">Start</button>
+    (click)="submitParameters()" (keydown.enter)="submitParameters()">Start</button>
 </form>

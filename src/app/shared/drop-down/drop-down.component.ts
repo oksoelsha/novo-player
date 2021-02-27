@@ -30,6 +30,8 @@ export class DropDownComponent implements OnInit {
         if (index < this.list.length) {
           document.getElementById(this.getIdFromItemName(this.list[index])).focus();
         }
+      } else if (event.key == 'Enter') {
+        event.stopPropagation();
       }
   }
 
