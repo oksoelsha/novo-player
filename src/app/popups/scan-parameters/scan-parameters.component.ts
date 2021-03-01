@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { EmulatorService } from 'src/app/services/emulator.service';
 import { GamesService } from 'src/app/services/games.service';
 import { PopupComponent } from '../popup.component';
@@ -12,6 +13,8 @@ export class ScanParametersComponent extends PopupComponent {
 
   @Input () popupId: string;
   @Output() parameters: EventEmitter<ScanParameters> = new EventEmitter<ScanParameters>();
+
+  @ViewChild('listingsDropdown', { static: true }) private listingsDropdown: NgbDropdown;
 
   items: string[] = [];
   machines: string[] = [];
@@ -64,7 +67,8 @@ export class ScanParametersComponent extends PopupComponent {
     } else {
       this.enteredListing = "";
     }
-    document.getElementById("listings-dropdown").classList.remove("show");
+
+    this.listingsDropdown.close();
     event.preventDefault();
   }
 

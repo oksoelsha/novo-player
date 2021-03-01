@@ -19,14 +19,14 @@
     <tr>
       <td class="pr-2">Listing</td>
       <td>
-        <div class="dropdown">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div ngbDropdown class="d-inline-block" #listingsDropdown="ngbDropdown">
+          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle
+            aria-haspopup="true" aria-expanded="false">
             <span *ngIf="!selectedOrEnteredListingDisplay">Enter a listing</span>
             <span *ngIf="selectedOrEnteredListingDisplay">{{ selectedOrEnteredListingDisplay }}</span>
           </button>
-          <div id="listings-dropdown" class="dropdown-menu listings-dropdown" aria-labelledby="dropdownMenu2">
-            <button *ngFor="let listing of listings" class="dropdown-item btn-sm" type="button"
+          <div class="listings-dropdown" ngbDropdownMenu aria-labelledby="dropdownMenu2">
+            <button *ngFor="let listing of listings" type="button" ngbDropdownItem
               (click)="setSelectedListing(listing)">
               {{ listing }}
             </button>
