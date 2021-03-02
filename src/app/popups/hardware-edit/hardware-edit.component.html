@@ -15,6 +15,7 @@
                     (selection)="selectedFDDMode = $event">
                 </app-drop-down>
             </td>
+            <td><img src="assets/images/general/info.png" placement="top" ngbTooltip="{{ infoMsg }}"></td>
         </tr>
         <tr>
             <td class="medium">Input Device</td>
@@ -23,6 +24,7 @@
                     (selection)="selectedInputDevice = $event">
                 </app-drop-down>
             </td>
+            <td><img src="assets/images/general/info.png" placement="top" ngbTooltip="{{ infoMsg }}"></td>
         </tr>
         <tr>
             <td class="medium">GFX9000</td>
@@ -32,6 +34,7 @@
                     <input type="checkbox" [(ngModel)]="connectGFX9000" [ngModelOptions]="{standalone: true}" />
                 </ng-toggle>
             </td>
+            <td><img src="assets/images/general/info.png" placement="top" ngbTooltip="{{ infoMsg }}"></td>
         </tr>
     </table>
     <button class="btn btn-primary" (click)="save()" (keyup.enter)="save()">Save</button>

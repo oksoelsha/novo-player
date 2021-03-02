@@ -24,6 +24,8 @@ export class HardwareEditComponent extends PopupComponent {
   selectedInputDevice: string = "";
   connectGFX9000: boolean = false;
 
+  readonly infoMsg:string = "Works with openMSX 0.16 or later";
+
   constructor(private emulatorService: EmulatorService) { 
     super();
   }
