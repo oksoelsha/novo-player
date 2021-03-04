@@ -189,7 +189,13 @@ export class HomeComponent implements OnInit {
   }
 
   launch(game: Game) {
-    this.gamesService.launchGame(game);
+    this.gamesService.launchGame(game).then((errorMessage: string) => {
+      if (errorMessage) {
+        this.alertService.failure("Failed to start openMSX for: " + game.name + " [" + errorMessage + "]");
+      } else {
+        this.alertService.info("openMSX window closed for: " + game.name);
+      }
+    });
   }
 
   processKeyEventsOnTable(event: any) {

@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { BrowserWindow, ipcMain } from 'electron'
 import { SettingsService } from 'SettingsService'
 import * as path from 'path'
 import * as cp from 'child_process'
@@ -61,21 +61,46 @@ export class EmulatorLaunchService {
         ])
     ];
 
-    constructor(private settingsService: SettingsService) { }
+    private static readonly LAUNCH_ERROR_SPLIT_MSG_UNCAUGHT = "Uncaught exception: ";
+    private static readonly LAUNCH_ERROR_SPLIT_MSG_ERROR_IN = "Error in ";
+
+    constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
 
     init() {
-        ipcMain.on('launchGame', (event, game: Game) => {
-            this.launch(game)
+        ipcMain.on('launchGame', (event, game: Game, time: number) => {
+            this.launch(game, time)
         })
     }
 
-    private launch(game: Game) {
+    private launch(game: Game, time: number) {
+        var self = this;
         var openmsx = '"' + path.join(this.settingsService.getSettings().openmsxPath, 'openmsx.exe') + '" ';
-        const ls = cp.exec(openmsx + this.getArguments(game), function (error, stdout, stderr) {
+        const ls = cp.exec(openmsx + this.getArguments(game), function (error: cp.ExecException, stdout, stderr) {
             if (error) {
-                console.log(error.stack)
+                console.log(error.message);
+                let errorMessage: string;
+                let splitText: string = self.getSplitText(error);
+                if (splitText) {
+                    errorMessage = error.message.substring(error.message.indexOf(splitText) + splitText.length);
+                } else {
+                    errorMessage = "Error launching openMSX";
+                }
+                self.win.webContents.send('launchGameResponse' + time, errorMessage);
+            } else {
+                //this is called when openMSX window is closed
+                self.win.webContents.send('launchGameResponse' + time);
             }
         });
+    }
+
+    private getSplitText(error: cp.ExecException): string {
+        if (error.message.indexOf(EmulatorLaunchService.LAUNCH_ERROR_SPLIT_MSG_UNCAUGHT) > 0) {
+            return EmulatorLaunchService.LAUNCH_ERROR_SPLIT_MSG_UNCAUGHT;
+        } else if (error.message.indexOf(EmulatorLaunchService.LAUNCH_ERROR_SPLIT_MSG_ERROR_IN) > 0) {
+            return EmulatorLaunchService.LAUNCH_ERROR_SPLIT_MSG_ERROR_IN;
+        } else {
+            return null;
+        }
     }
 
     private getArguments(game: Game): string {

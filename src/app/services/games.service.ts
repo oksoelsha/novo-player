@@ -42,8 +42,14 @@ export class GamesService {
     });
   }
 
-  launchGame(game: Game) {
-    this.ipc.send("launchGame", game);
+  launchGame(game: Game): Promise<string> {
+    let time: number = Date.now();
+    return new Promise<string>((resolve, reject) => {
+      this.ipc.once("launchGameResponse" + time, (event, errorMessage: string) => {
+        resolve(errorMessage);
+      });
+      this.ipc.send("launchGame", game, time);
+    });
   }
 
   async saveGame(game: Game) {

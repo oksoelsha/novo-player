@@ -75,7 +75,7 @@ function initializeServices() {
     let filesService = new FilesService(win, settingsService);
     filesService.init();
 
-    let emulatorLaunchService = new EmulatorLaunchService(settingsService);
+    let emulatorLaunchService = new EmulatorLaunchService(win, settingsService);
     emulatorLaunchService.init();
 
     let emulatorHardwareService = new EmulatorHardwareService(win, settingsService);
