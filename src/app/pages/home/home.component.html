@@ -54,8 +54,8 @@
             <td class="year">{{ game.year }}</td>
             <td>
               <span>
-                <img src="assets/images/operations/play.png" (click)="launch(game)">
-                <img src="assets/images/operations/remove.png" (click)="remove($event, game)">
+                <img src="assets/images/operations/play.png" (click)="launch(game)" placement="top" ngbTooltip="Launch on openMSX">
+                <img src="assets/images/operations/remove.png" (click)="remove($event, game)" placement="top" ngbTooltip="Remove from listing">
               </span>
             </td>
           </tr>
