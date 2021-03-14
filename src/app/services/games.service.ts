@@ -88,6 +88,10 @@ export class GamesService {
     });
   }
 
+  exploreFile(file: string) {
+    this.ipc.send("openFileExplorer", file);
+  }
+
   async getStats(): Promise<Stats> {
     return new Promise<Stats>((resolve, reject) => {
       this.ipc.once("getStatsResponse", (event, arg) => {

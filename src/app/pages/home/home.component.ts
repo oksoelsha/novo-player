@@ -373,6 +373,10 @@ export class HomeComponent implements OnInit {
     return Math.floor(this.selectedGame.size / 1024) + " KB"
   }
 
+  exploreFile(file: string) {
+    this.gamesService.exploreFile(file);
+  }
+
   isGenerationMSX(): boolean {
     return GameUtils.isMSX(this.selectedGame)
   }
