@@ -3,6 +3,7 @@ import { IpcRenderer } from 'electron';
 import { Game } from '../models/game';
 import { ScreenshotData } from '../models/screenshot-data';
 import { Stats } from '../models/stats';
+import { LaunchActivityService } from './launch-activity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Stats } from '../models/stats';
 export class GamesService {
   private ipc: IpcRenderer
 
-  constructor() {
+  constructor(private launchActivityService: LaunchActivityService) {
     if ((<any>window).require) {
       try {
         this.ipc = (<any>window).require('electron').ipcRenderer
@@ -44,8 +45,11 @@ export class GamesService {
 
   launchGame(game: Game): Promise<string> {
     let time: number = Date.now();
+    this.launchActivityService.recordGameStart(game, time);
     return new Promise<string>((resolve, reject) => {
       this.ipc.once("launchGameResponse" + time, (event, errorMessage: string) => {
+        //this resolving means that either openMSX failed to start or the window was closed
+        this.launchActivityService.recordGameFinish(game, time);
         resolve(errorMessage);
       });
       this.ipc.send("launchGame", game, time);
