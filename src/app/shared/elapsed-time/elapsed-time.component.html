@@ -1,0 +1,2 @@
+<span *ngIf="shortTime" placement="top" ngbTooltip="Launched less than a minute ago">&lt; 1 m ago</span>
+<span *ngIf="!shortTime" placement="top" ngbTooltip="Launched at {{ getStartTimeDisplay() }}">{{ elapsedTime.hours }} h {{ elapsedTime.minutes }} m</span>

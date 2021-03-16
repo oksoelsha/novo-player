@@ -20,6 +20,7 @@ import { DropDownComponent } from './shared/drop-down/drop-down.component';
 import { PopupComponent } from './popups/popup.component';
 import { HardwareEditComponent } from './popups/hardware-edit/hardware-edit.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ElapsedTimeComponent } from './shared/elapsed-time/elapsed-time.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MediaEditComponent,
     DropDownComponent,
     PopupComponent,
-    HardwareEditComponent
+    HardwareEditComponent,
+    ElapsedTimeComponent
   ],
   imports: [
     BrowserModule,

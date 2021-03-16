@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="card text-white widget widget-narrow ml-3">
+  <div class="card text-white widget widget-narrow ml-3 mb-3">
     <div class="card-body">
       <h5 class="card-title">Stats</h5>
       <table class="table table-sm text-white">
@@ -10,7 +10,7 @@
       </table>
     </div>
   </div>
-  <div class="card text-white widget widget-wide ml-3">
+  <div class="card text-white widget widget-wide ml-3 mb-3">
     <div class="card-body">
       <h5 class="card-title">Running Games</h5>
       <div *ngIf="launchActivities.length == 0">None</div>
@@ -19,7 +19,7 @@
           <tr *ngFor="let activity of launchActivities">
             <td class="activity-game-name">{{ activity.game.name }}</td>
             <td class="activity-game-listing">{{ activity.game.listing }}</td>
-            <td>{{ getTimeDisplay(activity.time) }}</td>
+            <td><app-elapsed-time [startTime]="activity.time"></app-elapsed-time></td>
           </tr>
         </table>
       </div>
