@@ -10,6 +10,14 @@
       </table>
     </div>
   </div>
+  <div class="card text-white widget widget-mid-size ml-3 mb-3">
+    <div *ngIf="series.length > 0" class="card-body">
+      <h5 class="card-title">Media</h5>
+      <div id="media-chart">
+        <apx-chart [series]="series" [chart]="chart" [labels]="labels" [legend]="legend" [stroke]="stroke" #chartRef></apx-chart>
+      </div>
+    </div>
+  </div>
   <div class="card text-white widget widget-wide ml-3 mb-3">
     <div class="card-body">
       <h5 class="card-title">Running Games</h5>

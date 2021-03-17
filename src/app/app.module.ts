@@ -21,6 +21,7 @@ import { PopupComponent } from './popups/popup.component';
 import { HardwareEditComponent } from './popups/hardware-edit/hardware-edit.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElapsedTimeComponent } from './shared/elapsed-time/elapsed-time.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ElapsedTimeComponent } from './shared/elapsed-time/elapsed-time.compone
     FormsModule,
     ModalModule.forRoot(),
     NgToggleModule,
-    NgbModule
+    NgbModule,
+    NgApexchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
