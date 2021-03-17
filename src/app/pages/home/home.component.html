@@ -1,10 +1,9 @@
 <div class="entire-area">
   <div class="area-on-the-left">
     <div class="table-buttons">
-      <div ngbDropdown class="d-inline-block mr-2" (openChange)="openMenu = $event">
-        <button class="btn btn-secondary btn-sm" type="button" id="menuDropdownButton" ngbDropdownToggle
+      <div ngbDropdown class="d-inline-block mr-1" (openChange)="openMenu = $event">
+        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle
           aria-haspopup="true" aria-expanded="false">
-          <img src="assets/images/navigation/menu.png">
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownMenu2">
           <button ngbDropdownItem type="button" (click)="undoRemove()"
