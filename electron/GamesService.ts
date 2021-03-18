@@ -3,7 +3,7 @@ import * as Datastore from 'nedb';
 import * as os from 'os';
 import * as path from 'path';
 import { Game } from '../src/app/models/game';
-import { Stats } from '../src/app/models/stats';
+import { Totals } from '../src/app/models/totals';
 import { GameDO } from './data/game-do';
 import { EmulatorRepositoryService, RepositoryData } from './EmulatorRepositoryService';
 import { PersistenceUtils } from './utils/PersistenceUtils';
@@ -43,8 +43,8 @@ export class GamesService {
             this.updateGame(oldGame, newGame);
         });
 
-        ipcMain.on('getStats', (event, arg) => {
-            this.getStats();
+        ipcMain.on('getTotals', (event, arg) => {
+            this.getTotals();
         });
     }
 
@@ -141,40 +141,40 @@ export class GamesService {
         });
     }
 
-    private getStats() {
+    private getTotals() {
         var self = this;
-        let stats: Stats;
-        let totalGames:number = 0;
-        let totalListings:number = 0;
-        let totalRoms:number = 0;
-        let totalDisks:number = 0;
-        let totalTapes:number = 0;
-        let totalHarddisks:number = 0;
-        let totalLaserdiscs:number = 0;
+        let totals: Totals;
+        let listings:number = 0;
+        let games:number = 0;
+        let roms:number = 0;
+        let disks:number = 0;
+        let tapes:number = 0;
+        let harddisks:number = 0;
+        let laserdiscs:number = 0;
         let tempSet = new Set();
         this.database.find({}, function (err: any, entries: any) {
-            totalGames = entries.length;
+            games = entries.length;
             for (var entry of entries) {
                 if (!tempSet.has(entry.listing)) {
                     tempSet.add(entry.listing);
-                    totalListings++;
+                    listings++;
                 }
 
                 if (entry.romA != null) {
-                    totalRoms++;
+                    roms++;
                 } else if (entry.diskA != null) {
-                    totalDisks++;
+                    disks++;
                 } else if (entry.tape != null) {
-                    totalTapes++;
+                    tapes++;
                 } else if (entry.harddisk != null) {
-                    totalHarddisks++;
+                    harddisks++;
                 } else if (entry.laserdisc != null) {
-                    totalLaserdiscs++;
+                    laserdiscs++;
                 }
             }
-            stats = new Stats(totalGames, totalListings, totalRoms, totalDisks, totalTapes, totalHarddisks, totalLaserdiscs);
+            totals = new Totals(listings, games, roms, disks, tapes, harddisks, laserdiscs);
 
-            self.win.webContents.send('getStatsResponse', stats)
+            self.win.webContents.send('getTotalsResponse', totals)
         });
     }
 }

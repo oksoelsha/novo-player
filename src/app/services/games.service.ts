@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IpcRenderer } from 'electron';
 import { Game } from '../models/game';
 import { ScreenshotData } from '../models/screenshot-data';
-import { Stats } from '../models/stats';
+import { Totals } from '../models/totals';
 import { LaunchActivityService } from './launch-activity.service';
 
 @Injectable({
@@ -96,12 +96,12 @@ export class GamesService {
     this.ipc.send("openFileExplorer", file);
   }
 
-  async getStats(): Promise<Stats> {
-    return new Promise<Stats>((resolve, reject) => {
-      this.ipc.once("getStatsResponse", (event, arg) => {
+  async getTotals(): Promise<Totals> {
+    return new Promise<Totals>((resolve, reject) => {
+      this.ipc.once("getTotalsResponse", (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getStats");
+      this.ipc.send("getTotals");
     });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApexChart, ApexNonAxisChartSeries, ApexStroke } from 'ng-apexcharts';
 import { Subscription } from 'rxjs';
-import { Stats } from 'src/app/models/stats';
+import { Totals } from 'src/app/models/totals';
 import { GamesService } from 'src/app/services/games.service';
 import { LaunchActivity, LaunchActivityService } from 'src/app/services/launch-activity.service';
 
@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
 
   private subscription: Subscription;
 
-  stats = [];
+  totals = [];
 
   launchActivities: LaunchActivity[] = [];
 
@@ -50,18 +50,18 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.gamesService.getStats().then((data: Stats) => {
-      this.stats = [
-        { name: "Total Listings", value: data.totalListings },
-        { name: "Total Games", value: data.totalGames },
-        { name: "Total ROMs", value: data.totalRoms },
-        { name: "Total Disks", value: data.totalDisks },
-        { name: "Total Tapes", value: data.totalTapes },
-        { name: "Total Harddisks", value: data.totalHarddisks },
-        { name: "Total Laserdiscs", value: data.totalLaserdiscs },
+    this.gamesService.getTotals().then((data: Totals) => {
+      this.totals = [
+        { name: "Listings", value: data.listings },
+        { name: "Games", value: data.games },
+        { name: "ROMs", value: data.roms },
+        { name: "Disks", value: data.disks },
+        { name: "Tapes", value: data.tapes },
+        { name: "Harddisks", value: data.harddisks },
+        { name: "Laserdiscs", value: data.laserdiscs },
       ];
 
-      this.series = [data.totalRoms, data.totalDisks, data.totalTapes, data.totalHarddisks, data.totalLaserdiscs];
+      this.series = [data.roms, data.disks, data.tapes, data.harddisks, data.laserdiscs];
     });
   }
 
