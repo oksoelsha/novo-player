@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Totals } from 'src/app/models/totals';
 import { GamesService } from 'src/app/services/games.service';
 import { LaunchActivity, LaunchActivityService } from 'src/app/services/launch-activity.service';
+import { ScannerService } from 'src/app/services/scanner.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,9 +13,10 @@ import { LaunchActivity, LaunchActivityService } from 'src/app/services/launch-a
 })
 export class DashboardComponent implements OnInit {
 
-  private subscription: Subscription;
+  private launchActivitySubscription: Subscription;
+  private totalsSubscription: Subscription;
 
-  totals = [];
+  totals: any = [];
 
   launchActivities: LaunchActivity[] = [];
 
@@ -40,29 +42,21 @@ export class DashboardComponent implements OnInit {
   };
   series: ApexNonAxisChartSeries = [];
 
-  constructor(private gamesService: GamesService, private launchActivityService: LaunchActivityService) {
+  constructor(private gamesService: GamesService, private launchActivityService: LaunchActivityService, private scannerService: ScannerService) {
     var self = this;
-    this.subscription = this.launchActivityService.getUpdatedActivities().subscribe(launchActivity => {
+    this.launchActivitySubscription = this.launchActivityService.getUpdatedActivities().subscribe(launchActivity => {
       self.launchActivities = launchActivity;
     });
+
+    this.totalsSubscription = this.scannerService.getScannerFinishedEvent().subscribe(() => {
+      this.getTotals();
+    })
 
     this.launchActivities = launchActivityService.getActivities();
   }
 
   ngOnInit() {
-    this.gamesService.getTotals().then((data: Totals) => {
-      this.totals = [
-        { name: "Listings", value: data.listings },
-        { name: "Games", value: data.games },
-        { name: "ROMs", value: data.roms },
-        { name: "Disks", value: data.disks },
-        { name: "Tapes", value: data.tapes },
-        { name: "Harddisks", value: data.harddisks },
-        { name: "Laserdiscs", value: data.laserdiscs },
-      ];
-
-      this.series = [data.roms, data.disks, data.tapes, data.harddisks, data.laserdiscs];
-    });
+    this.getTotals();
   }
 
   getTimeDisplay(time: number): string {
@@ -72,5 +66,28 @@ export class DashboardComponent implements OnInit {
     var seconds = "0" + date.getSeconds();
 
     return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  }
+
+  private getTotals() {
+    this.gamesService.getTotals().then((totals: Totals) => {
+      this.updateTotals(totals);
+      this.updateGraph(totals);
+    });
+  }
+
+  private updateTotals(totals: Totals) {
+    this.totals = [
+      { name: "Listings", value: totals.listings },
+      { name: "Games", value: totals.games },
+      { name: "ROMs", value: totals.roms },
+      { name: "Disks", value: totals.disks },
+      { name: "Tapes", value: totals.tapes },
+      { name: "Harddisks", value: totals.harddisks },
+      { name: "Laserdiscs", value: totals.laserdiscs }
+    ];
+  }
+
+  private updateGraph(totals: Totals) {
+    this.series = [totals.roms, totals.disks, totals.tapes, totals.harddisks, totals.laserdiscs];
   }
 }
