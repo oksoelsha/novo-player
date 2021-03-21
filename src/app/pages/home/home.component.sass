@@ -7,7 +7,7 @@
   height: 100%
 
 .area-on-the-left
-  flex: 0 0 500px
+  flex: 0 0 32rem
   display: flex
   flex-direction: column
 
@@ -15,23 +15,23 @@
   flex: 1
   display: flex
   justify-content: center
-  padding-top: 50px
+  padding-top: 4rem
 
 .table-buttons
-  margin-bottom: 4px
+  margin-bottom: .25rem
 
 .inline-dropdown
   display: inline-block
-  margin-right: 4px
+  margin-right: .25rem
 
 #games-table
   table
-    font-size: 14px
+    font-size: 1rem
     th
       background-color: grey
-      padding-left: 5px
-      padding-top: 3px
-      padding-bottom: 3px
+      padding-left: .45rem
+      padding-top: .25rem
+      padding-bottom: .25rem
       text-transform: uppercase
       font-weight: normal
 
@@ -40,11 +40,11 @@
 
 #games-table-data
   height: 86vh
-  width: 670px
+  width: 41.875rem
   overflow-y: auto
   scroll-behavior: smooth
   table
-    font-size: 14px
+    font-size: .875rem
     tr
       transition: 0.1s
     tr:hover
@@ -61,48 +61,48 @@
     th
       background-color: #333
     td
-      padding-left: 5px
-      padding-top: 3px
-      padding-bottom: 3px
+      padding-left: .3125rem
+      padding-top: .1875rem
+      padding-bottom: .1875rem
 
 #gameNameEditInput
   width: 100%
-  height: 20px
+  height: 1.25rem
   box-sizing: border-box
 
 .medium-img
-  padding: 0 0 3px 3px !important
+  padding: 0 0 .1875rem .1875rem !important
 
 .name-title
-  width: 430px
+  width: 26.875rem
 
 .name
-  width: 410px
-  max-width: 410px
+  width: 25.625rem
+  max-width: 25.625rem
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
 
 .company-title, .company
-  width: 150px
-  max-width: 150px
+  width: 9.375rem
+  max-width: 9.375rem
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
 .year-title
-  width: 90px
+  width: 5.625rem
 .year
-  width: 42px
+  width: 2.625rem
 
 div::-webkit-scrollbar
-  width: 8px
+  width: .5rem
 
 div::-webkit-scrollbar-track
   background: transparent
 
 div::-webkit-scrollbar-thumb
   background-color: #444
-  border-radius: 20px
+  border-radius: 1.25rem
   border: 1px solid transparent
 
 .screenshot
@@ -110,7 +110,7 @@ div::-webkit-scrollbar-thumb
   height: 240px
   width: 272px
   display: inline-block
-  margin: 10px
+  margin: .625rem
 
 .screenshot img
   position: absolute
@@ -118,19 +118,25 @@ div::-webkit-scrollbar-thumb
   left: 0
   -webkit-transition: opacity 0.7s ease-in-out
 
+@media screen and (max-width: 83.5rem)
+  #second-screenshot
+    display: none
+  .area-on-the-right
+    justify-content: left
+
 .additional-info
-  padding-left: 30px
+  padding-left: 1.875rem
 
 .additional-info button
-  margin-bottom: 5px
+  margin-bottom: .3125rem
 
 .game-detail-name
-  width: 145px
-  height: 23px
+  width: 9.125rem
+  height: 1.5rem
   vertical-align: top
 
 .game-detail-value, .game-detail-value div
-  max-width: 360px
+  max-width: 22.5rem
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
