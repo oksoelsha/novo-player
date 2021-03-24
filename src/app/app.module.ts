@@ -22,6 +22,9 @@ import { HardwareEditComponent } from './popups/hardware-edit/hardware-edit.comp
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElapsedTimeComponent } from './shared/elapsed-time/elapsed-time.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { TotalsCardComponent } from './pages/dashboard/totals-card/totals-card.component';
+import { MediaCardComponent } from './pages/dashboard/media-card/media-card.component';
+import { LaunchActivityComponent } from './pages/dashboard/launch-activity/launch-activity.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,10 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     DropDownComponent,
     PopupComponent,
     HardwareEditComponent,
-    ElapsedTimeComponent
+    ElapsedTimeComponent,
+    TotalsCardComponent,
+    MediaCardComponent,
+    LaunchActivityComponent
   ],
   imports: [
     BrowserModule,

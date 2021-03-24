@@ -1,0 +1,9 @@
+<div class="card text-white widget widget-mid-size ml-3 mb-3">
+    <div *ngIf="series.length > 0" class="card-body">
+        <h5 class="card-title">Media</h5>
+        <div id="media-chart">
+            <apx-chart [series]="series" [chart]="chart" [labels]="labels" [legend]="legend" [stroke]="stroke">
+            </apx-chart>
+        </div>
+    </div>
+</div>
