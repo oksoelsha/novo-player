@@ -14,6 +14,8 @@ export class DropDownComponent implements OnInit {
   @Output() selection: EventEmitter<string> = new EventEmitter<string>();
 
   private mainButtonDisplay: string;
+  private accumulatedPressedKeys: string = ""
+  private quickTypeTimer: NodeJS.Timer = null;
 
   constructor() { }
 
@@ -25,11 +27,14 @@ export class DropDownComponent implements OnInit {
     if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
       (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
       (event.key >= 'A' && event.key <= 'Z'))) {
-        let index: number;
-        for (index = 0; index < this.list.length && !this.list[index].toLowerCase().startsWith(event.key); index++);
-        if (index < this.list.length) {
-          document.getElementById(this.getIdFromItemName(this.list[index])).focus();
+        if (this.quickTypeTimer != null) {
+          clearTimeout(this.quickTypeTimer);
         }
+        this.accumulatedPressedKeys += event.key;
+        this.quickTypeTimer = setTimeout(() => {
+          this.jumpToNearestItem(this.accumulatedPressedKeys);
+          this.accumulatedPressedKeys = "";
+        }, 300)
       } else if (event.key == 'Enter') {
         event.stopPropagation();
       }
@@ -46,7 +51,15 @@ export class DropDownComponent implements OnInit {
     this.selection.emit("");
   }
 
+  private jumpToNearestItem(accumulatedPressedKeys: string) {
+    let index: number;
+    for (index = 0; index < this.list.length && !this.list[index].toLowerCase().startsWith(accumulatedPressedKeys.toLowerCase()); index++);
+    if (index < this.list.length) {
+      document.getElementById(this.getIdFromItemName(this.list[index])).focus();
+    }
+  }
+
   private getIdFromItemName(itemName: string): string {
-    return itemName.split(' ').join('_');
+    return itemName.split(' ').join('_') + "_dropdown";
   }
 }
