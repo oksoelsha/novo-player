@@ -1,18 +1,16 @@
 <div *ngIf="list && list.length > 0" ngbDropdown class="d-inline-block" (keyup)="processKeyup($event)">
-    <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button"
-        aria-haspopup="true" aria-expanded="false">
-        <span *ngIf="!selectedItem">{{ mainButtonDisplay }}</span>
+    <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
+        <span *ngIf="!selectedItem">{{ defaultLabel }}</span>
         <span *ngIf="selectedItem">{{ selectedItem }}</span>
     </button>
-    <div ngbDropdownMenu class="dropdown-scroll" aria-labelledby="dropdownMenu">
+    <div ngbDropdownMenu class="dropdown-scroll">
         <button *ngFor="let item of list" ngbDropdownItem type="button"
-            (click)="handleSelection(item)" [id]="getIdFromItemName(item)">
+            (click)="handleSelection(item)" #dropDownItem>
             {{ item }}
         </button>
     </div>
     <div *ngIf="resetButton && selectedItem" class="d-inline ml-2">
-        <button class="btn btn-secondary btn-sm" type="button"
-          aria-haspopup="true" aria-expanded="false" (click)="resetSelection()">
+        <button class="btn btn-secondary btn-sm" type="button" (click)="resetSelection()">
           Reset
         </button>
     </div>

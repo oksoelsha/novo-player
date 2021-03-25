@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 
 @Component({
   selector: 'app-drop-down',
   templateUrl: './drop-down.component.html',
   styleUrls: ['./drop-down.component.sass']
 })
-export class DropDownComponent implements OnInit {
+export class DropDownComponent {
 
   @Input ('list') list: string[];
   @Input ('selected-item') selectedItem: string;
@@ -13,15 +13,12 @@ export class DropDownComponent implements OnInit {
   @Input ('reset-button') resetButton: boolean;
   @Output() selection: EventEmitter<string> = new EventEmitter<string>();
 
-  private mainButtonDisplay: string;
+  @ViewChildren("dropDownItem") dropDownItems: QueryList<ElementRef>;
+
   private accumulatedPressedKeys: string = ""
   private quickTypeTimer: NodeJS.Timer = null;
 
   constructor() { }
-
-  ngOnInit(): void {
-    this.mainButtonDisplay = this.defaultLabel;
-  }
 
   processKeyup(event: KeyboardEvent) {
     if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
@@ -47,7 +44,6 @@ export class DropDownComponent implements OnInit {
 
   resetSelection() {
     this.selectedItem = "";
-    this.mainButtonDisplay = this.defaultLabel;
     this.selection.emit("");
   }
 
@@ -55,11 +51,7 @@ export class DropDownComponent implements OnInit {
     let index: number;
     for (index = 0; index < this.list.length && !this.list[index].toLowerCase().startsWith(accumulatedPressedKeys.toLowerCase()); index++);
     if (index < this.list.length) {
-      document.getElementById(this.getIdFromItemName(this.list[index])).focus();
+      this.dropDownItems.toArray()[index].nativeElement.focus();
     }
-  }
-
-  private getIdFromItemName(itemName: string): string {
-    return itemName.split(' ').join('_') + "_dropdown";
   }
 }
