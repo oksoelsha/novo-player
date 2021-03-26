@@ -155,7 +155,7 @@ export class ScanService {
                     this.gamesService.finishScan(this.finishScan, this);
                 }
             }
-        }).catch(error => console.log(filename + " - " + error));
+        }).catch(error => this.scannedFilesCounter++);
     }
 
     private finishScan(totalAddedToDatabase: number, ref: any) {
@@ -172,6 +172,9 @@ export class ScanService {
                     file: filename,
                     storeEntries: true
                 })
+                zip.on('error', (err: string) => {
+                    return reject(err);
+                });
                 zip.on('ready', () => {
                     let entries = Object.keys(zip.entries()).map(e => zip.entries()[e])
                     let msxFileIndex = this.getMSXFileIndexInZip(entries);
