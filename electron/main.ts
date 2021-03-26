@@ -42,13 +42,9 @@ function createWindow() {
         app.dock.hide();  //hide menu on MacOS
     }
 
-    win.loadURL(
-        url.format({
-            pathname: path.join(__dirname, `/../../../dist/novo-player/index.html`),
-            protocol: 'file:',
-            slashes: true,
-        })
-    )
+    const url = new URL(path.join(__dirname, `/../../../dist/novo-player/index.html`));
+    url.protocol = "file:";
+    win.loadURL(url.toString());
 
     win.once('ready-to-show', () => {
         win.show()
