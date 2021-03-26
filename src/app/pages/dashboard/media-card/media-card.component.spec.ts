@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs';
+import { Totals } from 'src/app/models/totals';
 
 import { MediaCardComponent } from './media-card.component';
 
@@ -16,6 +18,7 @@ describe('MediaCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MediaCardComponent);
     component = fixture.componentInstance;
+    component.totalsEvent = new Observable<Totals>();
     fixture.detectChanges();
   });
 
