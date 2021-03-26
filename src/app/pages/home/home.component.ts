@@ -15,7 +15,7 @@ import { HardwareEditComponent } from 'src/app/popups/hardware-edit/hardware-edi
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.sass']
+  styleUrls: ['../../common-styles.sass', './home.component.sass']
 })
 export class HomeComponent implements OnInit {
   @ViewChild('gameDetailSimpleText', { static: true }) private gameDetailSimpleText: TemplateRef<object>;

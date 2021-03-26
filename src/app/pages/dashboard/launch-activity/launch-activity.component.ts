@@ -5,7 +5,7 @@ import { LaunchActivity, LaunchActivityService } from 'src/app/services/launch-a
 @Component({
   selector: 'dashboard-launch-activity-card',
   templateUrl: './launch-activity.component.html',
-  styleUrls: ['../dashboard.component.sass', './launch-activity.component.sass']
+  styleUrls: ['../../../common-styles.sass', '../dashboard.component.sass', './launch-activity.component.sass']
 })
 export class LaunchActivityComponent implements OnInit, OnDestroy {
 

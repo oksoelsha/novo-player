@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChil
 @Component({
   selector: 'app-drop-down',
   templateUrl: './drop-down.component.html',
-  styleUrls: ['./drop-down.component.sass']
+  styleUrls: ['../../common-styles.sass', './drop-down.component.sass']
 })
 export class DropDownComponent {
 

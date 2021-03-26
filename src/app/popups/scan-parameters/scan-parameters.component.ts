@@ -7,7 +7,7 @@ import { PopupComponent } from '../popup.component';
 @Component({
   selector: 'app-scan-parameters',
   templateUrl: './scan-parameters.component.html',
-  styleUrls: ['./scan-parameters.component.sass']
+  styleUrls: ['../../common-styles.sass', './scan-parameters.component.sass']
 })
 export class ScanParametersComponent extends PopupComponent {
 
