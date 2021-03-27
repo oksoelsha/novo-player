@@ -25,6 +25,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { TotalsCardComponent } from './pages/dashboard/totals-card/totals-card.component';
 import { MediaCardComponent } from './pages/dashboard/media-card/media-card.component';
 import { LaunchActivityComponent } from './pages/dashboard/launch-activity/launch-activity.component';
+import { ChangeListingComponent } from './popups/change-listing/change-listing.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { LaunchActivityComponent } from './pages/dashboard/launch-activity/launc
     ElapsedTimeComponent,
     TotalsCardComponent,
     MediaCardComponent,
-    LaunchActivityComponent
+    LaunchActivityComponent,
+    ChangeListingComponent
   ],
   imports: [
     BrowserModule,

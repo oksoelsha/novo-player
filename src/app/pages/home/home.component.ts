@@ -11,6 +11,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { Settings } from 'src/app/models/settings';
 import { MediaEditComponent } from 'src/app/popups/media-edit/media-edit.component';
 import { HardwareEditComponent } from 'src/app/popups/hardware-edit/hardware-edit.component';
+import { ChangeListingComponent } from 'src/app/popups/change-listing/change-listing.component';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('scanParameters') scanParameters: ScanParametersComponent;
   @ViewChild('mediaEdit') mediaEdit: MediaEditComponent;
   @ViewChild('hardwareEdit') hardwareEdit: HardwareEditComponent;
+  @ViewChild('changeListing') changeListing: ChangeListingComponent;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
 
@@ -233,7 +235,7 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
     this.gamesService.removeGame(game).then((removed: boolean) => {
       if (removed) {
-        this.alertService.success("Game was removed");
+        this.alertService.success("Game was removed: " + game.name);
         this.lastRemovedGame = game;
         if (this.selectedGame != null && game.sha1Code == this.selectedGame.sha1Code) {
           this.initialize();
@@ -241,7 +243,7 @@ export class HomeComponent implements OnInit {
         sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
         this.removeGameFromList(game);
       } else {
-        this.alertService.failure("Game was not removed!");
+        this.alertService.failure("Game was not removed: " + game.name);
       }
     })
   }
@@ -250,14 +252,14 @@ export class HomeComponent implements OnInit {
     if (this.lastRemovedGame != null) {
       this.gamesService.saveGame(this.lastRemovedGame).then((added: boolean) => {
         if (added) {
-          this.alertService.success("Game was added back - " + this.lastRemovedGame.name);
+          this.alertService.success("Game was restored: " + this.lastRemovedGame.name);
           if (this.lastRemovedGame.listing == this.selectedListing) {
             this.addGameToSortedList(this.lastRemovedGame);
           }
           sessionStorage.removeItem('lastRemovedGame');
           this.lastRemovedGame = null;
         } else {
-          this.alertService.failure("Game was not added back!");
+          this.alertService.failure("Game was not restored: " + this.lastRemovedGame.name);
         }
       });
     }
@@ -265,12 +267,20 @@ export class HomeComponent implements OnInit {
 
   update(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then(() => {
-      this.alertService.success("Game was updated - " + newGame.name);
+      this.alertService.success("Game was updated: " + newGame.name);
       this.removeGameFromList(oldGame);
       this.addGameToSortedList(newGame);
       setTimeout(() => {
         this.showInfo(newGame);
       },0);
+    });
+  }
+
+  move(oldGame: Game, newGame: Game) {
+    this.gamesService.updateGame(oldGame, newGame).then(() => {
+      this.alertService.success("Game was moved: " + newGame.name + " -> " + newGame.listing);
+      this.removeGameFromList(oldGame);
+      this.initialize();
     });
   }
 
@@ -471,7 +481,15 @@ export class HomeComponent implements OnInit {
   }
 
   private removeGameFromList(game: Game) {
-    this.games.splice(this.games.indexOf(game), 1);
+    this.games.splice(this.games.findIndex((e) => e.sha1Code == game.sha1Code), 1);
+
+    if (this.games.length == 0) {
+      this.listings.splice(this.listings.findIndex((e) => e == this.selectedListing), 1);
+      if (this.listings.length > 0) {
+        this.selectedListing = this.listings[0];
+        this.getGames(this.selectedListing);
+      }
+    }
   }
 
   private addGameToSortedList(game: Game) {

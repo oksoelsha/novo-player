@@ -35,7 +35,7 @@ export class AlertsComponent implements OnDestroy {
     }
     this.timer = setTimeout(() => {
       this.resetFields();
-    }, 5000);
+    }, 10000);
   }
 
   private resetFields() {

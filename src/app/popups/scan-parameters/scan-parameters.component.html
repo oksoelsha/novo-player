@@ -55,6 +55,6 @@
       </td>
     </tr>
   </table>
-  <button class="btn btn-primary" [disabled]="items.length == 0 || !selectedOrEnteredListing"
+  <button class="btn btn-primary btn-sm mt-3" [disabled]="items.length == 0 || !selectedOrEnteredListing"
     (click)="submitParameters()" (keydown.enter)="submitParameters()">Start</button>
 </form>

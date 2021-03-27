@@ -75,11 +75,11 @@
       <div class="additional-info" *ngIf="selectedGame">
         <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="launch(selectedGame)">Launch</button>
         <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
-          <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button" aria-haspopup="true"
+          <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button" aria-haspopup="true"
             aria-expanded="false">
             Edit
           </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownMenu2">
+          <div ngbDropdownMenu>
             <button ngbDropdownItem type="button" (click)="edit(selectedGame)">
               Name
             </button>
@@ -88,6 +88,16 @@
             </button>
             <button ngbDropdownItem type="button" (click)="hardwareEdit.open()">
               Hardware
+            </button>
+          </div>
+        </div>
+        <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
+          <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
+            More
+          </button>
+          <div ngbDropdownMenu>
+            <button ngbDropdownItem type="button" [disabled]="listings.length == 1" (click)="changeListing.open()">
+              Move to another listing
             </button>
           </div>
         </div>
@@ -171,5 +181,12 @@
   <ng-template let-popupId="popupId">
     <app-hardware-edit [popupId]="popupId" [game]="selectedGame" (updatedGame)="update(selectedGame, $event)" #hardwareEdit>
     </app-hardware-edit>
+  </ng-template>
+</app-popup>
+
+<app-popup popupId="change-listing-id" title="Move to Another Listing">
+  <ng-template let-popupId="popupId">
+    <app-change-listing [popupId]="popupId" [game]="selectedGame" [listings]="listings" (updatedGame)="move(selectedGame, $event)" #changeListing>
+    </app-change-listing>
   </ng-template>
 </app-popup>

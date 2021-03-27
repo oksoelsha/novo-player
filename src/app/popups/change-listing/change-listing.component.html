@@ -1,0 +1,11 @@
+<form>
+    <div *ngIf="opened">
+        <span class="mr-2">Destination listing</span>
+        <span class="listing-input">
+            <app-drop-down [list]="destinationListings" [selected-item]="destinationListings[0]"
+                (selection)="selectedListing = $event">
+            </app-drop-down>
+        </span>
+    </div>
+    <button class="btn btn-primary btn-sm mt-3" (click)="move()" (keyup.enter)="move()">Move</button>
+</form>
