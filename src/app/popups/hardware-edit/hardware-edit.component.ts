@@ -52,7 +52,11 @@ export class HardwareEditComponent extends PopupComponent {
       this.selectedInputDevice = InputDevice[0].label;
     }
 
-    this.connectGFX9000 = this.game.connectGFX9000;
+    if (this.game.connectGFX9000) {
+      this.connectGFX9000 = this.game.connectGFX9000;
+    } else {
+      this.connectGFX9000 = false;
+    }
   }
 
   close(): void {
