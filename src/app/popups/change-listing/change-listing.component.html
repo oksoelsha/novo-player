@@ -2,10 +2,9 @@
     <div *ngIf="opened">
         <span class="mr-2">Destination listing</span>
         <span class="listing-input">
-            <app-drop-down [list]="destinationListings" [selected-item]="destinationListings[0]"
-                (selection)="selectedListing = $event">
-            </app-drop-down>
+            <app-drop-down-with-input default-label="Enter a listing" default-new-label="New listing"
+                [list]="destinationListings" (selection)="selectedListing = $event"></app-drop-down-with-input>
         </span>
     </div>
-    <button class="btn btn-primary btn-sm mt-3" (click)="move()" (keyup.enter)="move()">Move</button>
+    <button class="btn btn-primary btn-sm mt-3" (click)="move()" (keyup.enter)="move()" [disabled]="!selectedListing">Move</button>
 </form>

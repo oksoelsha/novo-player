@@ -19,32 +19,7 @@
     <tr>
       <td class="pr-2">Listing</td>
       <td>
-        <div ngbDropdown class="d-inline-block" #listingsDropdown="ngbDropdown">
-          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle
-            aria-haspopup="true" aria-expanded="false">
-            <span *ngIf="!selectedOrEnteredListingDisplay">Enter a listing</span>
-            <span *ngIf="selectedOrEnteredListingDisplay">{{ selectedOrEnteredListingDisplay }}</span>
-          </button>
-          <div class="listings-dropdown" ngbDropdownMenu aria-labelledby="dropdownMenu2">
-            <button *ngFor="let listing of listings" type="button" ngbDropdownItem
-              (click)="setSelectedListing(listing)">
-              {{ listing }}
-            </button>
-            <div *ngIf="listings.length > 0" class="dropdown-divider"></div>
-            <div class="dropdown">
-              <h6 class="dropdown-header">New Listing</h6>
-            </div>
-            <div class="dropdown pl-4 pr-4">
-              <div class="input-group input-group-sm mb-3">
-                <input type="text" class="form-control" name="listing" (keydown.enter)="setEnteredListing($event)"
-                  [(ngModel)]="enteredListing" />
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button" (click)="setEnteredListing($event)">&gt;</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-drop-down-with-input default-label="Enter a listing" default-new-label="New listing" [list]="listings" (selection)="selectedListing = $event"></app-drop-down-with-input>
       </td>
     </tr>
     <tr>
@@ -55,6 +30,6 @@
       </td>
     </tr>
   </table>
-  <button class="btn btn-primary btn-sm mt-3" [disabled]="items.length == 0 || !selectedOrEnteredListing"
+  <button class="btn btn-primary btn-sm mt-3" [disabled]="items.length == 0 || !selectedListing"
     (click)="submitParameters()" (keydown.enter)="submitParameters()">Start</button>
 </form>

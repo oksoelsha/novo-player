@@ -26,6 +26,7 @@ import { TotalsCardComponent } from './pages/dashboard/totals-card/totals-card.c
 import { MediaCardComponent } from './pages/dashboard/media-card/media-card.component';
 import { LaunchActivityComponent } from './pages/dashboard/launch-activity/launch-activity.component';
 import { ChangeListingComponent } from './popups/change-listing/change-listing.component';
+import { DropDownWithInputComponent } from './shared/drop-down-with-input/drop-down-with-input.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ChangeListingComponent } from './popups/change-listing/change-listing.c
     TotalsCardComponent,
     MediaCardComponent,
     LaunchActivityComponent,
-    ChangeListingComponent
+    ChangeListingComponent,
+    DropDownWithInputComponent
   ],
   imports: [
     BrowserModule,

@@ -281,6 +281,12 @@ export class HomeComponent implements OnInit {
       this.alertService.success("Game was moved: " + newGame.name + " -> " + newGame.listing);
       this.removeGameFromList(oldGame);
       this.initialize();
+      //add to listings if destination listing was new
+      if (this.listings.findIndex((e) => e == newGame.listing) < 0) {
+        let index: number;
+        for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(newGame.listing.toLowerCase()) < 0; index++);
+        this.listings.splice(index, 0, newGame.listing);
+      }
     });
   }
 
