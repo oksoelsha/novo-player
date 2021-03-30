@@ -268,9 +268,8 @@ export class HomeComponent implements OnInit {
   update(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then(() => {
       this.alertService.success("Game was updated: " + newGame.name);
-      //these two can be optimized
+      this.removeGameFromList(oldGame, false);
       this.addGameToSortedList(newGame);
-      this.removeGameFromList(oldGame);
       setTimeout(() => {
         this.showInfo(newGame);
       },0);
@@ -487,10 +486,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private removeGameFromList(game: Game) {
+  private removeGameFromList(game: Game, switchListingIfLastGameInCurrentListing: boolean = true) {
     this.games.splice(this.games.findIndex((e) => e.sha1Code == game.sha1Code), 1);
 
-    if (this.games.length == 0) {
+    if (switchListingIfLastGameInCurrentListing && this.games.length == 0) {
       this.listings.splice(this.listings.findIndex((e) => e == this.selectedListing), 1);
       if (this.listings.length > 0) {
         this.selectedListing = this.listings[0];
