@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 import { DropDownWithInputComponent } from './drop-down-with-input.component';
 
@@ -8,9 +9,12 @@ describe('DropDownWithInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DropDownWithInputComponent ]
+      declarations: [
+        DropDownWithInputComponent,
+        NgbDropdown
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
