@@ -268,8 +268,9 @@ export class HomeComponent implements OnInit {
   update(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then(() => {
       this.alertService.success("Game was updated: " + newGame.name);
-      this.removeGameFromList(oldGame);
+      //these two can be optimized
       this.addGameToSortedList(newGame);
+      this.removeGameFromList(oldGame);
       setTimeout(() => {
         this.showInfo(newGame);
       },0);
