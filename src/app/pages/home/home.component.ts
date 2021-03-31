@@ -139,6 +139,8 @@ export class HomeComponent implements OnInit {
           }
         } else if (event.key == 'Enter') {
           this.launch(this.selectedGame);
+        } else if (event.key == 'Delete') {
+          this.remove(event, this.selectedGame);
         }
       } else if (this.selectedGame == null && event.key == 'ArrowDown' && this.games.length > 0) {
         this.selectedGame = this.games[0];
