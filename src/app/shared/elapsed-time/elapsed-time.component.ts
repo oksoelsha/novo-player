@@ -35,7 +35,7 @@ export class ElapsedTimeComponent implements OnInit {
 
   private getElapsedTime(): any {
     let diff:number = this.now - this.startTime;
-    let hours = Math.floor((diff % 86400000) / 3600000);
+    let hours = Math.floor(diff / 3600000);
     let minutes = Math.floor((diff % 3600000) / 60000);
 
     return {
