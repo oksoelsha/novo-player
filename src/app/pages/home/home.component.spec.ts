@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { ScanParametersComponent } from 'src/app/popups/scan-parameters/scan-parameters.component';
 import { FileSystemChooserComponent } from 'src/app/shared/fs-chooser/fs-chooser.component';
 
@@ -17,7 +18,8 @@ describe('HomeComponent', () => {
       declarations: [
         HomeComponent,
         ScanParametersComponent,
-        FileSystemChooserComponent
+        FileSystemChooserComponent,
+        NgbDropdown
       ]
     })
       .compileComponents();

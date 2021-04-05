@@ -104,4 +104,13 @@ export class GamesService {
       this.ipc.send("getTotals");
     });
   }
+
+  async getSearch(text: string): Promise<Game[]> {
+    return new Promise<Game[]>((resolve, reject) => {
+      this.ipc.once("searchResponse_" + text, (event, arg) => {
+        resolve(arg);
+      });
+      this.ipc.send("search", text);
+    });
+  }
 }

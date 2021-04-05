@@ -46,6 +46,10 @@ export class GamesService {
         ipcMain.on('getTotals', (event, arg) => {
             this.getTotals();
         });
+
+        ipcMain.on('search', (event, text: string) => {
+            this.search(text);
+        });
     }
 
     saveGameInBatch(game: Game, reportResult: any = null, ref: any = null) {
@@ -175,6 +179,28 @@ export class GamesService {
             totals = new Totals(listings, games, roms, disks, tapes, harddisks, laserdiscs);
 
             self.win.webContents.send('getTotalsResponse', totals)
+        });
+    }
+
+    private search(text: string) {
+        var self = this;
+        let games: Game[] = [];
+        this.database.find({$or: [{name:{$regex: new RegExp(text, 'i') }}, {_id:{$regex: new RegExp('^' + text, 'i')}}]}, function (err: any, entries: any) {
+            let index: number = 0;
+            for (var entry of entries) {
+                let gameDO: GameDO = new GameDO(entry);
+                let game: Game = new Game(entry.name, entry._id, entry.size);
+                game.setListing(gameDO.listing);
+
+                games.push(game)
+                if (++index == 10) {
+                    break;
+                }
+            }
+            //order the games here rather than order on the database -> this is faster
+            games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+
+            self.win.webContents.send('searchResponse_' + text, games)
         });
     }
 }

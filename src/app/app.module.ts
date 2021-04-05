@@ -27,6 +27,7 @@ import { MediaCardComponent } from './pages/dashboard/media-card/media-card.comp
 import { LaunchActivityComponent } from './pages/dashboard/launch-activity/launch-activity.component';
 import { ChangeListingComponent } from './popups/change-listing/change-listing.component';
 import { DropDownWithInputComponent } from './shared/drop-down-with-input/drop-down-with-input.component';
+import { SearchComponent } from './pages/home/search/search.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { DropDownWithInputComponent } from './shared/drop-down-with-input/drop-d
     MediaCardComponent,
     LaunchActivityComponent,
     ChangeListingComponent,
-    DropDownWithInputComponent
+    DropDownWithInputComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

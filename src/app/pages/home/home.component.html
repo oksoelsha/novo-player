@@ -2,12 +2,9 @@
   <div class="area-on-the-left">
     <div class="table-buttons">
       <div ngbDropdown class="d-inline-block mr-1" (openChange)="openMenu = $event">
-        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle
-          aria-haspopup="true" aria-expanded="false">
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownMenu2">
-          <button ngbDropdownItem type="button" (click)="undoRemove()"
-            [disabled]="lastRemovedGame == null">
+        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle></button>
+        <div ngbDropdownMenu>
+          <button ngbDropdownItem type="button" (click)="undoRemove()" [disabled]="lastRemovedGame == null">
             Restore last deleted game
           </button>
           <div class="dropdown-divider"></div>
@@ -17,16 +14,24 @@
         </div>
       </div>
       <div *ngIf="listings.length > 0" ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
-        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle
-          aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
           {{ selectedListing }}
           <span class="badge badge-light">{{ games.length }}</span>
         </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownMenu2">
+        <div ngbDropdownMenu>
           <button *ngFor="let listing of listings" ngbDropdownItem type="button"
             (click)="selectedListing = listing; getGames(listing)">
             {{ listing }}
           </button>
+        </div>
+      </div>
+      <div id="search-button" ngbDropdown class="d-inline-block"
+        (openChange)="openMenu = $event; searchMenuOpen = $event;" #searchDropdown="ngbDropdown">
+        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
+          <img src="assets/images/general/search-13-16.png">
+        </button>
+        <div ngbDropdownMenu class="pt-0 pb-0">
+          <home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></home-game-search>
         </div>
       </div>
     </div>
@@ -75,8 +80,7 @@
       <div class="additional-info" *ngIf="selectedGame">
         <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="launch(selectedGame)">Launch</button>
         <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
-          <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button" aria-haspopup="true"
-            aria-expanded="false">
+          <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
             Edit
           </button>
           <div ngbDropdownMenu>

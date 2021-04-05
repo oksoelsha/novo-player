@@ -12,6 +12,7 @@ import { Settings } from 'src/app/models/settings';
 import { MediaEditComponent } from 'src/app/popups/media-edit/media-edit.component';
 import { HardwareEditComponent } from 'src/app/popups/hardware-edit/hardware-edit.component';
 import { ChangeListingComponent } from 'src/app/popups/change-listing/change-listing.component';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
@@ -34,6 +35,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('mediaEdit') mediaEdit: MediaEditComponent;
   @ViewChild('hardwareEdit') hardwareEdit: HardwareEditComponent;
   @ViewChild('changeListing') changeListing: ChangeListingComponent;
+  @ViewChild('searchDropdown', { static: true }) private searchDropdown: NgbDropdown;
 
   private readonly remote: Remote = (<any>window).require('electron').remote;
 
@@ -62,6 +64,7 @@ export class HomeComponent implements OnInit {
   scanRunning: boolean = false;
   listings: string[] = [];
   openMenu: boolean = false;
+  searchMenuOpen: boolean = false;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -112,7 +115,29 @@ export class HomeComponent implements OnInit {
     private settingsService: SettingsService) { }
 
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
+  keyupEvent(event: KeyboardEvent) {
+    if (!this.isEditMode() && !this.openMenu) {
+      if (this.selectedGame != null) {
+        if (event.key == 'ArrowUp') {
+          var index = this.games.indexOf(this.selectedGame);
+          if (index > 0) {
+            this.showInfo(this.games[index - 1]);
+          }
+        } else if (event.key == 'ArrowDown') {
+          var index = this.games.indexOf(this.selectedGame);
+          if (index < (this.games.length - 1)) {
+            this.showInfo(this.games[index + 1]);
+          }
+        }
+      } else if (event.key == 'ArrowDown' && this.games.length > 0) {
+        this.selectedGame = this.games[0];
+        this.showInfo(this.games[0]);
+      }
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  keydownEvent(event: KeyboardEvent) {
     if (!this.isEditMode() && !this.openMenu) {
       if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
         (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
@@ -125,26 +150,14 @@ export class HomeComponent implements OnInit {
           this.jumpToNearestGame(this.gameQuickSearch);
           this.gameQuickSearch = "";
         }, 600)
-      }
-      else if (this.selectedGame != null) {
-        if (event.key == 'ArrowUp') {
-          var index = this.games.indexOf(this.selectedGame);
-          if (index > 0) {
-            this.showInfo(this.games[index - 1]);
-          }
-        } else if (event.key == 'ArrowDown') {
-          var index = this.games.indexOf(this.selectedGame);
-          if (index < (this.games.length - 1)) {
-            this.showInfo(this.games[index + 1]);
-          }
-        } else if (event.key == 'Enter') {
+      } else if (event.ctrlKey && (event.key == 'f' || event.key == 'F')) {
+        this.searchDropdown.open();
+      } else if (this.selectedGame != null) {
+        if (event.key == 'Enter') {
           this.launch(this.selectedGame);
         } else if (event.key == 'Delete') {
           this.remove(event, this.selectedGame);
         }
-      } else if (this.selectedGame == null && event.key == 'ArrowDown' && this.games.length > 0) {
-        this.selectedGame = this.games[0];
-        this.showInfo(this.games[0]);
       }
     }
   }
@@ -176,13 +189,18 @@ export class HomeComponent implements OnInit {
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
   }
 
-  getGames(listing: string) {
+  getGames(listing: string, sha1Code: string = null) {
     this.selectedListing = listing;
     this.gamesService.getGames(this.selectedListing).then((data: Game[]) => {
       this.games = data;
       this.gamesEditMode.clear();
       for (let game of data) {
         this.gamesEditMode.set(game.sha1Code, false);
+        if (sha1Code && game.sha1Code == sha1Code) {
+          setTimeout(() => {
+            this.showInfo(game);
+          },0);
+        }
       }
     });
   }
@@ -315,6 +333,17 @@ export class HomeComponent implements OnInit {
 
   openGenerationMSXInBrowser(generationMSXId: number) {
     this.remote.shell.openExternal("http://www.generation-msx.nl/msxdb/softwareinfo/" + generationMSXId);
+  }
+
+  showFoundGame(game: Game) {
+    if (game.listing == this.selectedListing) {
+      this.showInfoBySha1Code(game.sha1Code);
+    } else {
+      this.getGames(game.listing, game.sha1Code);
+    }
+
+    //this is needed for when the Enter key is pressed to select a game from the search menu
+    this.searchDropdown.close();
   }
 
   getGameMedium(game: Game): string {
@@ -520,5 +549,9 @@ export class HomeComponent implements OnInit {
 
   private isEditMode(): boolean {
     return this.selectedGame && this.gamesEditMode.get(this.selectedGame.sha1Code);
+  }
+
+  private showInfoBySha1Code(sha1Code: string) {
+    this.games.filter(g => g.sha1Code == sha1Code).forEach(match => this.showInfo(match));
   }
 }
