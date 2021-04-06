@@ -23,14 +23,16 @@ export class PopupComponent implements OnInit {
   }
 
   open(): void {
-    //intercept key board events to prevent them from propagating to the parent window
+    //intercept keyboard events to prevent them from propagating to the parent window
     document.addEventListener('keyup', this.handleKeyEvents);
+    document.addEventListener('keydown', this.handleKeyEvents);
 
     document.getElementById(this.popupId).classList.add('popup-fade');
   }
 
   close(): void {
     document.removeEventListener('keyup', this.handleKeyEvents);
+    document.removeEventListener('keydown', this.handleKeyEvents);
 
     document.getElementById(this.popupId).classList.remove('popup-fade');
   }
