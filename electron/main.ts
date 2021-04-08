@@ -31,6 +31,7 @@ function createWindow() {
         height: 600,
         frame: false,
         titleBarStyle: 'hidden',
+        icon: path.join(__dirname, `/../../../dist/novo-player/assets/images/general/novo-player.ico`),
         backgroundColor: '#2e2c29',
         show: false,
         webPreferences: {
@@ -47,11 +48,11 @@ function createWindow() {
     win.loadURL(url.toString());
 
     win.once('ready-to-show', () => {
-        win.show()
+        win.show();
     })
 
     win.on('closed', () => {
-        win = null
+        win = null;
     })
 }
 
