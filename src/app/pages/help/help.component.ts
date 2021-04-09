@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-help',
   templateUrl: './help.component.html',
-  styleUrls: ['./help.component.sass']
+  styleUrls: ['../../common-styles.sass', './help.component.sass']
 })
-export class HelpComponent implements OnInit {
+export class HelpComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

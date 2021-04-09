@@ -4,7 +4,6 @@ import { GamesService } from 'src/app/services/games.service';
 import { ScreenshotData } from 'src/app/models/screenshot-data';
 import { ScannerService } from 'src/app/services/scanner.service';
 import { GameUtils } from 'src/app/models/game-utils';
-import { Remote } from 'electron';
 import { AlertsService } from 'src/app/shared/alerts/alerts.service';
 import { ScanParametersComponent, ScanParameters } from 'src/app/popups/scan-parameters/scan-parameters.component';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -36,8 +35,6 @@ export class HomeComponent implements OnInit {
   @ViewChild('hardwareEdit') hardwareEdit: HardwareEditComponent;
   @ViewChild('changeListing') changeListing: ChangeListingComponent;
   @ViewChild('searchDropdown', { static: true }) private searchDropdown: NgbDropdown;
-
-  private readonly remote: Remote = (<any>window).require('electron').remote;
 
   private readonly noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
   private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
@@ -331,8 +328,12 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  openGenerationMSXInBrowser(generationMSXId: number) {
-    this.remote.shell.openExternal("http://www.generation-msx.nl/msxdb/softwareinfo/" + generationMSXId);
+  isDisplayGenerationMSX() {
+    return this.selectedGame.generationMSXId < 10000;
+  }
+
+  getGenerationMSXAddress() {
+    return "http://www.generation-msx.nl/msxdb/softwareinfo/" + this.selectedGame.generationMSXId;
   }
 
   showFoundGame(game: Game) {

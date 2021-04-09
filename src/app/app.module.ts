@@ -28,6 +28,7 @@ import { LaunchActivityComponent } from './pages/dashboard/launch-activity/launc
 import { ChangeListingComponent } from './popups/change-listing/change-listing.component';
 import { DropDownWithInputComponent } from './shared/drop-down-with-input/drop-down-with-input.component';
 import { SearchComponent } from './pages/home/search/search.component';
+import { WebLinkComponent } from './shared/web-link/web-link.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { SearchComponent } from './pages/home/search/search.component';
     LaunchActivityComponent,
     ChangeListingComponent,
     DropDownWithInputComponent,
-    SearchComponent
+    SearchComponent,
+    WebLinkComponent
   ],
   imports: [
     BrowserModule,
