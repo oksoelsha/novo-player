@@ -31,7 +31,7 @@ function createWindow() {
         height: 600,
         frame: false,
         titleBarStyle: 'hidden',
-        icon: path.join(__dirname, `/../../../dist/novo-player/assets/images/general/novo-player.ico`),
+        icon: path.join(__dirname, `/../../../dist/novo-player/assets/icon.ico`),
         backgroundColor: '#2e2c29',
         show: false,
         webPreferences: {

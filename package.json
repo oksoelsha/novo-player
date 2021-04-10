@@ -1,6 +1,6 @@
 {
   "name": "novo-player",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "main": "electron/dist/electron/main.js",
   "scripts": {
     "ng": "ng",
@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build --base-href ./ && tsc --p electron && electron ."
+    "electron": "ng build --base-href ./ && tsc --p electron && electron .",
+    "package-win": "electron-packager . --overwrite --no-tmpdir --platform=win32 --arch=x64  --prune=true --out=../release-builds --icon=./src/assets/icon.ico"
   },
   "private": true,
   "dependencies": {
@@ -49,6 +50,7 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "electron": "^11.4.2",
+    "electron-packager": "^15.2.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.0.0",
