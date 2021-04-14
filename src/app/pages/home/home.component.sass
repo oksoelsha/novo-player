@@ -31,6 +31,9 @@
   display: none
 
 #games-table
+  display: flex
+  flex-direction: column
+  height: 100%
   table
     font-size: .875rem
     th
@@ -44,7 +47,7 @@
   outline: none
 
 #games-table-data
-  height: 86vh
+  height: 100%
   width: 41.875rem
   overflow-y: auto
   scroll-behavior: smooth
@@ -69,6 +72,10 @@
       padding-left: .3125rem
       padding-top: .1875rem
       padding-bottom: .1875rem
+
+#games-table-bottom
+  height: 4.25rem
+  margin-top: auto
 
 #gameNameEditInput
   width: 100%
