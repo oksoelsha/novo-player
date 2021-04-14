@@ -78,7 +78,19 @@
         <img src="{{ screenshot_b_2.screenshot2 }}" class="{{ transparent2 }}">
       </div>
       <div class="additional-info" *ngIf="selectedGame">
-        <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="launch(selectedGame)">Launch</button>
+        <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
+          <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
+            Launch
+          </button>
+          <div ngbDropdownMenu>
+            <button ngbDropdownItem type="button" (click)="launch(selectedGame)" [disabled]="!isOpenMSXPathDefined">
+              on openMSX
+            </button>
+            <button ngbDropdownItem type="button" (click)="launchWebmsx(selectedGame)" [disabled]="!isWebMSXPathDefined">
+              on WebMSX
+            </button>
+          </div>
+        </div>
         <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
             Edit

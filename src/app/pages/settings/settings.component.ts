@@ -17,6 +17,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   openmsxPath: string = "";
   screenshotsPath: string = "";
   defaultListing: string = "";
+  webmsxPath: string = "";
   submitDisabled: boolean = true;
   listings: string[] = [];
 
@@ -29,6 +30,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
       self.openmsxPath = settings.openmsxPath;
       self.screenshotsPath = settings.screenshotsPath;
       self.defaultListing = settings.defaultListing;
+      self.webmsxPath = settings.webmsxPath;
     })
   }
 
@@ -57,7 +59,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   }
 
   submitSettings(form: any) {
-    let settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path'], this.defaultListing);
+    let settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path'], this.defaultListing, form.value['webmsx-path']);
     this.settingsService.saveSettings(settings);
     this.submitDisabled = true;
     this.alertService.success('Settings saved successfully');

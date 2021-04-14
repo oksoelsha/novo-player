@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationCancel } from '@angular/router';
+import { Router, NavigationCancel, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,6 @@ import { Router, NavigationCancel } from '@angular/router';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  title = 'novo-player';
   links: Link[];
   selectedIndex: number = 0;
   oldSelectedIndex: number = 0;
@@ -19,6 +18,10 @@ export class AppComponent implements OnInit {
         //therefore restore the old index so that the navigation bar selection
         //goes back to where it was, which is the current form page
         this.selectedIndex = this.oldSelectedIndex;
+      } else if (val instanceof NavigationEnd && val.url.startsWith("/wmsx;")) {
+        //When when detect navigation to WebMSX page, reset all selected navigation icons
+        this.selectedIndex = -1;
+        this.oldSelectedIndex = 0;
       }
     });
   }

@@ -29,6 +29,7 @@ import { ChangeListingComponent } from './popups/change-listing/change-listing.c
 import { DropDownWithInputComponent } from './shared/drop-down-with-input/drop-down-with-input.component';
 import { SearchComponent } from './pages/home/search/search.component';
 import { WebLinkComponent } from './shared/web-link/web-link.component';
+import { WebMSXComponent } from './pages/web-msx/web-msx.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { WebLinkComponent } from './shared/web-link/web-link.component';
     ChangeListingComponent,
     DropDownWithInputComponent,
     SearchComponent,
-    WebLinkComponent
+    WebLinkComponent,
+    WebMSXComponent
   ],
   imports: [
     BrowserModule,

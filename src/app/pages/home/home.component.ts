@@ -12,6 +12,7 @@ import { MediaEditComponent } from 'src/app/popups/media-edit/media-edit.compone
 import { HardwareEditComponent } from 'src/app/popups/hardware-edit/hardware-edit.component';
 import { ChangeListingComponent } from 'src/app/popups/change-listing/change-listing.component';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -62,6 +63,8 @@ export class HomeComponent implements OnInit {
   listings: string[] = [];
   openMenu: boolean = false;
   searchMenuOpen: boolean = false;
+  isOpenMSXPathDefined: boolean;
+  isWebMSXPathDefined: boolean;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -109,7 +112,8 @@ export class HomeComponent implements OnInit {
   constructor(private gamesService: GamesService,
     private scanner: ScannerService,
     private alertService: AlertsService,
-    private settingsService: SettingsService) { }
+    private settingsService: SettingsService,
+    private router: Router) { }
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
@@ -180,7 +184,9 @@ export class HomeComponent implements OnInit {
         }
         self.getGames(this.selectedListing);
       });
-    })
+      this.isOpenMSXPathDefined = settings.openmsxPath != null && settings.openmsxPath.trim() != "";
+      this.isWebMSXPathDefined = settings.webmsxPath != null && settings.webmsxPath.trim() != "";
+    });
 
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
@@ -215,6 +221,10 @@ export class HomeComponent implements OnInit {
         this.alertService.info("openMSX window closed for: " + game.name);
       }
     });
+  }
+
+  launchWebmsx(game: Game) {
+    this.router.navigate(['./wmsx', { gameParams: JSON.stringify(this.selectedGame) }], { queryParams: this.getWebMSXParams() });
   }
 
   processKeyEventsOnTable(event: any) {
@@ -554,5 +564,22 @@ export class HomeComponent implements OnInit {
 
   private showInfoBySha1Code(sha1Code: string) {
     this.games.filter(g => g.sha1Code == sha1Code).forEach(match => this.showInfo(match));
+  }
+
+  private getWebMSXParams(): any {
+    var webMSXParams = {};
+    if (this.selectedGame.romA != null) {
+      webMSXParams["ROM"] = this.selectedGame.romA;
+    }
+    if (this.selectedGame.diskA != null) {
+      webMSXParams["DISK"] = this.selectedGame.diskA;
+    }
+    if (this.selectedGame.extensionRom == "scc") {
+      webMSXParams["PRESETS"] = "SCC";
+    }
+    if (this.selectedGame.tape != null) {
+      webMSXParams["TAPE"] = this.selectedGame.tape;
+    }
+    return webMSXParams;
   }
 }

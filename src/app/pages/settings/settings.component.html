@@ -28,5 +28,14 @@
     </div>
   </div>
 
+  <div class="form-group">
+    <label for="inputWebMSXPath">WebMSX Path</label>
+    <div class="input-group">
+      <input type="text" class="form-control form-control-sm" name="webmsx-path" [(ngModel)]="webmsxPath" />
+      <app-fs-chooser directory-mode=true label="Browse" (onChosen)="updateControl('webmsx-path', $event)">
+      </app-fs-chooser>
+    </div>
+  </div>
+
   <button class="btn btn-primary" [disabled]="submitDisabled">Save</button>
 </form>

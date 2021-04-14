@@ -1,0 +1,8 @@
+<div id="wmsx">
+    <div id="name">{{ selectedGame.name }}</div>
+    <div id="company-and-year" *ngIf="selectedGame.company">
+        {{ selectedGame.company }}
+        <span *ngIf="selectedGame.year"> - {{ selectedGame.year }}</span>
+    </div>
+    <div id="wmsx-screen"></div>
+</div>
