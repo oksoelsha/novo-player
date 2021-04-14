@@ -283,6 +283,7 @@ export class HomeComponent implements OnInit {
           if (this.lastRemovedGame.listing == this.selectedListing) {
             this.addGameToSortedList(this.lastRemovedGame);
           }
+          this.addListingToListings(this.lastRemovedGame.listing);
           sessionStorage.removeItem('lastRemovedGame');
           this.lastRemovedGame = null;
         } else {
@@ -308,12 +309,7 @@ export class HomeComponent implements OnInit {
       this.alertService.success("Game was moved: " + newGame.name + " -> " + newGame.listing);
       this.removeGameFromList(oldGame);
       this.initialize();
-      //add to listings if destination listing was new
-      if (this.listings.findIndex((e) => e == newGame.listing) < 0) {
-        let index: number;
-        for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(newGame.listing.toLowerCase()) < 0; index++);
-        this.listings.splice(index, 0, newGame.listing);
-      }
+      this.addListingToListings(newGame.listing);
     });
   }
 
@@ -547,6 +543,15 @@ export class HomeComponent implements OnInit {
       this.games.splice(index, 0, game);
     } else {
       this.games.push(game);
+    }
+  }
+
+  private addListingToListings(listing: string) {
+    //add listing to listings if it didn't exist there
+    if (this.listings.findIndex((e) => e == listing) < 0) {
+      let index: number;
+      for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++);
+      this.listings.splice(index, 0, listing);
     }
   }
 
