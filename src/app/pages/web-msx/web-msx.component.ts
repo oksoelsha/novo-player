@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Game } from 'src/app/models/game';
 import { Settings } from 'src/app/models/settings';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -11,11 +12,12 @@ import { SettingsService } from 'src/app/services/settings.service';
 })
 export class WebMSXComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  private paramsSubscription: Subscription;
   private wmsxScript: any;
   selectedGame: Game;
 
   constructor(private renderer: Renderer2, private route: ActivatedRoute, private settingsService: SettingsService) {
-    this.route.params.subscribe(params => {
+    this.paramsSubscription = this.route.params.subscribe(params => {
       this.selectedGame = JSON.parse(route.snapshot.params['gameParams']);
     });
   }
@@ -38,6 +40,7 @@ export class WebMSXComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.paramsSubscription.unsubscribe();
     window["WMSX"]["shutdown"]();
     this.renderer.removeChild(document.body, this.wmsxScript);
   }

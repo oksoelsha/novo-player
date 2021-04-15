@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LaunchActivity, LaunchActivityService } from 'src/app/services/launch-activity.service';
 
@@ -7,7 +7,7 @@ import { LaunchActivity, LaunchActivityService } from 'src/app/services/launch-a
   templateUrl: './launch-activity.component.html',
   styleUrls: ['../../../common-styles.sass', '../dashboard.component.sass', './launch-activity.component.sass']
 })
-export class LaunchActivityComponent implements OnInit, OnDestroy {
+export class LaunchActivityComponent implements OnDestroy {
 
   private launchActivitySubscription: Subscription;
   launchActivities: LaunchActivity[] = [];
@@ -18,9 +18,6 @@ export class LaunchActivityComponent implements OnInit, OnDestroy {
       self.launchActivities = launchActivity;
     });
     this.launchActivities = launchActivityService.getActivities();
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy() {
