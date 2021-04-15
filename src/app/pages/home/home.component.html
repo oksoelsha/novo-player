@@ -20,7 +20,7 @@
         </button>
         <div ngbDropdownMenu>
           <button *ngFor="let listing of listings" ngbDropdownItem type="button"
-            (click)="selectedListing = listing; getGames(listing)">
+            (click)="setSelectedListing(listing)">
             {{ listing }}
           </button>
         </div>

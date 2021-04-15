@@ -37,8 +37,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('changeListing') changeListing: ChangeListingComponent;
   @ViewChild('searchDropdown', { static: true }) private searchDropdown: NgbDropdown;
 
-  private readonly noScreenshot1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
-  private readonly noScreenshot2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
+  private readonly noScreenshotImage1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
+  private readonly noScreenshotImage2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
+  private readonly noScreenshotData: ScreenshotData = new ScreenshotData("", "");
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
   private selectedGameMedium: Promise<string>;
@@ -187,9 +188,14 @@ export class HomeComponent implements OnInit {
       this.isOpenMSXPathDefined = settings.openmsxPath != null && settings.openmsxPath.trim() != "";
       this.isWebMSXPathDefined = settings.webmsxPath != null && settings.webmsxPath.trim() != "";
     });
+  }
 
-    this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
-    this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
+  setSelectedListing(listing: string) {
+    this.selectedGame = null;
+    this.setScreenshots(this.noScreenshotData);
+
+    this.selectedListing = listing;
+    this.getGames(listing)
   }
 
   getGames(listing: string, sha1Code: string = null) {
@@ -319,19 +325,8 @@ export class HomeComponent implements OnInit {
     this.adjustScrollForSelectedGame(game);
 
     this.gamesService.getScreenshot(game).then((screenshots) => {
-      if (this.toggle) {
-        this.screenshot_a_1 = this.getScreenshot1Data(screenshots);
-        this.screenshot_b_1 = this.getScreenshot2Data(screenshots);
-        this.transparent1 = ""
-        this.transparent2 = "transparent"
-      } else {
-        this.screenshot_a_2 = this.getScreenshot1Data(screenshots);
-        this.screenshot_b_2 = this.getScreenshot2Data(screenshots);
-        this.transparent1 = "transparent"
-        this.transparent2 = ""
-      }
-      this.toggle = !this.toggle;
-    })
+      this.setScreenshots(screenshots);
+    });
   }
 
   isDisplayGenerationMSX() {
@@ -491,8 +486,23 @@ export class HomeComponent implements OnInit {
 
   private initialize() {
     this.selectedGame = null;
-    this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshot1;
-    this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshot2;
+    this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshotImage1;
+    this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshotImage2;
+  }
+
+  private setScreenshots(screenshots: ScreenshotData) {
+    if (this.toggle) {
+      this.screenshot_a_1 = this.getScreenshot1Data(screenshots);
+      this.screenshot_b_1 = this.getScreenshot2Data(screenshots);
+      this.transparent1 = ""
+      this.transparent2 = "transparent"
+    } else {
+      this.screenshot_a_2 = this.getScreenshot1Data(screenshots);
+      this.screenshot_b_2 = this.getScreenshot2Data(screenshots);
+      this.transparent1 = "transparent"
+      this.transparent2 = ""
+    }
+    this.toggle = !this.toggle;
   }
 
   private adjustScrollForSelectedGame(game: Game) {
@@ -510,7 +520,7 @@ export class HomeComponent implements OnInit {
 
   private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {
     if (!screenshots.screenshot1) {
-      return this.noScreenshot1;
+      return this.noScreenshotImage1;
     } else {
       return screenshots;
     }
@@ -518,7 +528,7 @@ export class HomeComponent implements OnInit {
 
   private getScreenshot2Data(screenshots: ScreenshotData): ScreenshotData {
     if (!screenshots.screenshot2) {
-      return this.noScreenshot2;
+      return this.noScreenshotImage2;
     } else {
       return screenshots;
     }
