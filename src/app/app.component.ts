@@ -7,6 +7,7 @@ import { Router, NavigationCancel, NavigationEnd } from '@angular/router';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
+  title: string = "Novo Player";
   links: Link[];
   selectedIndex: number = 0;
   oldSelectedIndex: number = 0;

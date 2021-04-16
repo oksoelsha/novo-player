@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Game } from 'src/app/models/game';
 
 import { WebMSXComponent } from './web-msx.component';
 
@@ -8,11 +9,26 @@ describe('WebMSXComponent', () => {
   let fixture: ComponentFixture<WebMSXComponent>;
 
   beforeEach(async () => {
+    let game: Game = new Game("name", "12345", 12345);
+    game.setCompany("company");
+    game.setYear("1986");
     await TestBed.configureTestingModule({
-      imports: [ RouterModule.forRoot([]) ],
-      declarations: [ WebMSXComponent ]
+      imports: [RouterModule.forRoot([])],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => JSON.stringify(game),
+              },
+            },
+          },
+        },
+      ],
+      declarations: [WebMSXComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { Game } from 'src/app/models/game';
 import { Settings } from 'src/app/models/settings';
 import { EmulatorService } from 'src/app/services/emulator.service';
@@ -13,15 +12,12 @@ import { SettingsService } from 'src/app/services/settings.service';
 })
 export class WebMSXComponent implements OnInit, OnDestroy {
 
-  private paramsSubscription: Subscription;
   private wmsxScript: any;
   selectedGame: Game;
   error: boolean;
 
   constructor(private renderer: Renderer2, private route: ActivatedRoute, private settingsService: SettingsService, private emulatorService: EmulatorService) {
-    this.paramsSubscription = this.route.params.subscribe(params => {
-      this.selectedGame = JSON.parse(route.snapshot.params['gameParams']);
-    });
+    this.selectedGame = JSON.parse(route.snapshot.paramMap.get('gameParams'));
   }
 
   ngOnInit(): void {
@@ -52,7 +48,6 @@ export class WebMSXComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.paramsSubscription.unsubscribe();
     if (!this.error) {
       window["WMSX"]["shutdown"]();
       this.renderer.removeChild(document.body, this.wmsxScript);
