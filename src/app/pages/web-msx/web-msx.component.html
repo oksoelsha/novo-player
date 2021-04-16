@@ -4,5 +4,6 @@
         {{ selectedGame.company }}
         <span *ngIf="selectedGame.year"> - {{ selectedGame.year }}</span>
     </div>
-    <div id="wmsx-screen"></div>
+    <div id="wmsx-screen" *ngIf="!error"></div>
+    <div id="error-message" *ngIf="error">Error loading WebMSX. Make sure the path is set correctly</div>
 </div>

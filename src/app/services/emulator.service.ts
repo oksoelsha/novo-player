@@ -36,4 +36,13 @@ export class EmulatorService {
       this.ipc.send("getExtensions");
     });
   }
+
+  async getWebMSXPath(folder: string, file: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      this.ipc.once("getWebMSXPathResponse", (event, fullpath: string) => {
+        resolve(fullpath);
+      });
+      this.ipc.send("getWebMSXPath", folder, file);
+    });
+  }
 }

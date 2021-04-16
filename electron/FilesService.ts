@@ -20,6 +20,15 @@ export class FilesService {
         ipcMain.on('openFileExplorer', (event, file) => {
             var screenshotData = this.openFileExplorer(file);
         })
+
+        ipcMain.on('getWebMSXPath', (event, folder: string, file: string) => {
+            var fullpath: string = path.join(folder, file);
+            if (fs.existsSync(fullpath)) {
+                this.win.webContents.send('getWebMSXPathResponse', fullpath);
+            } else {
+                this.win.webContents.send('getWebMSXPathResponse', null);
+            }
+        })
     }
 
     private getScreenshotData(genMsxId: number, suffix: string): ScreenshotData {
