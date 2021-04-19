@@ -30,6 +30,7 @@ import { DropDownWithInputComponent } from './shared/drop-down-with-input/drop-d
 import { SearchComponent } from './pages/home/search/search.component';
 import { WebLinkComponent } from './shared/web-link/web-link.component';
 import { WebMSXComponent } from './pages/web-msx/web-msx.component';
+import { MusicComponent } from './pages/home/music/music.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { WebMSXComponent } from './pages/web-msx/web-msx.component';
     DropDownWithInputComponent,
     SearchComponent,
     WebLinkComponent,
-    WebMSXComponent
+    WebMSXComponent,
+    MusicComponent
   ],
   imports: [
     BrowserModule,

@@ -95,28 +95,38 @@
         </div>
         <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
-            Edit
+            Actions
           </button>
           <div ngbDropdownMenu>
             <button ngbDropdownItem type="button" (click)="edit(selectedGame)">
-              Name
+              Rename
             </button>
             <button ngbDropdownItem type="button" (click)="mediaEdit.open()">
-              Media
+              Edit Media
             </button>
             <button ngbDropdownItem type="button" (click)="hardwareEdit.open()">
-              Hardware
+              Edit Hardware
             </button>
-          </div>
-        </div>
-        <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
-          <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
-            More
-          </button>
-          <div ngbDropdownMenu>
+            <div class="dropdown-divider"></div>
             <button ngbDropdownItem type="button" (click)="changeListing.open()">
               Move to another listing
             </button>
+            </div>
+        </div>
+        <div *ngIf="musicFiles" class="d-inline-block">
+          <div class="d-inline-block" ngbDropdown (openChange)="openMenu = $event">
+            <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
+              <img src="assets/images/music/musical-note.png">
+            </button>
+            <div ngbDropdownMenu>
+              <button *ngFor="let musicFile of musicFiles" ngbDropdownItem type="button"
+                (click)="setSelectedMusicFile(musicFile)">
+                {{ getMusicName(musicFile) }}
+              </button>
+            </div>    
+          </div>
+          <div class="d-inline-block">
+            <home-game-music [music-url]="selectedMusicFile" [title]="getMusicName(selectedMusicFile)"></home-game-music>
           </div>
         </div>
         <table>

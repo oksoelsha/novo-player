@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IpcRenderer } from 'electron';
 import { Game } from '../models/game';
-import { ScreenshotData } from '../models/screenshot-data';
+import { GameSecondaryData } from '../models/secondary-data';
 import { Totals } from '../models/totals';
 import { LaunchActivityService } from './launch-activity.service';
 
@@ -83,12 +83,12 @@ export class GamesService {
     });
   }
 
-  getScreenshot(game: Game): Promise<ScreenshotData> {
-    return new Promise<ScreenshotData>((resolve, reject) => {
-      this.ipc.once("getScreenshotResponse" + game.sha1Code, (event, arg) => {
+  getSecondaryData(game: Game): Promise<GameSecondaryData> {
+    return new Promise<GameSecondaryData>((resolve, reject) => {
+      this.ipc.once("getSecondaryDataResponse" + game.sha1Code, (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getScreenshot", game.sha1Code, game.generationMSXId, game.screenshotSuffix);
+      this.ipc.send("getSecondaryData", game.sha1Code, game.generationMSXId, game.screenshotSuffix);
     });
   }
 

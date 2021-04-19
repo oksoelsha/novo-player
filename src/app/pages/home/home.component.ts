@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef, HostListener, ElementRef } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { GamesService } from 'src/app/services/games.service';
-import { ScreenshotData } from 'src/app/models/screenshot-data';
+import { GameSecondaryData } from 'src/app/models/secondary-data';
 import { ScannerService } from 'src/app/services/scanner.service';
 import { GameUtils } from 'src/app/models/game-utils';
 import { AlertsService } from 'src/app/shared/alerts/alerts.service';
@@ -37,9 +37,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('changeListing') changeListing: ChangeListingComponent;
   @ViewChild('searchDropdown', { static: true }) private searchDropdown: NgbDropdown;
 
-  private readonly noScreenshotImage1: ScreenshotData = new ScreenshotData("assets/noscrsht.png", "");
-  private readonly noScreenshotImage2: ScreenshotData = new ScreenshotData("", "assets/noscrsht.png");
-  private readonly noScreenshotData: ScreenshotData = new ScreenshotData("", "");
+  private readonly noScreenshotImage1: GameSecondaryData = new GameSecondaryData("assets/noscrsht.png", "", null);
+  private readonly noScreenshotImage2: GameSecondaryData = new GameSecondaryData("", "assets/noscrsht.png", null);
+  private readonly noScreenshotData: GameSecondaryData = new GameSecondaryData("", "", null);
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
   private selectedGameMedium: Promise<string>;
@@ -54,10 +54,10 @@ export class HomeComponent implements OnInit {
   editedGameName: string;
   selectedGame: Game;
   lastRemovedGame: Game = null;
-  screenshot_a_1: ScreenshotData;
-  screenshot_a_2: ScreenshotData;
-  screenshot_b_1: ScreenshotData;
-  screenshot_b_2: ScreenshotData;
+  screenshot_a_1: GameSecondaryData;
+  screenshot_a_2: GameSecondaryData;
+  screenshot_b_1: GameSecondaryData;
+  screenshot_b_2: GameSecondaryData;
   transparent1: string = "";
   transparent2: string = "transparent";
   scanRunning: boolean = false;
@@ -66,6 +66,8 @@ export class HomeComponent implements OnInit {
   searchMenuOpen: boolean = false;
   isOpenMSXPathDefined: boolean;
   isWebMSXPathDefined: boolean;
+  musicFiles: string[];
+  selectedMusicFile: string;
 
   private readonly gameDetails = [
     { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
@@ -323,9 +325,9 @@ export class HomeComponent implements OnInit {
     this.selectedGame = game;
     this.setSelectedGameMedium();
     this.adjustScrollForSelectedGame(game);
-
-    this.gamesService.getScreenshot(game).then((screenshots) => {
-      this.setScreenshots(screenshots);
+    this.gamesService.getSecondaryData(game).then((secondaryData) => {
+      this.setScreenshots(secondaryData);
+      this.setMusicFiles(secondaryData);
     });
   }
 
@@ -490,19 +492,42 @@ export class HomeComponent implements OnInit {
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshotImage2;
   }
 
-  private setScreenshots(screenshots: ScreenshotData) {
+  private setScreenshots(secondaryData: GameSecondaryData) {
     if (this.toggle) {
-      this.screenshot_a_1 = this.getScreenshot1Data(screenshots);
-      this.screenshot_b_1 = this.getScreenshot2Data(screenshots);
+      this.screenshot_a_1 = this.getScreenshot1Data(secondaryData);
+      this.screenshot_b_1 = this.getScreenshot2Data(secondaryData);
       this.transparent1 = ""
       this.transparent2 = "transparent"
     } else {
-      this.screenshot_a_2 = this.getScreenshot1Data(screenshots);
-      this.screenshot_b_2 = this.getScreenshot2Data(screenshots);
+      this.screenshot_a_2 = this.getScreenshot1Data(secondaryData);
+      this.screenshot_b_2 = this.getScreenshot2Data(secondaryData);
       this.transparent1 = "transparent"
       this.transparent2 = ""
     }
     this.toggle = !this.toggle;
+  }
+
+  private setMusicFiles(secondaryData: GameSecondaryData) {
+    this.musicFiles = secondaryData.musicFiles;
+    if (this.musicFiles && this.musicFiles.length > 0) {
+      this.selectedMusicFile = this.musicFiles[0];
+    } else {
+      this.selectedMusicFile = null;
+    }
+  }
+
+  setSelectedMusicFile(musicFile: string) {
+    this.selectedMusicFile = musicFile;
+  }
+
+  getMusicName(musicFile: string) {
+    let firstIndex = musicFile.lastIndexOf('_') + 1;
+    let lastIndex = musicFile.lastIndexOf('.');
+    if (firstIndex < 0 || lastIndex < 0 || lastIndex <= firstIndex) {
+      return "Unknown";
+    } else {
+      return musicFile.substring(firstIndex, lastIndex);
+    }
   }
 
   private adjustScrollForSelectedGame(game: Game) {
@@ -518,7 +543,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private getScreenshot1Data(screenshots: ScreenshotData): ScreenshotData {
+  private getScreenshot1Data(screenshots: GameSecondaryData): GameSecondaryData {
     if (!screenshots.screenshot1) {
       return this.noScreenshotImage1;
     } else {
@@ -526,7 +551,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private getScreenshot2Data(screenshots: ScreenshotData): ScreenshotData {
+  private getScreenshot2Data(screenshots: GameSecondaryData): GameSecondaryData {
     if (!screenshots.screenshot2) {
       return this.noScreenshotImage2;
     } else {

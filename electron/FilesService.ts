@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import { SettingsService } from 'SettingsService';
-import { ScreenshotData } from '../src/app/models/screenshot-data';
+import { GameSecondaryData } from '../src/app/models/secondary-data';
 import * as cp from 'child_process'
 
 export class FilesService {
@@ -12,13 +12,13 @@ export class FilesService {
     constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
 
     init() {
-        ipcMain.on('getScreenshot', (event, sha1Code, genMsxId, suffix) => {
-            var screenshotData = this.getScreenshotData(genMsxId, suffix);
-            this.win.webContents.send('getScreenshotResponse' + sha1Code, screenshotData);
+        ipcMain.on('getSecondaryData', (event, sha1Code, genMsxId, suffix) => {
+            var secondaryData = this.getSecondaryData(genMsxId, suffix);
+            this.win.webContents.send('getSecondaryDataResponse' + sha1Code, secondaryData);
         })
 
         ipcMain.on('openFileExplorer', (event, file) => {
-            var screenshotData = this.openFileExplorer(file);
+            this.openFileExplorer(file);
         })
 
         ipcMain.on('getWebMSXPath', (event, folder: string, file: string) => {
@@ -31,7 +31,7 @@ export class FilesService {
         })
     }
 
-    private getScreenshotData(genMsxId: number, suffix: string): ScreenshotData {
+    private getSecondaryData(genMsxId: number, suffix: string): GameSecondaryData {
         var screenshotsPath1: string;
         if (suffix == null) {
             screenshotsPath1 = path.join(this.settingsService.getSettings().screenshotsPath, genMsxId + 'a.png');
@@ -63,7 +63,27 @@ export class FilesService {
             data2 = "";
         }
 
-        return new ScreenshotData(data1, data2);
+        let musicFiles: string[] = this.getMusicFiles(genMsxId);
+
+        return new GameSecondaryData(data1, data2, musicFiles);
+    }
+
+    private getMusicFiles(genMsxId: number): string[] {
+        if (genMsxId && this.settingsService.getSettings().gameMusicPath) {
+            let folder = path.join(this.settingsService.getSettings().gameMusicPath, genMsxId.toString());
+            if (fs.existsSync(folder)) {
+                var list: string[] = [];
+                var contents: string[] = fs.readdirSync(folder, 'utf8');
+                contents.forEach(file => {
+                    list.push(path.join(folder, file));
+                });
+                return list;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     private openFileExplorer(file: string) {
