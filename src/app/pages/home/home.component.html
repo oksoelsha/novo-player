@@ -113,12 +113,12 @@
             </button>
             </div>
         </div>
-        <div *ngIf="musicFiles" class="d-inline-block">
+        <div *ngIf="musicFiles.length > 0" class="d-inline-block">
           <div class="d-inline-block" ngbDropdown (openChange)="openMenu = $event">
             <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
               <img src="assets/images/music/musical-note.png">
             </button>
-            <div ngbDropdownMenu>
+            <div ngbDropdownMenu class="dropdown-scroll">
               <button *ngFor="let musicFile of musicFiles" ngbDropdownItem type="button"
                 (click)="setSelectedMusicFile(musicFile)">
                 {{ getMusicName(musicFile) }}

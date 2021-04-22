@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit {
   searchMenuOpen: boolean = false;
   isOpenMSXPathDefined: boolean;
   isWebMSXPathDefined: boolean;
-  musicFiles: string[];
+  musicFiles: string[] = [];
   selectedMusicFile: string;
 
   private readonly gameDetails = [
@@ -509,7 +509,7 @@ export class HomeComponent implements OnInit {
 
   private setMusicFiles(secondaryData: GameSecondaryData) {
     this.musicFiles = secondaryData.musicFiles;
-    if (this.musicFiles && this.musicFiles.length > 0) {
+    if (this.musicFiles.length > 0) {
       this.selectedMusicFile = this.musicFiles[0];
     } else {
       this.selectedMusicFile = null;

@@ -77,12 +77,13 @@ export class FilesService {
                 contents.forEach(file => {
                     list.push(path.join(folder, file));
                 });
+                list.sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()));
                 return list;
             } else {
-                return null;
+                return [];
             }
         } else {
-            return null;
+            return [];
         }
     }
 

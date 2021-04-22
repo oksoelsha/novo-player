@@ -2,7 +2,8 @@
     <img src="assets/images/music/play-6-16.png" [class]="playButton" (click)="play()">
     <img src="assets/images/music/pause-16.png" [class]="pauseButton" (click)="pause()">
     <canvas id="progress-bar" [width]="progressBarWidth" [height]="progressBarHeight" #progressBar></canvas>
-    <span class="ml-2">{{ elapsedTime }} / {{ totalTime }}</span>
-    <span class="ml-2">{{ title }}</span>
-    <audio id="audio" controls src="" type="audio/mpeg" #audioPlayer (loadeddata)="setTotalTime()" (timeupdate)="updateProgress()" (ended)="reset()"></audio>
+    <div class="d-inline-block ml-2 alignment">{{ elapsedTime }} / {{ totalTime }}</div>
+    <div id="music-title" class="d-inline-block ml-2 alignment">{{ title }}</div>
 </div>
+<audio id="audio" controls src="" type="audio/mpeg" #audioPlayer (loadeddata)="setTotalTime()"
+    (timeupdate)="updateProgress()" (ended)="reset()"></audio>
