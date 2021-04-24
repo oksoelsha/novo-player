@@ -521,12 +521,17 @@ export class HomeComponent implements OnInit {
   }
 
   getMusicName(musicFile: string) {
-    let firstIndex = musicFile.lastIndexOf('_') + 1;
+    let firstIndex = musicFile.lastIndexOf('\\') + 1;
     let lastIndex = musicFile.lastIndexOf('.');
-    if (firstIndex < 0 || lastIndex < 0 || lastIndex <= firstIndex) {
+    if (lastIndex < firstIndex) {
       return "Unknown";
+    }
+    let filename = musicFile.substring(firstIndex, lastIndex);
+    let separaterIndex = filename.indexOf('_');
+    if (separaterIndex < 0) {
+      return filename;
     } else {
-      return musicFile.substring(firstIndex, lastIndex);
+      return filename.substring(separaterIndex + 1);
     }
   }
 
