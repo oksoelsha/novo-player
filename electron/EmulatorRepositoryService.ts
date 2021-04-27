@@ -1,7 +1,9 @@
-import { SettingsService } from 'SettingsService'
-import * as path from 'path'
-import * as fs from 'fs'
+import { SettingsService } from 'SettingsService';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as os from 'os';
 import * as parser from 'fast-xml-parser';
+import { PlatformUtils } from './utils/PlatformUtils';
 
 export class EmulatorRepositoryService implements UpdateListerner {
 
@@ -15,10 +17,10 @@ export class EmulatorRepositoryService implements UpdateListerner {
         var self = this;
         let gamesDataMap: Map<string, RepositoryData> = new Map<string, RepositoryData>();
         let softwaredbFilenames: string[] = [
-            path.join(this.settingsService.getSettings().openmsxPath, 'share/softwaredb.xml'),
+            PlatformUtils.getOpenmsxSoftwareDb(this.settingsService.getSettings().openmsxPath),
             path.join(__dirname, '/../../../dist/novo-player/assets/data/msxdskdb.xml'),
             path.join(__dirname, '/../../../dist/novo-player/assets/data/msxcaswavdb.xml')
-        ]
+        ];
         var options = {
             parseTrueNumberOnly: true,
             tagValueProcessor : (val: any, tagName: any) => val.replace(/&amp;/g, '&').replace(/&#34;/g, '"')
@@ -45,8 +47,15 @@ export class EmulatorRepositoryService implements UpdateListerner {
         this.repositoryInfo = gamesDataMap
     }
 
+    getRepositoryInfo(): Map<string, RepositoryData> {
+        return this.repositoryInfo;
+    }
 
-    processDump(software: any, dump: any, gamesDataMap: Map<string, RepositoryData>): void {
+    reinit(): void {
+        this.init();
+    }
+
+    private processDump(software: any, dump: any, gamesDataMap: Map<string, RepositoryData>): void {
         if (dump.hasOwnProperty('rom')) {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
                 software.year, software.country);
@@ -113,14 +122,6 @@ export class EmulatorRepositoryService implements UpdateListerner {
                 gamesDataMap.set(dump.cas.format[f].hash, repositoryData)
             }
         }
-    }
-
-    getRepositoryInfo(): Map<string, RepositoryData> {
-        return this.repositoryInfo;
-    }
-
-    reinit(): void {
-        this.init();
     }
 }
 

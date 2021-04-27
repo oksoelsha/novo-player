@@ -1,6 +1,5 @@
 import { ipcMain, app, BrowserWindow } from 'electron'
 import * as path from 'path'
-import * as url from 'url'
 import { SettingsService} from './SettingsService'
 import { GamesService } from './GamesService'
 import { EmulatorLaunchService } from './EmulatorLaunchService'
@@ -12,11 +11,11 @@ import { EmulatorHardwareService } from './EmulatorHardwareService'
 
 let win: BrowserWindow
 
-app.on('ready', startApp)
+app.on('ready', startApp);
 
 app.on('activate', () => {
     if (win === null) {
-        startApp()
+        startApp();
     }
 })
 
@@ -31,7 +30,7 @@ function createWindow() {
         height: 600,
         frame: false,
         titleBarStyle: 'hidden',
-        icon: path.join(__dirname, `/../../../dist/novo-player/assets/icon.ico`),
+        icon: path.join(__dirname, `/../../../dist/novo-player/assets/icon.png`),
         backgroundColor: '#2e2c29',
         show: false,
         webPreferences: {
@@ -43,9 +42,7 @@ function createWindow() {
         app.dock.hide();  //hide menu on MacOS
     }
 
-    const url = new URL(path.join(__dirname, `/../../../dist/novo-player/index.html`));
-    url.protocol = "file:";
-    win.loadURL(url.toString());
+    win.loadFile(path.join(__dirname, `/../../../dist/novo-player/index.html`));
 
     win.once('ready-to-show', () => {
         win.show();

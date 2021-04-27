@@ -486,6 +486,25 @@ export class HomeComponent implements OnInit {
     return displayString;
   }
 
+  setSelectedMusicFile(musicFile: string) {
+    this.selectedMusicFile = musicFile;
+  }
+
+  getMusicName(musicFile: string) {
+    let firstIndex = musicFile.lastIndexOf('/') + 1;
+    let lastIndex = musicFile.lastIndexOf('.');
+    if (lastIndex < firstIndex) {
+      return "Unknown";
+    }
+    let filename = musicFile.substring(firstIndex, lastIndex);
+    let separaterIndex = filename.indexOf('_');
+    if (separaterIndex < 0) {
+      return filename;
+    } else {
+      return filename.substring(separaterIndex + 1);
+    }
+  }
+
   private initialize() {
     this.selectedGame = null;
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshotImage1;
@@ -513,25 +532,6 @@ export class HomeComponent implements OnInit {
       this.selectedMusicFile = this.musicFiles[0];
     } else {
       this.selectedMusicFile = null;
-    }
-  }
-
-  setSelectedMusicFile(musicFile: string) {
-    this.selectedMusicFile = musicFile;
-  }
-
-  getMusicName(musicFile: string) {
-    let firstIndex = musicFile.lastIndexOf('\\') + 1;
-    let lastIndex = musicFile.lastIndexOf('.');
-    if (lastIndex < firstIndex) {
-      return "Unknown";
-    }
-    let filename = musicFile.substring(firstIndex, lastIndex);
-    let separaterIndex = filename.indexOf('_');
-    if (separaterIndex < 0) {
-      return filename;
-    } else {
-      return filename.substring(separaterIndex + 1);
     }
   }
 

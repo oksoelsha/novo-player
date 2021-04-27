@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { SettingsService } from 'SettingsService';
 import { GameSecondaryData } from '../src/app/models/secondary-data';
 import * as cp from 'child_process'
+import { PlatformUtils } from './utils/PlatformUtils';
 
 export class FilesService {
 
@@ -88,9 +89,8 @@ export class FilesService {
     }
 
     private openFileExplorer(file: string) {
-        //Windows for now
-        let explorer = 'explorer.exe /select, "' + file + '"';
-        const ls = cp.exec(explorer, function (error: cp.ExecException, stdout, stderr) {
+        let fileManagerCommand = PlatformUtils.getFileManagerCommand(file);
+        const ls = cp.exec(fileManagerCommand, function (error: cp.ExecException, stdout, stderr) {
             if (error) {
             }
         });

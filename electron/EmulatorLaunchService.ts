@@ -2,7 +2,9 @@ import { BrowserWindow, ipcMain } from 'electron'
 import { SettingsService } from 'SettingsService'
 import * as path from 'path'
 import * as cp from 'child_process'
+import * as os from 'os';
 import { Game } from '../src/app/models/game'
+import { PlatformUtils } from './utils/PlatformUtils';
 
 class TCLCommands {
     field: string;
@@ -74,7 +76,7 @@ export class EmulatorLaunchService {
 
     private launch(game: Game, time: number) {
         var self = this;
-        var openmsx = '"' + path.join(this.settingsService.getSettings().openmsxPath, 'openmsx.exe') + '" ';
+        var openmsx = '"' + path.join(this.settingsService.getSettings().openmsxPath, PlatformUtils.getOpenmsxBinary()) + '" ';
         const ls = cp.exec(openmsx + this.getArguments(game), function (error: cp.ExecException, stdout, stderr) {
             if (error) {
                 console.log(error.message);

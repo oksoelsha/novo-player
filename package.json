@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build --base-href ./ && tsc --p electron && electron .",
-    "package-win": "electron-packager . --overwrite --no-tmpdir --platform=win32 --arch=x64  --prune=true --out=../release-builds --icon=./src/assets/icon.ico"
+    "package-win": "electron-packager . --overwrite --no-tmpdir --platform=win32 --arch=x64  --prune=true --out=../release-builds --icon=./src/assets/icon.ico",
+    "package-linux": "electron-packager . --overwrite --no-tmpdir --platform=linux --arch=x64  --prune=true --out=../release-builds --icon=./src/assets/icon.png"
   },
   "private": true,
   "dependencies": {
