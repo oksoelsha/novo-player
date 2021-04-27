@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Remote } from 'electron';
 
@@ -7,7 +7,7 @@ import { Remote } from 'electron';
   templateUrl: './window-controls.component.html',
   styleUrls: ['./window-controls.component.sass']
 })
-export class WindowControlsComponent implements OnInit {
+export class WindowControlsComponent {
 
   @Input('title-img') titleImg: string;
   private remote: Remote = (<any>window).require('electron').remote;
@@ -33,7 +33,8 @@ export class WindowControlsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  isOnWindows(): boolean {
+    return navigator.platform.startsWith('Win');
   }
 
   minimizeMainWindow() {

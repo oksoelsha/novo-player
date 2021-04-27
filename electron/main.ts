@@ -28,7 +28,7 @@ function createWindow() {
     win = new BrowserWindow({
         width: 800,
         height: 600,
-        frame: false,
+        frame: process.platform !== 'win32',
         titleBarStyle: 'hidden',
         icon: path.join(__dirname, `/../../../dist/novo-player/assets/icon.png`),
         backgroundColor: '#2e2c29',
