@@ -33,7 +33,7 @@ export class PlatformUtils {
         } else if (this.isLinux()) {
             return '/usr/share/openmsx/softwaredb.xml';
         } else if (this.isMacOS()) {
-            return "openmsx.app/share/softwaredb.xml";
+            return path.join(openmsxPath, 'openmsx.app/share/softwaredb.xml');
         } else {
             return this.unsupportedPlatform();
         }

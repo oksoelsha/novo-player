@@ -37,10 +37,7 @@ function createWindow() {
             enableRemoteModule: true,
             nodeIntegration: true
         }
-    })
-    if (process.platform === "darwin") {
-        app.dock.hide();  //hide menu on MacOS
-    }
+    });
 
     win.loadFile(path.join(__dirname, `/../../../dist/novo-player/index.html`));
 
