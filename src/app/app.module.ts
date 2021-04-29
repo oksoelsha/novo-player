@@ -31,6 +31,7 @@ import { SearchComponent } from './pages/home/search/search.component';
 import { WebLinkComponent } from './shared/web-link/web-link.component';
 import { WebMSXComponent } from './pages/web-msx/web-msx.component';
 import { MusicComponent } from './pages/home/music/music.component';
+import { GameDetailsComponent } from './pages/home/game-details/game-details.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { MusicComponent } from './pages/home/music/music.component';
     SearchComponent,
     WebLinkComponent,
     WebMSXComponent,
-    MusicComponent
+    MusicComponent,
+    GameDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, TemplateRef, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { GamesService } from 'src/app/services/games.service';
 import { GameSecondaryData } from 'src/app/models/secondary-data';
 import { ScannerService } from 'src/app/services/scanner.service';
-import { GameUtils } from 'src/app/models/game-utils';
 import { AlertsService } from 'src/app/shared/alerts/alerts.service';
 import { ScanParametersComponent, ScanParameters } from 'src/app/popups/scan-parameters/scan-parameters.component';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -20,15 +19,6 @@ import { Router } from '@angular/router';
   styleUrls: ['../../common-styles.sass', './home.component.sass']
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('gameDetailSimpleText', { static: true }) private gameDetailSimpleText: TemplateRef<object>;
-  @ViewChild('gameDetailFiles', { static: true }) private gameDetailFiles: TemplateRef<object>;
-  @ViewChild('gameDetailMedium', { static: true }) private gameDetailMedium: TemplateRef<object>;
-  @ViewChild('gameDetailSize', { static: true }) private gameDetailSize: TemplateRef<object>;
-  @ViewChild('gameDetailCountry', { static: true }) private gameDetailCountry: TemplateRef<object>;
-  @ViewChild('gameDetailGenerations', { static: true }) private gameDetailGenerations: TemplateRef<object>;
-  @ViewChild('gameDetailSounds', { static: true }) private gameDetailSounds: TemplateRef<object>;
-  @ViewChild('gameDetailGenres', { static: true }) private gameDetailGenres: TemplateRef<object>;
-  @ViewChild('gameDetailGenerationMSXLink', { static: true }) private gameDetailGenerationMSXLink: TemplateRef<object>;
 
   @ViewChild('gameNameEditInput', { static: false }) private gameNameEdit: ElementRef;
   @ViewChild('scanParameters') scanParameters: ScanParametersComponent;
@@ -40,9 +30,7 @@ export class HomeComponent implements OnInit {
   private readonly noScreenshotImage1: GameSecondaryData = new GameSecondaryData("assets/noscrsht.png", "", null);
   private readonly noScreenshotImage2: GameSecondaryData = new GameSecondaryData("", "assets/noscrsht.png", null);
   private readonly noScreenshotData: GameSecondaryData = new GameSecondaryData("", "", null);
-  private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
 
-  private selectedGameMedium: Promise<string>;
   private toggle: boolean = false;
   private gamesTable: Element;
   private gameQuickSearch: string = ""
@@ -68,49 +56,6 @@ export class HomeComponent implements OnInit {
   isWebMSXPathDefined: boolean;
   musicFiles: string[] = [];
   selectedMusicFile: string;
-
-  private readonly gameDetails = [
-    { name: "Common Name", value: "title", blockName: "gameDetailSimpleText" },
-    { name: "Files", blockName: "gameDetailFiles" },
-    { name: "Medium", blockName: "gameDetailMedium" },
-    { name: "System", value: "system", blockName: "gameDetailSimpleText" },
-    { name: "Company", value: "company", blockName: "gameDetailSimpleText" },
-    { name: "Year", value: "year", blockName: "gameDetailSimpleText" },
-    { name: "Country", value: "country", blockName: "gameDetailCountry" },
-    { name: "SHA1", value: "sha1Code", blockName: "gameDetailSimpleText" },
-    { name: "Size", value: "size", blockName: "gameDetailSize" },
-    { name: "Generations", value: "generations", blockName: "gameDetailGenerations" },
-    { name: "Sound", value: "sounds", blockName: "gameDetailSounds" },
-    { name: "Genres", value: "genre1", blockName: "gameDetailGenres" },
-    { name: "Dump", value: "dump", blockName: "gameDetailSimpleText" },
-    { name: "Mapper", value: "mapper", blockName: "gameDetailSimpleText" },
-    { name: "Start", value: "start", blockName: "gameDetailSimpleText" },
-    { name: "Remark", value: "remark", blockName: "gameDetailSimpleText" },
-    { name: "Generation-MSX", value: "generationMSXId", blockName: "gameDetailGenerationMSXLink" },
-  ]
-
-  private readonly countryFlags: Map<string, string> = new Map([
-    ["BR", "pt_BR"],
-    ["DE", "de_DE"],
-    ["ES", "es_ES"],
-    ["FR", "fr_FR"],
-    ["GB", "UK"],
-    ["HK", "HK"],
-    ["IT", "it_IT"],
-    ["JP", "ja_JP"],
-    ["KR", "ko_KR"],
-    ["KW", "KW"],
-    ["NL", "nl_NL"],
-    ["PT", "PT"],
-    ["RU", "ru_RU"],
-    ["SA", "SA"],
-    ["SE", "sv_SE"],
-    ["UK", "UK"],
-    ["US", "en_US"],
-    ["TW", "zh_TW"],
-    ["CA", "CA"],
-    ["EU", "EU"]
-  ]);
 
   constructor(private gamesService: GamesService,
     private scanner: ScannerService,
@@ -216,11 +161,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getFilteredGameDetails() {
-    return this.gameDetails.filter(d => d.value == null ||
-      (this.selectedGame[d.value] != null && this.selectedGame[d.value] != 0))
-  }
-
   launch(game: Game) {
     this.gamesService.launchGame(game).then((errorMessage: string) => {
       if (errorMessage) {
@@ -323,20 +263,11 @@ export class HomeComponent implements OnInit {
 
   showInfo(game: Game) {
     this.selectedGame = game;
-    this.setSelectedGameMedium();
     this.adjustScrollForSelectedGame(game);
     this.gamesService.getSecondaryData(game).then((secondaryData) => {
       this.setScreenshots(secondaryData);
       this.setMusicFiles(secondaryData);
     });
-  }
-
-  isDisplayGenerationMSX() {
-    return this.selectedGame.generationMSXId < 10000;
-  }
-
-  getGenerationMSXAddress() {
-    return "http://www.generation-msx.nl/msxdb/softwareinfo/" + this.selectedGame.generationMSXId;
   }
 
   showFoundGame(game: Game) {
@@ -388,102 +319,6 @@ export class HomeComponent implements OnInit {
     } else {
       return "";
     }
-  }
-
-  getSelectedGameFiles(): string[] {
-    var files: string[] = []
-
-    for (let fileField of this.fileFields) {
-      if (this.selectedGame[fileField] != null) {
-        files.push(this.selectedGame[fileField]);
-      }
-    }
-    return files;
-  }
-
-  setSelectedGameMedium() {
-    if (this.selectedGame.romA != null) {
-      this.selectedGameMedium = Promise.resolve('ROM');
-    } else if (this.selectedGame.diskA != null) {
-      this.selectedGameMedium = Promise.resolve('Disk');
-      //TODO - get disk group
-    } else if (this.selectedGame.tape != null) {
-      this.selectedGameMedium = Promise.resolve('Tape');
-      //TODO - get tape group
-    } else if (this.selectedGame.harddisk != null) {
-      this.selectedGameMedium = Promise.resolve('Harddisk');
-    } else if (this.selectedGame.laserdisc != null) {
-      this.selectedGameMedium = Promise.resolve('Laserdisc');
-    } else {
-      //shouldn't happen
-      this.selectedGameMedium = Promise.resolve('')
-    }
-  }
-
-  getSizeDisplayString(): string {
-    return Math.floor(this.selectedGame.size / 1024) + " KB"
-  }
-
-  exploreFile(file: string) {
-    this.gamesService.exploreFile(file);
-  }
-
-  isGenerationMSX(): boolean {
-    return GameUtils.isMSX(this.selectedGame)
-  }
-
-  isGenerationMSX2(): boolean {
-    return GameUtils.isMSX2(this.selectedGame)
-  }
-
-  isGenerationMSX2Plus(): boolean {
-    return GameUtils.isMSX2Plus(this.selectedGame)
-  }
-
-  isGenerationTurboR(): boolean {
-    return GameUtils.isTurboR(this.selectedGame)
-  }
-
-  getSoundsDisplayString(): string {
-    let displayString: string[] = []
-
-    if (GameUtils.isPSG(this.selectedGame)) {
-      displayString.push('PSG')
-    }
-    if (GameUtils.isSCC(this.selectedGame)) {
-      displayString.push('SCC')
-    }
-    if (GameUtils.isSCCI(this.selectedGame)) {
-      displayString.push('SCC-I')
-    }
-    if (GameUtils.isPCM(this.selectedGame)) {
-      displayString.push('PCM')
-    }
-    if (GameUtils.isMSXMusic(this.selectedGame)) {
-      displayString.push('MSX-MUSIC')
-    }
-    if (GameUtils.isMSXAudio(this.selectedGame)) {
-      displayString.push('MSX-AUDIO')
-    }
-    if (GameUtils.isMoonsound(this.selectedGame)) {
-      displayString.push('Moonsound')
-    }
-    if (GameUtils.isMidi(this.selectedGame)) {
-      displayString.push('MIDI')
-    }
-
-    return displayString.join(', ')
-  }
-
-  getGenresDisplayString(): string {
-    let displayString: string = GameUtils.getGenre(this.selectedGame.genre1);
-    if (displayString != null) {
-      var genre2 = GameUtils.getGenre(this.selectedGame.genre2);
-      if (genre2 != null) {
-        displayString += ", " + genre2;
-      }
-    }
-    return displayString;
   }
 
   setSelectedMusicFile(musicFile: string) {
