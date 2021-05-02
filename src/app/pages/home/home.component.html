@@ -133,9 +133,15 @@
   </div>
 </div>
 
+<div id="drag-area" #dragArea>
+  <img src="assets/images/general/download-2-64.png">
+  <div>Drop files and folders</div>
+</div>
+
 <app-popup popupId="scan-parameters-id" title="Scan Parameters">
   <ng-template let-popupId="popupId">
-    <app-scan-parameters [popupId]="popupId" (parameters)="startScan($event)" #scanParameters></app-scan-parameters>
+    <app-scan-parameters [popupId]="popupId" [listings]="listings" [files-and-folders]="draggedFilesAndFolders"
+      [current-listing]="selectedListing" (parameters)="startScan($event)" #scanParameters></app-scan-parameters>
   </ng-template>
 </app-popup>
 

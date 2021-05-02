@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('hardwareEdit') hardwareEdit: HardwareEditComponent;
   @ViewChild('changeListing') changeListing: ChangeListingComponent;
   @ViewChild('searchDropdown', { static: true }) private searchDropdown: NgbDropdown;
+  @ViewChild('dragArea', { static: false }) private dragArea: ElementRef;
 
   private readonly noScreenshotImage1: GameSecondaryData = new GameSecondaryData("assets/noscrsht.png", "", null);
   private readonly noScreenshotImage2: GameSecondaryData = new GameSecondaryData("", "assets/noscrsht.png", null);
@@ -35,6 +36,9 @@ export class HomeComponent implements OnInit {
   private gamesTable: Element;
   private gameQuickSearch: string = ""
   private quickTypeTimer: NodeJS.Timer = null;
+
+  private draggedFilesAndFolders: string[] = [];
+  private dragCounter: number = 0;
 
   selectedListing: string = ""
   games: Game[] = [];
@@ -108,6 +112,44 @@ export class HomeComponent implements OnInit {
           this.remove(event, this.selectedGame);
         }
       }
+    }
+  }
+
+  @HostListener('dragover', ['$event'])
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragArea.nativeElement.classList.add('drag-over');
+  }
+
+  @HostListener('dragenter', ['$event'])
+  onDragEnter(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragCounter++;
+    this.dragArea.nativeElement.classList.add('drag-over');
+  }
+
+  @HostListener('dragleave', ['$event'])
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragCounter--;
+    if (this.dragCounter == 0) {
+      this.dragArea.nativeElement.classList.remove('drag-over');
+    }
+  }
+
+  @HostListener('drop', ['$event'])
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragCounter = 0;
+    this.dragArea.nativeElement.classList.remove('drag-over');
+    let files = event.dataTransfer.files;
+    if (files.length > 0) {
+      this.draggedFilesAndFolders = Array.from(files).map(f => f.path);
+      this.scanParameters.open();
     }
   }
 

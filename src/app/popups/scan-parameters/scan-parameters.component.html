@@ -19,7 +19,8 @@
     <tr>
       <td class="pr-2">Listing</td>
       <td>
-        <app-drop-down-with-input default-label="Enter a listing" default-new-label="New listing" [list]="listings" (selection)="selectedListing = $event"></app-drop-down-with-input>
+        <app-drop-down-with-input default-label="Enter a listing" default-new-label="New listing" [list]="listings"
+          [default-selection]="currentListing" (selection)="selectedListing = $event"></app-drop-down-with-input>
       </td>
     </tr>
     <tr>

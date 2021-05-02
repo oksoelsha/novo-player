@@ -11,6 +11,7 @@ export class DropDownWithInputComponent {
   @Input ('list') list: string[] = [];
   @Input ('default-label') defaultLabel: string;
   @Input ('default-new-label') defaultNewLabel: string;
+  @Input ('default-selection') defaultSelection: string;
   @Output() selection: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('dropdownWithInput', { static: true }) private listingsDropdown: NgbDropdown;
@@ -23,9 +24,9 @@ export class DropDownWithInputComponent {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['list']) {
-      this.setSelectedItemAndAdjustForDisplay(this.list[0]);
-      this.selection.emit(this.list[0]);
+    if (changes['defaultSelection']) {
+      this.setSelectedItemAndAdjustForDisplay(this.defaultSelection);
+      this.selection.emit(this.defaultSelection);
     }
   }
 

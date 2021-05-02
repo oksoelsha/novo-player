@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { EmulatorService } from 'src/app/services/emulator.service';
-import { GamesService } from 'src/app/services/games.service';
 import { PopupComponent } from '../popup.component';
 
 @Component({
@@ -10,25 +9,23 @@ import { PopupComponent } from '../popup.component';
 })
 export class ScanParametersComponent extends PopupComponent {
 
-  @Input () popupId: string;
+  @Input() popupId: string;
+  @Input('listings') listings: string[] = [];
+  @Input('files-and-folders') items: string[] = [];
+  @Input('current-listing') currentListing: string = "";
   @Output() parameters: EventEmitter<ScanParameters> = new EventEmitter<ScanParameters>();
 
-  items: string[] = [];
-  listings: string[] = [];
   selectedListing: string = "";
   machines: string[] = [];
   selectedMachine: string = "";
 
-  constructor(private gamesService: GamesService, private emulatorService: EmulatorService) {
+  constructor(private emulatorService: EmulatorService) {
     super();
   }
 
   open(): void {
     super.open();
 
-    this.gamesService.getListings().then((data: string[]) => {
-      this.listings = data;
-    });
     this.emulatorService.getMachines().then((data: string[]) => {
       this.machines = data;
       if (!this.selectedMachine) {
