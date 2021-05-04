@@ -1,5 +1,5 @@
 import * as crypto from 'crypto'
-import { ipcMain, BrowserWindow } from 'electron'
+import { BrowserWindow } from 'electron'
 import { ExtraData, ExtraDataService } from 'ExtraDataService'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -14,6 +14,7 @@ export class ScanService {
     private repositoryInfo: Map<string, RepositoryData>;
     private totalFilesToScan: number = 0;
     private scannedFilesCounter: number = 0;
+    private totalAddedGamesCounter: number = 0;
     private smallFileScanBatchSize: any;
     private largeFileScanBatchSize: any;
 
@@ -57,10 +58,8 @@ export class ScanService {
                 }
             })
             return count;
-        } else if (FileTypeUtils.isMSXFile(item)) {
-            return 1;
         } else {
-            return 0;
+            return 1;
         }
     }
 
@@ -70,30 +69,71 @@ export class ScanService {
         }
     }
 
-    private readItem(item: string, listing:string, machine: string) {
+    private readItem(item: string, listing: string, machine: string) {
         if (fs.statSync(item).isDirectory()) {
             var currentDirectory = fs.readdirSync(item, 'utf8');
             currentDirectory.forEach(file => {
                 var fullPath: string = path.join(item, file);
-                if (fs.statSync(fullPath).isFile()) {
-                    if(FileTypeUtils.isMSXFile(fullPath)) {
-                        this.processFile(fullPath, listing, machine);
-                    } else {
-                        //a file that wasn't processed was still scanned
-                        this.scannedFilesCounter++;
-                    }
-                } else {
-                    this.readItem(fullPath, listing, machine);
-                }
-            })
+                this.readItem(fullPath, listing, machine);
+            });
         } else {
-            if(FileTypeUtils.isMSXFile(item)) {
+            if (FileTypeUtils.isMSXFile(item)) {
                 this.processFile(item, listing, machine);
             } else {
-                //a file that wasn't processed was still scanned
-                this.scannedFilesCounter++;
+                this.incrementScanCounterAndCheckIfFinished();
             }
         }
+    }
+
+    private incrementScanCounterAndCheckIfFinished() {
+        this.scannedFilesCounter++;
+        this.win.setProgressBar(this.scannedFilesCounter / this.totalFilesToScan);
+        if (this.scannedFilesCounter == this.totalFilesToScan) {
+            this.finishScan();
+        }
+    }
+
+    private finishScan() {
+        this.win.setProgressBar(0);
+        this.win.webContents.send('scanResponse', this.totalAddedGamesCounter);
+    }
+
+    private processFile(filename: string, listing:string, machine: string) {
+        var sha1: Promise<any>;
+        if (fs.statSync(filename)["size"] > 10485760) {
+            //any files larger than 10Mb are considered large that we need to send them to the more limited promise batch size
+            sha1 = this.largeFileScanBatchSize(() => this.getSha1(filename));
+        } else {
+            sha1 = this.smallFileScanBatchSize(() => this.getSha1(filename));
+        }
+        sha1.then((data: any) => {
+            if (data != null) {
+                var extraData: ExtraData = this.extraDataInfo.get(data.hash);
+                var game: Game = new Game(this.getGameName(data.hash, data.filename), data.hash, data.size);
+
+                this.setMainFileForGame(game, filename, data.filename);
+                game.setMachine(machine);
+                game.setListing(listing);
+
+                if (extraData != null) {
+                    game.setGenerationMSXId(extraData.generationMSXID);
+                    game.setScreenshotSuffix(extraData.suffix);
+                    game.setGenerations(extraData.generations);
+                    game.setSounds(extraData.soundChips);
+                    game.setGenre1(extraData.genre1);
+                    game.setGenre2(extraData.genre2);
+                }
+
+                this.gamesService.saveGameFromScan(game).then((success:boolean) => {
+                    if (success) {
+                        this.totalAddedGamesCounter++;
+                    }
+                    this.incrementScanCounterAndCheckIfFinished();
+                });
+            } else {
+                this.incrementScanCounterAndCheckIfFinished();
+            }
+        }).catch(error => this.incrementScanCounterAndCheckIfFinished());
     }
 
     private setMainFileForGame(game: Game, filename: string, realFilename: string ) {
@@ -114,53 +154,6 @@ export class ScanService {
         } else if (FileTypeUtils.isLaserdisc(realFilename)) {
             game.setLaserdisc(filename);
         }
-    }
-
-    private processFile(filename: string, listing:string, machine: string) {
-        var sha1: Promise<any>;
-        if (fs.statSync(filename)["size"] > 10485760) {
-            //any files larger than 10Mb are considered large that we need to send them to the more limited promise batch size
-            sha1 = this.largeFileScanBatchSize(() => this.getSha1(filename));
-        } else {
-            sha1 = this.smallFileScanBatchSize(() => this.getSha1(filename));
-        }
-        sha1.then((data: any) => {
-            this.scannedFilesCounter++;
-            this.win.setProgressBar(this.scannedFilesCounter / this.totalFilesToScan);
-
-            if (data != null) {
-                var extraData: ExtraData = this.extraDataInfo.get(data.hash);
-                var game: Game = new Game(this.getGameName(data.hash, data.filename), data.hash, data.size);
-
-                this.setMainFileForGame(game, filename, data.filename);
-                game.setMachine(machine);
-                game.setListing(listing);
-
-                if (extraData != null) {
-                    game.setGenerationMSXId(extraData.generationMSXID);
-                    game.setScreenshotSuffix(extraData.suffix);
-                    game.setGenerations(extraData.generations);
-                    game.setSounds(extraData.soundChips);
-                    game.setGenre1(extraData.genre1);
-                    game.setGenre2(extraData.genre2);
-                }
-
-                if (this.scannedFilesCounter == this.totalFilesToScan) {
-                    this.gamesService.saveGameInBatch(game, this.finishScan, this);
-                } else {
-                    this.gamesService.saveGameInBatch(game);
-                }
-            } else {
-                if (this.scannedFilesCounter == this.totalFilesToScan) {
-                    this.gamesService.finishScan(this.finishScan, this);
-                }
-            }
-        }).catch(error => this.scannedFilesCounter++);
-    }
-
-    private finishScan(totalAddedToDatabase: number, ref: any) {
-        ref.win.setProgressBar(0);
-        ref.win.webContents.send('scanResponse', totalAddedToDatabase);
     }
 
     private getSha1(filename: string): Promise<any> {
@@ -211,7 +204,7 @@ export class ScanService {
     private getMSXFileIndexInZip(entries: any): number {
         let index: number;
         for(index = 0; index < entries.length; index++) {
-            if(FileTypeUtils.isMSXFile(entries[index].name)) {
+            if (FileTypeUtils.isMSXFile(entries[index].name)) {
                 return index;
             }
         }

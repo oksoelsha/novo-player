@@ -15,7 +15,6 @@ export class GamesService {
     private readonly databaseFile: string = path.join(this.databasePath, 'datafile');
 
     private repositoryInfo: Map<string, RepositoryData> = null;
-    private totalAddedToDatabase: number = 0;
 
     constructor(private win: BrowserWindow, private emulatorRepositoryService: EmulatorRepositoryService) {
         this.database = new Datastore({ filename: this.databaseFile, autoload: true });
@@ -52,23 +51,13 @@ export class GamesService {
         });
     }
 
-    saveGameInBatch(game: Game, reportResult: any = null, ref: any = null) {
-        var self = this;
-        var gameDO: GameDO = new GameDO(game);
-        this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
-            if (err == null) {
-                self.totalAddedToDatabase++;
-            }
-            if (reportResult != null) {
-                reportResult(self.totalAddedToDatabase, ref);
-                self.totalAddedToDatabase = 0;
-            }
+    saveGameFromScan(game: Game): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            var gameDO: GameDO = new GameDO(game);
+            this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
+                return resolve(err == null);
+            });
         });
-    }
-
-    finishScan(reportResult: any, ref: any) {
-        reportResult(this.totalAddedToDatabase, ref);
-        this.totalAddedToDatabase = 0;
     }
 
     private saveGame(game: Game) {
