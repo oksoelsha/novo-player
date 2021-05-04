@@ -23,7 +23,7 @@ export class EmulatorRepositoryService implements UpdateListerner {
         ];
         var options = {
             parseTrueNumberOnly: true,
-            tagValueProcessor : (val: any, tagName: any) => val.replace(/&amp;/g, '&').replace(/&#34;/g, '"')
+            tagValueProcessor: (val: any, tagName: any) => val.replace(/&amp;/g, '&').replace(/&#34;/g, '"').replace(/&#38;/g, '&').replace(/&#39;/g, "'")
         }
 
         for(var softwaredbFilename of softwaredbFilenames) {
