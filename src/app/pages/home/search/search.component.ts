@@ -53,7 +53,7 @@ export class SearchComponent {
     }
   }
 
-  onSelectGame(event: Event, game: Game) {
+  onSelectGame(game: Game) {
     this.searchText = "";
     this.foundGames = [];
     this.selectedGame.emit(game);

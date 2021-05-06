@@ -3,7 +3,7 @@
         (input)="onSearchGames($event.target.value)" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}"
         (keyup)="processArrowKey($event)" #inputField>
     <div ngbDropdownMenu class="pt-0 pb-0">
-        <button *ngFor="let game of foundGames" ngbDropdownItem (click)="onSelectGame($event, game)"
+        <button *ngFor="let game of foundGames" ngbDropdownItem (click)="onSelectGame(game)"
             #foundSearchItem class="pr-3 pl-3">
             <div class="game-name">
                 {{ game.name }}
