@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-popup',
@@ -9,6 +9,7 @@ export class PopupComponent implements OnInit {
 
   @Input () title: string;
   @Input () popupId: string;
+  @Output() openStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ContentChild(TemplateRef) templateVariable: TemplateRef<any>;
 
   constructor() { }
@@ -23,21 +24,12 @@ export class PopupComponent implements OnInit {
   }
 
   open(): void {
-    //intercept keyboard events to prevent them from propagating to the parent window
-    document.addEventListener('keyup', this.handleKeyEvents);
-    document.addEventListener('keydown', this.handleKeyEvents);
-
+    this.openStatus.emit(true);
     document.getElementById(this.popupId).classList.add('popup-fade');
   }
 
   close(): void {
-    document.removeEventListener('keyup', this.handleKeyEvents);
-    document.removeEventListener('keydown', this.handleKeyEvents);
-
+    this.openStatus.emit(false);
     document.getElementById(this.popupId).classList.remove('popup-fade');
-  }
-
-  private handleKeyEvents(event: any): void {
-    event.stopPropagation();
   }
 }

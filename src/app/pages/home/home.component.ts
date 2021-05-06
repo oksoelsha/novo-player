@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
   listings: string[] = [];
   openMenu: boolean = false;
   searchMenuOpen: boolean = false;
+  popupOpen: boolean = false;
   isOpenMSXPathDefined: boolean;
   isWebMSXPathDefined: boolean;
   musicFiles: string[] = [];
@@ -69,7 +70,7 @@ export class HomeComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
-    if (!this.isEditMode() && !this.openMenu) {
+    if (this.canHandleEvents()) {
       if (this.selectedGame != null) {
         if (event.key == 'ArrowUp') {
           var index = this.games.indexOf(this.selectedGame);
@@ -91,7 +92,7 @@ export class HomeComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   keydownEvent(event: KeyboardEvent) {
-    if (!this.isEditMode() && !this.openMenu) {
+    if (this.canHandleEvents()) {
       if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
         (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
         (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
@@ -117,39 +118,47 @@ export class HomeComponent implements OnInit {
 
   @HostListener('dragover', ['$event'])
   onDragOver(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.dragArea.nativeElement.classList.add('drag-over');
+    if (this.canHandleEvents()) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.dragArea.nativeElement.classList.add('drag-over');
+    }
   }
 
   @HostListener('dragenter', ['$event'])
   onDragEnter(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.dragCounter++;
-    this.dragArea.nativeElement.classList.add('drag-over');
+    if (this.canHandleEvents()) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.dragCounter++;
+      this.dragArea.nativeElement.classList.add('drag-over');
+    }
   }
 
   @HostListener('dragleave', ['$event'])
   onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.dragCounter--;
-    if (this.dragCounter == 0) {
-      this.dragArea.nativeElement.classList.remove('drag-over');
+    if (this.canHandleEvents()) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.dragCounter--;
+      if (this.dragCounter == 0) {
+        this.dragArea.nativeElement.classList.remove('drag-over');
+      }
     }
   }
 
   @HostListener('drop', ['$event'])
   onDrop(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.dragCounter = 0;
-    this.dragArea.nativeElement.classList.remove('drag-over');
-    let files = event.dataTransfer.files;
-    if (files.length > 0) {
-      this.draggedFilesAndFolders = Array.from(files).map(f => f.path);
-      this.scanParameters.open();
+    if (this.canHandleEvents()) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.dragCounter = 0;
+      this.dragArea.nativeElement.classList.remove('drag-over');
+      let files = event.dataTransfer.files;
+      if (files.length > 0) {
+        this.draggedFilesAndFolders = Array.from(files).map(f => f.path);
+        this.scanParameters.open();
+      }
     }
   }
 
@@ -386,6 +395,10 @@ export class HomeComponent implements OnInit {
     this.selectedGame = null;
     this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshotImage1;
     this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshotImage2;
+  }
+
+  private canHandleEvents(): boolean {
+    return !this.isEditMode() && !this.openMenu && !this.popupOpen;
   }
 
   private setScreenshots(secondaryData: GameSecondaryData) {

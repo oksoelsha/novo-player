@@ -137,31 +137,34 @@
   <img src="assets/images/general/download-2-64.png">
   <div>Drop files and folders</div>
 </div>
-
-<app-popup popupId="scan-parameters-id" title="Scan Parameters">
+<app-popup popupId="scan-parameters-id" title="Scan Parameters" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
-    <app-scan-parameters [popupId]="popupId" [listings]="listings" [files-and-folders]="draggedFilesAndFolders"
-      [current-listing]="selectedListing" (parameters)="startScan($event)" #scanParameters></app-scan-parameters>
+    <app-scan-parameters [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
+      [files-and-folders]="draggedFilesAndFolders" [current-listing]="selectedListing" (parameters)="startScan($event)"
+      #scanParameters></app-scan-parameters>
   </ng-template>
 </app-popup>
 
-<app-popup popupId="media-edit-id" title="Media Edit">
+<app-popup popupId="media-edit-id" title="Media Edit" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
-    <app-media-edit [popupId]="popupId" [game]="selectedGame" (updatedGame)="update(selectedGame, $event)" #mediaEdit>
+    <app-media-edit [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
+      (updatedGame)="update(selectedGame, $event)" #mediaEdit>
     </app-media-edit>
   </ng-template>
 </app-popup>
 
-<app-popup popupId="hardware-edit-id" title="Hardware Edit">
+<app-popup popupId="hardware-edit-id" title="Hardware Edit" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
-    <app-hardware-edit [popupId]="popupId" [game]="selectedGame" (updatedGame)="update(selectedGame, $event)" #hardwareEdit>
+    <app-hardware-edit [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
+      (updatedGame)="update(selectedGame, $event)" #hardwareEdit>
     </app-hardware-edit>
   </ng-template>
 </app-popup>
 
-<app-popup popupId="change-listing-id" title="Move to Another Listing">
+<app-popup popupId="change-listing-id" title="Move to Another Listing" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
-    <app-change-listing [popupId]="popupId" [game]="selectedGame" [listings]="listings" (updatedGame)="move(selectedGame, $event)" #changeListing>
+    <app-change-listing [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
+      [listings]="listings" (updatedGame)="move(selectedGame, $event)" #changeListing>
     </app-change-listing>
   </ng-template>
 </app-popup>
