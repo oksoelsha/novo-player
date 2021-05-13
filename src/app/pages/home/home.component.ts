@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   keydownEvent(event: KeyboardEvent) {
     if (this.canHandleEvents()) {
-      if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
+      if (event.key.length == 1 && !this.ctrlOrCommandKey(event) && (
         (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
         (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
         if (this.quickTypeTimer != null) {
@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit {
           this.jumpToNearestGame(this.gameQuickSearch);
           this.gameQuickSearch = "";
         }, 600)
-      } else if (event.ctrlKey && (event.key == 'f' || event.key == 'F')) {
+      } else if (this.ctrlOrCommandKey(event) && (event.key == 'f' || event.key == 'F')) {
         this.searchDropdown.open();
       } else if (this.selectedGame != null) {
         if (event.key == 'Enter') {
@@ -399,6 +399,10 @@ export class HomeComponent implements OnInit {
 
   private canHandleEvents(): boolean {
     return !this.isEditMode() && !this.openMenu && !this.popupOpen;
+  }
+
+  private ctrlOrCommandKey(event: KeyboardEvent): boolean {
+    return event.ctrlKey || event.metaKey;
   }
 
   private setScreenshots(secondaryData: GameSecondaryData) {
