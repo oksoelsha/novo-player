@@ -293,13 +293,17 @@ export class HomeComponent implements OnInit {
   }
 
   update(oldGame: Game, newGame: Game) {
-    this.gamesService.updateGame(oldGame, newGame).then(() => {
-      this.alertService.success("Game was updated: " + newGame.name);
-      this.removeGameFromList(oldGame, false);
-      this.addGameToSortedList(newGame);
-      setTimeout(() => {
-        this.showInfo(newGame);
-      },0);
+    this.gamesService.updateGame(oldGame, newGame).then((err: boolean) => {
+      if (err) {
+        this.alertService.failure("Game was not updated: " + oldGame.name + " - you cannot change a game's main file");
+      } else {
+        this.alertService.success("Game was updated: " + newGame.name);
+        this.removeGameFromList(oldGame, false);
+        this.addGameToSortedList(newGame);
+        setTimeout(() => {
+          this.showInfo(newGame);
+        },0);
+      }
     });
   }
 

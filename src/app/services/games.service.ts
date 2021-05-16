@@ -76,8 +76,8 @@ export class GamesService {
 
   async updateGame(oldGame: Game, newGame: Game) {
     return new Promise<boolean>((resolve, reject) => {
-      this.ipc.once("updateGameResponse", (event, arg) => {
-        resolve(arg);
+      this.ipc.once("updateGameResponse", (event, err: boolean) => {
+        resolve(err);
       });
       this.ipc.send("updateGame", oldGame, newGame);
     });

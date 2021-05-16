@@ -6,6 +6,7 @@ import { Game } from '../src/app/models/game';
 import { Totals } from '../src/app/models/totals';
 import { GameDO } from './data/game-do';
 import { EmulatorRepositoryService, RepositoryData } from './EmulatorRepositoryService';
+import { HashService } from './HashService';
 import { PersistenceUtils } from './utils/PersistenceUtils';
 
 export class GamesService {
@@ -16,7 +17,7 @@ export class GamesService {
 
     private repositoryInfo: Map<string, RepositoryData> = null;
 
-    constructor(private win: BrowserWindow, private emulatorRepositoryService: EmulatorRepositoryService) {
+    constructor(private win: BrowserWindow, private emulatorRepositoryService: EmulatorRepositoryService, private hashService: HashService) {
         this.database = new Datastore({ filename: this.databaseFile, autoload: true });
         this.repositoryInfo = this.emulatorRepositoryService.getRepositoryInfo()
     }
@@ -129,9 +130,39 @@ export class GamesService {
         var self = this;
         var gameDO: GameDO = new GameDO(newGame);
 
-        this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
-            self.win.webContents.send('updateGameResponse');
-        });
+        if (this.getGameMainFile(oldGame) == this.getGameMainFile(newGame)) {
+            this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
+                self.win.webContents.send('updateGameResponse');
+            });
+        } else {
+            this.hashService.getSha1Code(this.getGameMainFile(newGame)).then(data => {
+                if (oldGame.sha1Code == data.hash) {
+                    //only allow a game to be updated if the changed main file has the same hash
+                    //e.g. this can happen if the file was moved to a different folder
+                    this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
+                        self.win.webContents.send('updateGameResponse');
+                    });
+                } else {
+                    self.win.webContents.send('updateGameResponse', true);
+                }
+            });
+        }
+    }
+
+    private getGameMainFile(game: Game): string {
+        if (game.romA != null) {
+            return game.romA;
+        } else if (game.diskA != null) {
+            return game.diskA;
+        } else if (game.tape != null) {
+            return game.tape;
+        } else if (game.harddisk != null) {
+            return game.harddisk;
+        } else if (game.laserdisc != null) {
+            return game.laserdisc;
+        } else {
+            return "";
+        }
     }
 
     private getTotals() {
