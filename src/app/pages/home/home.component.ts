@@ -174,14 +174,20 @@ export class HomeComponent implements OnInit {
     this.settingsService.getSettings().then((settings: Settings) => {
       this.gamesService.getListings().then((data: string[]) => {
         this.listings = data;
-        if (!settings.defaultListing || !settings.defaultListing.trim()) {
+        let gameSha1Code:string = null;
+        if (sessionStorage.getItem('selectedListing') != null) {
+          self.selectedListing = sessionStorage.getItem('selectedListing');
+          if (sessionStorage.getItem('selectedGame') != null) {
+            gameSha1Code = JSON.parse(sessionStorage.getItem('selectedGame')).sha1Code;
+          }
+        } else if (!settings.defaultListing || !settings.defaultListing.trim()) {
           if (data.length > 0) {
             self.selectedListing = data[0];
           }
         } else {
           self.selectedListing = settings.defaultListing;
         }
-        self.getGames(this.selectedListing);
+        self.getGames(this.selectedListing, gameSha1Code);
       });
       this.isOpenMSXPathDefined = settings.openmsxPath != null && settings.openmsxPath.trim() != "";
       this.isWebMSXPathDefined = settings.webmsxPath != null && settings.webmsxPath.trim() != "";
@@ -189,15 +195,19 @@ export class HomeComponent implements OnInit {
   }
 
   setSelectedListing(listing: string) {
-    this.selectedGame = null;
-    this.setScreenshots(this.noScreenshotData);
+    if (listing != this.selectedListing) {
+      this.selectedGame = null;
+      sessionStorage.removeItem('selectedGame');
+      this.setScreenshots(this.noScreenshotData);
 
-    this.selectedListing = listing;
-    this.getGames(listing)
+      this.selectedListing = listing;
+      this.getGames(listing);
+    }
   }
 
   getGames(listing: string, sha1Code: string = null) {
     this.selectedListing = listing;
+    sessionStorage.setItem('selectedListing', listing);
     this.gamesService.getGames(this.selectedListing).then((data: Game[]) => {
       this.games = data;
       this.gamesEditMode.clear();
@@ -318,6 +328,7 @@ export class HomeComponent implements OnInit {
 
   showInfo(game: Game) {
     this.selectedGame = game;
+    sessionStorage.setItem('selectedGame', JSON.stringify(game));
     this.adjustScrollForSelectedGame(game);
     this.gamesService.getSecondaryData(game).then((secondaryData) => {
       this.setScreenshots(secondaryData);
@@ -413,13 +424,13 @@ export class HomeComponent implements OnInit {
     if (this.toggle) {
       this.screenshot_a_1 = this.getScreenshot1Data(secondaryData);
       this.screenshot_b_1 = this.getScreenshot2Data(secondaryData);
-      this.transparent1 = ""
-      this.transparent2 = "transparent"
+      this.transparent1 = "";
+      this.transparent2 = "transparent";
     } else {
       this.screenshot_a_2 = this.getScreenshot1Data(secondaryData);
       this.screenshot_b_2 = this.getScreenshot2Data(secondaryData);
-      this.transparent1 = "transparent"
-      this.transparent2 = ""
+      this.transparent1 = "transparent";
+      this.transparent2 = "";
     }
     this.toggle = !this.toggle;
   }
