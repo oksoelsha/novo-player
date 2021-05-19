@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
   transparent2: string = "transparent";
   scanRunning: boolean = false;
   listings: string[] = [];
-  openMenu: boolean = false;
+  openMenuEventCounter: number = 0;
   searchMenuOpen: boolean = false;
   popupOpen: boolean = false;
   isOpenMSXPathDefined: boolean;
@@ -192,6 +192,10 @@ export class HomeComponent implements OnInit {
       this.isOpenMSXPathDefined = settings.openmsxPath != null && settings.openmsxPath.trim() != "";
       this.isWebMSXPathDefined = settings.webmsxPath != null && settings.webmsxPath.trim() != "";
     });
+  }
+
+  handleOpenMenuEvents(opened:boolean) {
+    opened? this.openMenuEventCounter++ : this.openMenuEventCounter--;
   }
 
   setSelectedListing(listing: string) {
@@ -413,7 +417,7 @@ export class HomeComponent implements OnInit {
   }
 
   private canHandleEvents(): boolean {
-    return !this.isEditMode() && !this.openMenu && !this.popupOpen;
+    return !this.isEditMode() && !(this.openMenuEventCounter > 0) && !this.popupOpen;
   }
 
   private ctrlOrCommandKey(event: KeyboardEvent): boolean {

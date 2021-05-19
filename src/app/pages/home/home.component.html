@@ -1,7 +1,7 @@
 <div class="entire-area">
   <div class="area-on-the-left">
     <div class="table-buttons">
-      <div ngbDropdown class="d-inline-block mr-1" (openChange)="openMenu = $event">
+      <div ngbDropdown class="d-inline-block mr-1" (openChange)="handleOpenMenuEvents($event)">
         <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle></button>
         <div ngbDropdownMenu>
           <button ngbDropdownItem type="button" (click)="undoRemove()" [disabled]="lastRemovedGame == null">
@@ -13,7 +13,7 @@
           </button>
         </div>
       </div>
-      <div *ngIf="listings.length > 0" ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
+      <div *ngIf="listings.length > 0" ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event)">
         <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
           {{ selectedListing }}
           <span class="badge badge-light">{{ games.length }}</span>
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div id="search-button" ngbDropdown class="d-inline-block"
-        (openChange)="openMenu = $event; searchMenuOpen = $event;" #searchDropdown="ngbDropdown">
+        (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;" #searchDropdown="ngbDropdown">
         <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
           <img src="assets/images/general/search-13-16.png">
         </button>
@@ -78,7 +78,7 @@
         <img src="{{ screenshot_b_2.screenshot2 }}" class="{{ transparent2 }}">
       </div>
       <div class="additional-info" *ngIf="selectedGame">
-        <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
+        <div ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event)">
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
             Launch
           </button>
@@ -91,7 +91,7 @@
             </button>
           </div>
         </div>
-        <div ngbDropdown class="d-inline-block" (openChange)="openMenu = $event">
+        <div ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event)">
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
             Actions
           </button>
@@ -112,7 +112,7 @@
             </div>
         </div>
         <div *ngIf="musicFiles.length > 0" class="d-inline-block">
-          <div class="d-inline-block" ngbDropdown (openChange)="openMenu = $event">
+          <div class="d-inline-block" ngbDropdown (openChange)="handleOpenMenuEvents($event)">
             <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
               <img src="assets/images/music/musical-note.png">
             </button>
