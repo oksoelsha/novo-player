@@ -338,6 +338,11 @@ export class HomeComponent implements OnInit {
       this.setScreenshots(secondaryData);
       this.setMusicFiles(secondaryData);
     });
+
+    //reset the open menu counter because there's a case where it doesn't get reset (by subtracting 1 on openChange event)
+    //with the closing of the menu. That case is for the game music tracks menu where the closing menu event does not fire
+    //if the if statement around the html segment evaluates t0 false after clicking on a different game without music
+    this.openMenuEventCounter = 0;
   }
 
   showFoundGame(game: Game) {
