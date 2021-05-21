@@ -23,7 +23,7 @@ export class HashService {
             sha1 = this.smallFileScanBatchSize(() => this.getSha1(filename));
         }
 
-        return this.getSha1(filename);
+        return sha1;
     }
 
     private getSha1(filename: string): Promise<any> {
