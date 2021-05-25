@@ -4,7 +4,7 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-drop-down-with-input',
   templateUrl: './drop-down-with-input.component.html',
-  styleUrls: ['./drop-down-with-input.component.sass']
+  styleUrls: ['../../common-styles.sass', './drop-down-with-input.component.sass']
 })
 export class DropDownWithInputComponent {
 

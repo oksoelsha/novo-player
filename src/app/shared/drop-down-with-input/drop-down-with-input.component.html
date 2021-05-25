@@ -4,10 +4,12 @@
         <span *ngIf="selectedOrEnteredItemDisplay">{{ selectedOrEnteredItemDisplay }}</span>
     </button>
     <div class="items-dropdown" ngbDropdownMenu>
-        <button *ngFor="let item of list" type="button" ngbDropdownItem (click)="setSelectedItem(item)">
-            {{ item }}
-        </button>
-        <div *ngIf="list.length > 0" class="dropdown-divider"></div>
+        <div class="dropdown-scroll">
+            <button *ngFor="let item of list" type="button" ngbDropdownItem (click)="setSelectedItem(item)">
+                {{ item }}
+            </button>
+        </div>
+        <div *ngIf="list.length > 0" class="dropdown-divider mt-0 mb-0"></div>
         <div class="dropdown">
             <h6 class="dropdown-header">{{ defaultNewLabel }}</h6>
         </div>

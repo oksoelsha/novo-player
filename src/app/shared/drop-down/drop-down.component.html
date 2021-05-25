@@ -3,7 +3,7 @@
         <span *ngIf="!selectedItem">{{ defaultLabel }}</span>
         <span *ngIf="selectedItem">{{ selectedItem }}</span>
     </button>
-    <div ngbDropdownMenu class="dropdown-scroll">
+    <div ngbDropdownMenu class="dropdown-scroll pt-0 pb-0">
         <button *ngFor="let item of list" ngbDropdownItem type="button"
             (click)="handleSelection(item)" #dropDownItem>
             {{ item }}
