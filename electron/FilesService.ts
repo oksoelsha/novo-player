@@ -30,6 +30,16 @@ export class FilesService {
                 this.win.webContents.send('getWebMSXPathResponse', null);
             }
         })
+
+        ipcMain.on('getScreenshotsVersion', (event) => {
+            var screenshotVersion = this.getScreenshotVersion();
+            this.win.webContents.send('getScreenshotsVersionResponse', screenshotVersion);
+        })
+
+        ipcMain.on('getGameMusicVersion', (event) => {
+            var gameMusicVersion = this.getGameMusicVersion();
+            this.win.webContents.send('getGameMusicVersionResponse', gameMusicVersion);
+        })
     }
 
     private getSecondaryData(genMsxId: number, suffix: string): GameSecondaryData {
@@ -94,5 +104,26 @@ export class FilesService {
             if (error) {
             }
         });
+    }
+
+    private getScreenshotVersion(): string {
+        return this.getVersionValue(this.settingsService.getSettings().screenshotsPath, "version.txt");
+    }
+
+    private getGameMusicVersion(): string {
+        return this.getVersionValue(this.settingsService.getSettings().gameMusicPath, "version.txt");
+    }
+
+    private getVersionValue(filepath: string, filename: string) :string {
+        if (filepath) {
+            let versionFile = path.join(filepath, filename);
+            if (fs.existsSync(versionFile)) {
+                return fs.readFileSync(versionFile).toString();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }

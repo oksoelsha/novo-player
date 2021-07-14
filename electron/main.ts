@@ -55,7 +55,7 @@ function initializeServices() {
     let settingsService = new SettingsService(win);
     settingsService.init();
 
-    let extraDataService = new ExtraDataService();
+    let extraDataService = new ExtraDataService(win);
     extraDataService.init();
 
     let emulatorRepositoryService = new EmulatorRepositoryService(settingsService)
