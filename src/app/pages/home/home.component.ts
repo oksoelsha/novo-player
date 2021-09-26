@@ -5,6 +5,7 @@ import { GameSecondaryData } from 'src/app/models/secondary-data';
 import { ScannerService } from 'src/app/services/scanner.service';
 import { AlertsService } from 'src/app/shared/alerts/alerts.service';
 import { ScanParametersComponent, ScanParameters } from 'src/app/popups/scan-parameters/scan-parameters.component';
+import { ManageListingsComponent } from 'src/app/popups/manage-listings/manage-listings.component';
 import { SettingsService } from 'src/app/services/settings.service';
 import { Settings } from 'src/app/models/settings';
 import { MediaEditComponent } from 'src/app/popups/media-edit/media-edit.component';
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('gameNameEditInput', { static: false }) private gameNameEdit: ElementRef;
   @ViewChild('scanParameters') scanParameters: ScanParametersComponent;
+  @ViewChild('manageListings') manageListings: ManageListingsComponent;
   @ViewChild('mediaEdit') mediaEdit: MediaEditComponent;
   @ViewChild('hardwareEdit') hardwareEdit: HardwareEditComponent;
   @ViewChild('changeListing') changeListing: ChangeListingComponent;
@@ -330,6 +332,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  updateListings(data: any) {
+    console.log(data)
+  }
+
   showInfo(game: Game) {
     this.selectedGame = game;
     sessionStorage.setItem('selectedGame', JSON.stringify(game));
@@ -341,7 +347,7 @@ export class HomeComponent implements OnInit {
 
     //reset the open menu counter because there's a case where it doesn't get reset (by subtracting 1 on openChange event)
     //with the closing of the menu. That case is for the game music tracks menu where the closing menu event does not fire
-    //if the if statement around the html segment evaluates t0 false after clicking on a different game without music
+    //if the if-statement around the html segment evaluates to false after clicking on a different game without music
     this.openMenuEventCounter = 0;
   }
 

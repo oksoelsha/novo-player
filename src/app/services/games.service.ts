@@ -113,4 +113,22 @@ export class GamesService {
       this.ipc.send("search", text);
     });
   }
+
+  async renameListing(oldName: string, newName: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once("renameListingResponse", (event, err: boolean) => {
+        resolve(err);
+      });
+      this.ipc.send("renameListing", oldName, newName);
+    });
+  }
+
+  async deleteListing(name: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once("deleteListingResponse", (event, removed: boolean) => {
+        resolve(removed);
+      });
+      this.ipc.send("deleteListing", name);
+    });
+  }
 }

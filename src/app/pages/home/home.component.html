@@ -11,6 +11,9 @@
           <button ngbDropdownItem type="button" (click)="scanParameters.open()" [disabled]="scanRunning">
             Scan physical media for MSX software
           </button>
+          <button ngbDropdownItem type="button" (click)="manageListings.open()" [disabled]="!listings.length">
+            Manage listings
+          </button>
         </div>
       </div>
       <div *ngIf="listings.length > 0" ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event)">
@@ -137,6 +140,7 @@
   <img src="assets/images/general/download-2-64.png">
   <div>Drop files and folders</div>
 </div>
+
 <app-popup popupId="scan-parameters-id" title="Scan Parameters" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-scan-parameters [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
@@ -166,5 +170,12 @@
     <app-change-listing [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
       [listings]="listings" (updatedGame)="move(selectedGame, $event)" #changeListing>
     </app-change-listing>
+  </ng-template>
+</app-popup>
+
+<app-popup popupId="manage-listings-id" title="Manage Listings" (openStatus)="popupOpen = $event">
+  <ng-template let-popupId="popupId">
+    <app-manage-listings [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
+      (updatedListing)="updateListings($event)" #manageListings></app-manage-listings>
   </ng-template>
 </app-popup>

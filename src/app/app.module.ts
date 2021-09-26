@@ -32,6 +32,7 @@ import { WebLinkComponent } from './shared/web-link/web-link.component';
 import { WebMSXComponent } from './pages/web-msx/web-msx.component';
 import { MusicComponent } from './pages/home/music/music.component';
 import { GameDetailsComponent } from './pages/home/game-details/game-details.component';
+import { ManageListingsComponent } from './popups/manage-listings/manage-listings.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { GameDetailsComponent } from './pages/home/game-details/game-details.com
     WebLinkComponent,
     WebMSXComponent,
     MusicComponent,
-    GameDetailsComponent
+    GameDetailsComponent,
+    ManageListingsComponent
   ],
   imports: [
     BrowserModule,

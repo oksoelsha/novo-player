@@ -1,0 +1,28 @@
+<div class="total">
+    Total <span class="badge badge-light">{{ listings.length }}</span>
+</div>
+<div [ngClass]="{listings: true, disabled: deleteMode}" #listingsTable>
+    <table>
+        <tr>
+            <td class="listing"></td>
+            <td class="actions"></td>
+        </tr>
+        <tr *ngFor="let listing of listings" [ngClass]="{selected: listingsSelectionMap.get(listing)}">
+            <td *ngIf="!(renameMode && listingsSelectionMap.get(listing))" [id]="listing" class="listing">{{ listing }}</td>
+            <td *ngIf="renameMode && listingsSelectionMap.get(listing)"  class="listing">
+                <input class="listingRenameInput" #listingRenameInput type="text" [(ngModel)]="renamedListing"
+                  (keyup.enter)="renameListing($event)" (keyup.escape)="resetState()"
+                  (focusout)="resetState()" />
+            </td>
+            <td class="actions">
+                <img src="assets/images/operations/rename.png" (click)="enableRenameMode(listing)" placement="top" ngbTooltip="Rename">
+                <img src="assets/images/operations/remove.png" (click)="enableDeleteMode(listing)" placement="top" ngbTooltip="Delete">
+            </td>
+        </tr>
+    </table>
+</div>
+<div [ngClass]="{confirmation: true, hidden: !deleteMode}">
+    Delete selected listing?
+    <button class="btn btn-primary btn-sm ml-1" (click)="deleteListing()">Yes</button>
+    <button class="btn btn-secondary btn-sm ml-1" (click)="resetState()">No</button>
+</div>

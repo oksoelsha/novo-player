@@ -50,6 +50,14 @@ export class GamesService {
         ipcMain.on('search', (event, text: string) => {
             this.search(text);
         });
+
+        ipcMain.on('renameListing', (event, oldName: string, newName: string) => {
+            this.renameListing(oldName, newName);
+        });
+
+        ipcMain.on('deleteListing', (event, name: string) => {
+            this.deleteListing(name);
+        });
     }
 
     saveGameFromScan(game: Game): Promise<boolean> {
@@ -221,6 +229,20 @@ export class GamesService {
             games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
 
             self.win.webContents.send('searchResponse_' + text, games)
+        });
+    }
+
+    private renameListing(oldName: string, newName: string) {
+        var self = this;
+        this.database.update({ listing: oldName }, { $set: { listing: newName } }, { multi: true }, function () {
+            self.win.webContents.send('renameListingResponse');
+        });
+    }
+
+    private deleteListing(name: string) {
+        var self = this;
+        this.database.remove({ listing: name }, { multi: true }, function () {
+            self.win.webContents.send('deleteListingResponse', true);
         });
     }
 }
