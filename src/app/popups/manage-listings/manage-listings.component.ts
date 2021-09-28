@@ -17,8 +17,17 @@ export class ManageListingsComponent extends PopupComponent {
   renamedListing: string;
   renameMode: boolean = false;
   deleteMode: boolean = false;
+  mergeMode: boolean = false;
   selectedListing: string;
   listingsSelectionMap: Map<string, boolean> = new Map();
+  listingToMergeFrom: string;
+  listingToMergeTo: string;
+
+  public static readonly mode = {
+    delete: 0,
+    rename:1,
+    merge: 2
+  };
 
   constructor(private gamesService: GamesService) {
     super();
@@ -55,23 +64,12 @@ export class ManageListingsComponent extends PopupComponent {
 
   renameListing(event: any) {
     if (this.renamedListing && !this.renamedListing.startsWith(' ')) {
-      this.gamesService.renameListing(this.selectedListing, this.renamedListing.trim()).then((err: boolean) => {
-        if (err) {
-          //error TODO - show an error?
-        } else {
-          let oldName= this.selectedListing;
-          let newName = this.renamedListing;
-          this.removeFromListings(oldName);
-          this.addToListings(newName);
-          this.resetState();
-          setTimeout(() => {
-            this.adjustScrollForRenamedListing(newName);
-          }, 0);
-      
-          this.updatedListing.emit({oldListingName: oldName, newListingName: newName});
-        }
-      });
-  
+      //first check if the new name matches another listing -> in this case prompt for merge
+      if (this.listings.indexOf(this.renamedListing.trim(), 0) >= 0) {
+        this.enableMergeMode();
+      } else {
+        this.doRenameListing(this.selectedListing, this.renamedListing.trim(), false);
+      }
       event.stopPropagation();
     }
   }
@@ -80,11 +78,15 @@ export class ManageListingsComponent extends PopupComponent {
     this.gamesService.deleteListing(this.selectedListing).then((removed: boolean) => {
       if (removed) {
         this.removeFromListings(this.selectedListing);
-
-        this.updatedListing.emit({deletedListingName: this.selectedListing});
+        this.updatedListing.emit({ mode: ManageListingsComponent.mode.delete, oldListingName: this.selectedListing });
       }
       this.resetState();
     });
+  }
+
+  mergeListings() {
+    this.doRenameListing(this.listingToMergeFrom, this.listingToMergeTo, true);
+    this.resetMergeMode();
   }
 
   resetState() {
@@ -93,6 +95,12 @@ export class ManageListingsComponent extends PopupComponent {
     this.listingsSelectionMap.clear();
     this.renamedListing = "";
     this.selectedListing = "";
+  }
+
+  resetMergeMode() {
+    this.mergeMode = false;
+    this.listingToMergeFrom = null;
+    this.listingToMergeTo = null;
   }
 
   private setSelectedListing(listing: string) {
@@ -126,5 +134,35 @@ export class ManageListingsComponent extends PopupComponent {
     } else if (tableCellBottom > listingsTableBottom) {
       this.listingsTable.nativeElement.scrollTop = (tableCellBottom + this.listingsTable.nativeElement.scrollTop) - listingsTableBottom;
     }
+  }
+
+  private doRenameListing(oldName: string, newName: string, isMergeMode: boolean) {
+    this.gamesService.renameListing(oldName, newName).then((err: boolean) => {
+      if (err) {
+        //show an error?
+      } else {
+        this.removeFromListings(oldName);
+        if (!isMergeMode) {
+          this.addToListings(newName);
+        }
+        this.resetState();
+        setTimeout(() => {
+          this.adjustScrollForRenamedListing(newName);
+        }, 0);
+
+        if (isMergeMode) {
+          this.updatedListing.emit({ mode: ManageListingsComponent.mode.merge, oldListingName: oldName, newListingName: newName });
+        } else {
+          this.updatedListing.emit({ mode: ManageListingsComponent.mode.rename, oldListingName: oldName, newListingName: newName });
+        }
+      }
+    });
+  }
+
+  private enableMergeMode() {
+    this.mergeMode = true;
+
+    this.listingToMergeFrom = this.selectedListing;
+    this.listingToMergeTo = this.renamedListing.trim();
   }
 }

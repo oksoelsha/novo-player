@@ -333,7 +333,21 @@ export class HomeComponent implements OnInit {
   }
 
   updateListings(data: any) {
-    console.log(data)
+    if (data.mode == ManageListingsComponent.mode.delete) {
+      if (this.selectedListing == data.oldListingName) {
+        this.switchListingIfCurrentIsEmpty();
+      }
+    } else if (data.mode == ManageListingsComponent.mode.rename) {
+      if (this.selectedListing == data.oldListingName) {
+        this.setSelectedListing(data.newListingName);
+      }
+    } else if (data.mode == ManageListingsComponent.mode.merge) {
+      if (this.selectedListing == data.oldListingName) {
+        this.setSelectedListing(data.newListingName);
+      } else if (this.selectedListing == data.newListingName) {
+        this.getGames(this.selectedListing);
+      }
+    }
   }
 
   showInfo(game: Game) {
@@ -492,11 +506,15 @@ export class HomeComponent implements OnInit {
     this.games.splice(this.games.findIndex((e) => e.sha1Code == game.sha1Code), 1);
 
     if (switchListingIfLastGameInCurrentListing && this.games.length == 0) {
-      this.listings.splice(this.listings.findIndex((e) => e == this.selectedListing), 1);
-      if (this.listings.length > 0) {
-        this.selectedListing = this.listings[0];
-        this.getGames(this.selectedListing);
-      }
+      this.switchListingIfCurrentIsEmpty();
+    }
+  }
+
+  private switchListingIfCurrentIsEmpty() {
+    this.listings.splice(this.listings.findIndex((e) => e == this.selectedListing), 1);
+    if (this.listings.length > 0) {
+      this.selectedListing = this.listings[0];
+      this.getGames(this.selectedListing);
     }
   }
 

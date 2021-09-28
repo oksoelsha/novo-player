@@ -21,8 +21,15 @@
         </tr>
     </table>
 </div>
-<div [ngClass]="{confirmation: true, hidden: !deleteMode}">
-    Delete selected listing?
-    <button class="btn btn-primary btn-sm ml-1" (click)="deleteListing()">Yes</button>
-    <button class="btn btn-secondary btn-sm ml-1" (click)="resetState()">No</button>
+<div class="confirmation">
+    <div *ngIf="deleteMode">
+        Delete selected listing?
+        <button class="btn btn-primary btn-sm ml-1" (click)="deleteListing()">Yes</button>
+        <button class="btn btn-secondary btn-sm ml-1" (click)="resetState()">No</button>
+    </div>
+    <div *ngIf="mergeMode">
+        Name exists already. Merge?
+        <button class="btn btn-primary btn-sm ml-1" (click)="mergeListings()">Yes</button>
+        <button class="btn btn-secondary btn-sm ml-1" (click)="resetMergeMode(); resetState()">No</button>
+    </div>
 </div>
