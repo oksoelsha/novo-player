@@ -9,7 +9,7 @@ import { PopupComponent } from '../popup.component';
 })
 export class ManageListingsComponent extends PopupComponent {
 
-  @Input('listings') listings: string[];
+  @Input('listings') listings: string[] = [];
   @Output() updatedListing: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('listingRenameInput', { static: false }) private listingRenameInput: ElementRef;
   @ViewChild('listingsTable', { static: true }) private listingsTable: ElementRef;
