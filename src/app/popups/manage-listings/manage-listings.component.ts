@@ -75,10 +75,11 @@ export class ManageListingsComponent extends PopupComponent {
   }
 
   deleteListing() {
-    this.gamesService.deleteListing(this.selectedListing).then((removed: boolean) => {
+    let listingToDelete = this.selectedListing;
+    this.gamesService.deleteListing(listingToDelete).then((removed: boolean) => {
       if (removed) {
-        this.removeFromListings(this.selectedListing);
-        this.updatedListing.emit({ mode: ManageListingsComponent.mode.delete, oldListingName: this.selectedListing });
+        this.removeFromListings(listingToDelete);
+        this.updatedListing.emit({ mode: ManageListingsComponent.mode.delete, oldListingName: listingToDelete });
       }
       this.resetState();
     });

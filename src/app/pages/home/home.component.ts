@@ -515,6 +515,8 @@ export class HomeComponent implements OnInit {
     if (this.listings.length > 0) {
       this.selectedListing = this.listings[0];
       this.getGames(this.selectedListing);
+    } else {
+      this.games = [];
     }
   }
 
@@ -529,7 +531,6 @@ export class HomeComponent implements OnInit {
   }
 
   private addListingToListings(listing: string) {
-    //add listing to listings if it didn't exist there
     if (this.listings.findIndex((e) => e == listing) < 0) {
       let index: number;
       for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++);

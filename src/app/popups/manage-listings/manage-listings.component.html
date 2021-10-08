@@ -3,10 +3,6 @@
 </div>
 <div [ngClass]="{listings: true, disabled: deleteMode}" #listingsTable>
     <table>
-        <tr>
-            <td class="listing"></td>
-            <td class="actions"></td>
-        </tr>
         <tr *ngFor="let listing of listings" [ngClass]="{selected: listingsSelectionMap.get(listing)}">
             <td *ngIf="!(renameMode && listingsSelectionMap.get(listing))" [id]="listing" class="listing">{{ listing }}</td>
             <td *ngIf="renameMode && listingsSelectionMap.get(listing)"  class="listing">
