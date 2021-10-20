@@ -36,6 +36,8 @@ export class Game {
     inputDevice: number;
     connectGFX9000: boolean;
 
+    favorite: boolean;
+
     public readonly MASK_GENERATION_MSX = 1;
     public readonly MASK_GENERATION_MSX2 = 2;
     public readonly MASK_GENERATION_MSX2PLUS = 4;
@@ -166,5 +168,9 @@ export class Game {
 
     setConnectGFX9000(connectGFX9000: boolean) {
         this.connectGFX9000 = connectGFX9000;
+    }
+
+    setFavorite(flag: boolean) {
+        this.favorite = flag;
     }
 }

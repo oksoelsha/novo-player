@@ -131,4 +131,22 @@ export class GamesService {
       this.ipc.send("deleteListing", name);
     });
   }
+
+  async setFavoritesFlag(game: Game, flag: boolean) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once("setFavoritesFlagResponse", (event, err: boolean) => {
+        resolve(err);
+      });
+      this.ipc.send("setFavoritesFlag", game, flag);
+    });
+  }
+
+  async getFavorites(): Promise<Game[]> {
+    return new Promise<Game[]>((resolve, reject) => {
+      this.ipc.once("getFavoritesResponse", (event, favorites) => {
+        resolve(favorites);
+      });
+      this.ipc.send("getFavorites");
+    });
+  }
 }

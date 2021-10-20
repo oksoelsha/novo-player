@@ -19,7 +19,7 @@ export class GamesService {
 
     constructor(private win: BrowserWindow, private emulatorRepositoryService: EmulatorRepositoryService, private hashService: HashService) {
         this.database = new Datastore({ filename: this.databaseFile, autoload: true });
-        this.repositoryInfo = this.emulatorRepositoryService.getRepositoryInfo()
+        this.repositoryInfo = this.emulatorRepositoryService.getRepositoryInfo();
     }
 
     init() {
@@ -58,6 +58,14 @@ export class GamesService {
         ipcMain.on('deleteListing', (event, name: string) => {
             this.deleteListing(name);
         });
+
+        ipcMain.on('setFavoritesFlag', (event, game: Game, flag: boolean) => {
+            this.setFavoritesFlag(game, flag);
+        });
+
+        ipcMain.on('getFavorites', (event) => {
+            this.getFavorites();
+        });
     }
 
     saveGameFromScan(game: Game): Promise<boolean> {
@@ -73,14 +81,14 @@ export class GamesService {
         var self = this;
         var gameDO: GameDO = new GameDO(game);
         this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
-            self.win.webContents.send('saveGameResponse', err == null)
+            self.win.webContents.send('saveGameResponse', err == null);
         });
     }
 
     private removeGame(game: Game) {
         var self = this;
         this.database.remove({ _id: game.sha1Code }, {}, function (err: any, numRemoved: number) {
-            self.win.webContents.send('removeGameResponse', numRemoved == 1)
+            self.win.webContents.send('removeGameResponse', numRemoved == 1);
         });
     }
 
@@ -96,7 +104,7 @@ export class GamesService {
                 }
             }
 
-            self.win.webContents.send('getListingsResponse', listings)
+            self.win.webContents.send('getListingsResponse', listings);
         });
     }
 
@@ -110,27 +118,27 @@ export class GamesService {
 
                 for (var field of PersistenceUtils.fieldsToPersist) {
                     if (gameDO[field] != game[field]) {
-                        game[field] = gameDO[field]
+                        game[field] = gameDO[field];
                     }
                 }
 
                 if (self.repositoryInfo != null) {
-                    let repositoryData: RepositoryData = self.repositoryInfo.get(entry._id)
+                    let repositoryData: RepositoryData = self.repositoryInfo.get(entry._id);
                     if (repositoryData != null) {
-                        game.setTitle(repositoryData.title)
-                        game.setSystem(repositoryData.system)
-                        game.setCompany(repositoryData.company)
-                        game.setYear(repositoryData.year)
-                        game.setCountry(repositoryData.country)
-                        game.setMapper(repositoryData.mapper)
-                        game.setRemark(repositoryData.remark)
-                        game.setStart(repositoryData.start)
+                        game.setTitle(repositoryData.title);
+                        game.setSystem(repositoryData.system);
+                        game.setCompany(repositoryData.company);
+                        game.setYear(repositoryData.year);
+                        game.setCountry(repositoryData.country);
+                        game.setMapper(repositoryData.mapper);
+                        game.setRemark(repositoryData.remark);
+                        game.setStart(repositoryData.start);
                     }
                 }
-                games.push(game)
+                games.push(game);
             }
 
-            self.win.webContents.send('getGamesResponse', games)
+            self.win.webContents.send('getGamesResponse', games);
         });
     }
 
@@ -206,7 +214,7 @@ export class GamesService {
             }
             totals = new Totals(listings, games, roms, disks, tapes, harddisks, laserdiscs);
 
-            self.win.webContents.send('getTotalsResponse', totals)
+            self.win.webContents.send('getTotalsResponse', totals);
         });
     }
 
@@ -226,9 +234,9 @@ export class GamesService {
                 }
             }
             //order the games here rather than order on the database -> this is faster
-            games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+            games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
-            self.win.webContents.send('searchResponse_' + text, games)
+            self.win.webContents.send('searchResponse_' + text, games);
         });
     }
 
@@ -243,6 +251,29 @@ export class GamesService {
         var self = this;
         this.database.remove({ listing: name }, { multi: true }, function () {
             self.win.webContents.send('deleteListingResponse', true);
+        });
+    }
+
+    private setFavoritesFlag(game: Game, flag: boolean) {
+        var self = this;
+        this.database.update({ _id: game.sha1Code }, { $set: { favorite: flag } }, {}, function () {
+            self.win.webContents.send('setFavoritesFlagResponse', false);
+        });
+    }
+
+    private getFavorites() {
+        var self = this;
+        let favorites: Game[] = [];
+        this.database.find({ favorite: true }, function (err: any, entries: any) {
+            for (var entry of entries) {
+                let gameDO: GameDO = new GameDO(entry);
+                let game: Game = new Game(entry.name, entry._id, entry.size);
+                game.setListing(gameDO.listing);
+                favorites.push(game)
+            }
+            favorites.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+
+            self.win.webContents.send('getFavoritesResponse', favorites)
         });
     }
 }

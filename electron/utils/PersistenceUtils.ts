@@ -21,6 +21,7 @@ export class PersistenceUtils {
         'listing',
         'fddMode',
         'inputDevice',
-        'connectGFX9000'
+        'connectGFX9000',
+        'favorite'
     ]
 }

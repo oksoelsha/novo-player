@@ -29,6 +29,8 @@ export class GameDO {
     inputDevice: number;
     connectGFX9000: boolean;
 
+    favorite: boolean;
+
     constructor(game: Game) {
         for (var field of PersistenceUtils.fieldsToPersist) {
             if (game[field]) {

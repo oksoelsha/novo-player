@@ -63,6 +63,7 @@ export class HomeComponent implements OnInit {
   isWebMSXPathDefined: boolean;
   musicFiles: string[] = [];
   selectedMusicFile: string;
+  favorites: Game[] = [];
 
   constructor(private gamesService: GamesService,
     private scanner: ScannerService,
@@ -330,6 +331,26 @@ export class HomeComponent implements OnInit {
       this.initialize();
       this.addListingToListings(newGame.listing);
     });
+  }
+
+  setFavoritesFlag(flag: boolean) {
+    this.gamesService.setFavoritesFlag(this.selectedGame, flag).then((error: boolean) => {
+      if (error) {
+        this.alertService.failure("Failed to toggle the favorites flag for: " + this.selectedGame.name);
+      } else {
+        this.selectedGame.favorite = flag;
+      }
+    });
+  }
+
+  getFavorites(opened: boolean) {
+    if (opened) {
+      this.gamesService.getFavorites().then((data: Game[]) => {
+        this.favorites = data;
+      });
+    } else {
+      this.favorites = [];
+    }
   }
 
   updateListings(data: any) {

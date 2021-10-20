@@ -28,13 +28,30 @@
           </button>
         </div>
       </div>
-      <div id="search-button" ngbDropdown class="d-inline-block"
-        (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;" #searchDropdown="ngbDropdown">
-        <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
-          <img src="assets/images/general/search-13-16.png">
-        </button>
-        <div ngbDropdownMenu class="pt-0 pb-0">
-          <home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></home-game-search>
+      <div class="action-button">
+        <div ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
+          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
+            <img src="assets/images/general/star-2-16.png">
+          </button>
+          <div ngbDropdownMenu class="pt-0 pb-0">
+            <button *ngFor="let favorite of favorites" ngbDropdownItem type="button" (click)="showFoundGame(favorite)">
+              <div class="xxxxgame-name">
+                {{ favorite.name }}
+              </div>
+              <div class="xxxxgame-listing pl-2">
+                - {{ favorite.listing }}
+              </div>
+            </button>
+          </div>
+        </div>
+        <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;"
+          #searchDropdown="ngbDropdown">
+          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
+            <img src="assets/images/general/search-13-16.png">
+          </button>
+          <div ngbDropdownMenu class="pt-0 pb-0">
+            <home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></home-game-search>
+          </div>
         </div>
       </div>
     </div>
@@ -109,10 +126,16 @@
               Edit Hardware
             </button>
             <div class="dropdown-divider mt-0 mb-0"></div>
+            <button *ngIf="!selectedGame.favorite" ngbDropdownItem type="button" (click)="setFavoritesFlag(true)">
+              Add to Favorites
+            </button>
+            <button *ngIf="selectedGame.favorite" ngbDropdownItem type="button" (click)="setFavoritesFlag(false)">
+              Remove from Favorites
+            </button>
             <button ngbDropdownItem type="button" (click)="changeListing.open()">
               Move to another listing
             </button>
-            </div>
+          </div>
         </div>
         <div *ngIf="musicFiles.length > 0" class="d-inline-block">
           <div class="d-inline-block" ngbDropdown (openChange)="handleOpenMenuEvents($event)">
