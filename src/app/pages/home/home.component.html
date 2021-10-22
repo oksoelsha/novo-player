@@ -35,10 +35,10 @@
           </button>
           <div ngbDropdownMenu class="pt-0 pb-0">
             <button *ngFor="let favorite of favorites" ngbDropdownItem type="button" (click)="showFoundGame(favorite)">
-              <div class="xxxxgame-name">
+              <div class="favorite-name">
                 {{ favorite.name }}
               </div>
-              <div class="xxxxgame-listing pl-2">
+              <div class="favorite-listing pl-2">
                 - {{ favorite.listing }}
               </div>
             </button>
