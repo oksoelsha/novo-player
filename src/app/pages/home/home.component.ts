@@ -58,6 +58,7 @@ export class HomeComponent implements OnInit {
   listings: string[] = [];
   openMenuEventCounter: number = 0;
   searchMenuOpen: boolean = false;
+  musicMenuOpen: boolean = false;
   popupOpen: boolean = false;
   isOpenMSXPathDefined: boolean;
   isWebMSXPathDefined: boolean;
@@ -378,12 +379,15 @@ export class HomeComponent implements OnInit {
     this.gamesService.getSecondaryData(game).then((secondaryData) => {
       this.setScreenshots(secondaryData);
       this.setMusicFiles(secondaryData);
-    });
 
-    //reset the open menu counter because there's a case where it doesn't get reset (by subtracting 1 on openChange event)
-    //with the closing of the menu. That case is for the game music tracks menu where the closing menu event does not fire
-    //if the if-statement around the html segment evaluates to false after clicking on a different game without music
-    this.openMenuEventCounter = 0;
+      //decrement the open menu counter because there's a case where it doesn't get decremented with the closing of the menu.
+      //That case is for the game music tracks menu where the closing menu event does not fire if the if-statement around the
+      //html segment evaluates to false after clicking on a different game without music.
+      if (this.musicFiles.length == 0 && this.musicMenuOpen) {
+        this.openMenuEventCounter--;
+        this.musicMenuOpen = false;
+      }
+    });
   }
 
   showFoundGame(game: Game) {
