@@ -221,7 +221,9 @@ export class GamesService {
     private search(text: string) {
         var self = this;
         let games: Game[] = [];
-        this.database.find({$or: [{name:{$regex: new RegExp(text, 'i') }}, {_id:{$regex: new RegExp('^' + text, 'i')}}]}, function (err: any, entries: any) {
+        let sanitizedText: string = text.replace(/[(){}[\]\\?|]/g,'');
+
+        this.database.find({$or: [{name:{$regex: new RegExp(sanitizedText, 'i') }}, {_id:{$regex: new RegExp('^' + sanitizedText, 'i')}}]}, function (err: any, entries: any) {
             let index: number = 0;
             for (var entry of entries) {
                 let gameDO: GameDO = new GameDO(entry);
@@ -233,7 +235,6 @@ export class GamesService {
                     break;
                 }
             }
-            //order the games here rather than order on the database -> this is faster
             games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
             self.win.webContents.send('searchResponse_' + text, games);
