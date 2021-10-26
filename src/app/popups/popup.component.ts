@@ -7,7 +7,7 @@ import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateR
 })
 export class PopupComponent implements OnInit {
 
-  @Input () title: string;
+  @Input () titleHeader: string;
   @Input () popupId: string;
   @Output() openStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ContentChild(TemplateRef) templateVariable: TemplateRef<any>;
