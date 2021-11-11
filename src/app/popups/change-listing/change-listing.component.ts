@@ -29,10 +29,12 @@ export class ChangeListingComponent extends PopupComponent {
 
     this.destinationListings  = Object.assign([], this.listings);
     this.destinationListings.splice(this.destinationListings.indexOf(this.game.listing), 1);
-    this.selectedListing = this.destinationListings[0];  
+//    this.selectedListing = this.destinationListings[0];
   }
 
   close(): void {
+    this.selectedListing = "";
+
     this.opened = false;
     super.close();
   }
