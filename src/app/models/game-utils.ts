@@ -111,4 +111,8 @@ export class GameUtils {
             return this.genres[genre];
         }
     }
+
+    static getMonikor(game: Game): any {
+        return {"name": game.name, "listing": game.listing};
+    }
 }

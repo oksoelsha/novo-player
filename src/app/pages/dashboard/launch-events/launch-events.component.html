@@ -1,0 +1,20 @@
+<div class="card text-white widget widget-wide ml-3 mb-3">
+    <div class="card-body container">
+        <h5 class="card-title">Launch History</h5>
+        <div class="events-table">
+            <table class="table table-sm text-white">
+                <tr *ngFor="let event of events">
+                    <td class="event-time">{{ getEventDate(event.timestamp) }}</td>
+                    <td class="event-source">{{ getLaunchSource(event.source) }}</td>
+                    <td class="event-game-name">{{ event.data.name }}</td>
+                    <td class="event-game-listing">{{ event.data.listing }}</td>
+                </tr>
+            </table>
+            <div class="pagination" *ngIf="events.length > 0">
+                <button class="badge badge-light" (click)="previousPage()" [disabled]="getCurrentPage() == 1">&lt;</button>
+                <button class="badge badge-light" (click)="nextPage()" [disabled]="getCurrentPage() == getTotalPages()">&gt;</button>
+                Page {{ getCurrentPage() }} / {{ getTotalPages() }}
+            </div>
+        </div>
+    </div>
+</div>

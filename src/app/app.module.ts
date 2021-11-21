@@ -33,6 +33,7 @@ import { WebMSXComponent } from './pages/web-msx/web-msx.component';
 import { MusicComponent } from './pages/home/music/music.component';
 import { GameDetailsComponent } from './pages/home/game-details/game-details.component';
 import { ManageListingsComponent } from './popups/manage-listings/manage-listings.component';
+import { LaunchEventsComponent } from './pages/dashboard/launch-events/launch-events.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ManageListingsComponent } from './popups/manage-listings/manage-listing
     WebMSXComponent,
     MusicComponent,
     GameDetailsComponent,
-    ManageListingsComponent
+    ManageListingsComponent,
+    LaunchEventsComponent
   ],
   imports: [
     BrowserModule,

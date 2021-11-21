@@ -1,10 +1,12 @@
-import { BrowserWindow, ipcMain } from 'electron'
-import { SettingsService } from 'SettingsService'
-import * as path from 'path'
 import * as cp from 'child_process'
-import * as os from 'os';
+import { BrowserWindow, ipcMain } from 'electron'
+import { EventLogService } from 'EventLogService'
+import * as path from 'path'
+import { SettingsService } from 'SettingsService'
+import { Event, EventSource, EventType } from '../src/app/models/event'
 import { Game } from '../src/app/models/game'
-import { PlatformUtils } from './utils/PlatformUtils';
+import { GameUtils } from '../src/app/models/game-utils'
+import { PlatformUtils } from './utils/PlatformUtils'
 
 class TCLCommands {
     field: string;
@@ -66,7 +68,7 @@ export class EmulatorLaunchService {
     private static readonly LAUNCH_ERROR_SPLIT_MSG_UNCAUGHT = "Uncaught exception: ";
     private static readonly LAUNCH_ERROR_SPLIT_MSG_ERROR_IN = "Error in ";
 
-    constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
+    constructor(private win: BrowserWindow, private settingsService: SettingsService, private eventLogService: EventLogService) { }
 
     init() {
         ipcMain.on('launchGame', (event, game: Game, time: number) => {
@@ -93,6 +95,8 @@ export class EmulatorLaunchService {
                 self.win.webContents.send('launchGameResponse' + time);
             }
         });
+
+        this.eventLogService.logEvent(new Event(EventSource.openMSX, EventType.LAUNCH, GameUtils.getMonikor(game)));
     }
 
     private getSplitText(error: cp.ExecException): string {

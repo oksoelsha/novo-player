@@ -69,3 +69,12 @@ describe('GameUtils', () => {
     expect(GameUtils.getGenre(50)).toEqual('Dexterity')
   });
 });
+
+describe('GameUtils', () => {
+  it('getMonikor function should return a valid monikor for a given game', () => {
+    var game: Game = new Game("name", "123abc", 256);
+    game.setListing("listing");
+    expect(GameUtils.getMonikor(game).name).toEqual('name')
+    expect(GameUtils.getMonikor(game).listing).toEqual('listing')
+  });
+});

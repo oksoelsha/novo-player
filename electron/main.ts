@@ -9,6 +9,7 @@ import { ExtraDataService } from './ExtraDataService'
 import { ScanService } from './ScanService'
 import { EmulatorHardwareService } from './EmulatorHardwareService'
 import { HashService } from './HashService'
+import { EventLogService } from './EventLogService'
 
 let win: BrowserWindow
 
@@ -69,7 +70,10 @@ function initializeServices() {
     let filesService = new FilesService(win, settingsService);
     filesService.init();
 
-    let emulatorLaunchService = new EmulatorLaunchService(win, settingsService);
+    let eventLogService = new EventLogService(win);
+    eventLogService.init();
+
+    let emulatorLaunchService = new EmulatorLaunchService(win, settingsService, eventLogService);
     emulatorLaunchService.init();
 
     let emulatorHardwareService = new EmulatorHardwareService(win, settingsService);

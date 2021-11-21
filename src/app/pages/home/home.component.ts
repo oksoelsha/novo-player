@@ -13,6 +13,9 @@ import { HardwareEditComponent } from 'src/app/popups/hardware-edit/hardware-edi
 import { ChangeListingComponent } from 'src/app/popups/change-listing/change-listing.component';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { EventsService } from 'src/app/services/events.service';
+import { Event, EventSource, EventType } from 'src/app/models/event';
+import { GameUtils } from 'src/app/models/game-utils';
 
 @Component({
   selector: 'app-home',
@@ -70,6 +73,7 @@ export class HomeComponent implements OnInit {
     private scanner: ScannerService,
     private alertService: AlertsService,
     private settingsService: SettingsService,
+    private eventsService: EventsService,
     private router: Router) { }
 
   @HostListener('window:keyup', ['$event'])
@@ -242,6 +246,7 @@ export class HomeComponent implements OnInit {
 
   launchWebmsx(game: Game) {
     this.router.navigate(['./wmsx', { gameParams: JSON.stringify(this.selectedGame) }], { queryParams: this.getWebMSXParams() });
+    this.eventsService.logEvent(new Event(EventSource.WebMSX, EventType.LAUNCH, GameUtils.getMonikor(game)));
   }
 
   processKeyEventsOnTable(event: any) {
