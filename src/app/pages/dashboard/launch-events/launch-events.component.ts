@@ -48,6 +48,16 @@ export class LaunchEventsComponent implements OnInit {
     this.getEvents();
   }
 
+  lastPage() {
+    this.currentPage = this.getTotalPages() - 1;
+    this.getEvents();
+  }
+
+  firstPage() {
+    this.currentPage = 0;
+    this.getEvents();
+  }
+
   private getEvents() {
     this.eventsService.getEvents(this.pageSize, this.currentPage).then((data: any) => {
       this.total = data.total;

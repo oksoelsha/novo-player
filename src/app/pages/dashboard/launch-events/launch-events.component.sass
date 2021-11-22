@@ -27,8 +27,22 @@
   position: absolute
   bottom: .5rem
 
-.pagination span
-  color: white
+.pagination button
+  padding: 0.035rem 0.225rem 0.035rem 0.225rem
+  background-color: #999999
+  border: 0
+  margin-right: .25rem
+  border-radius: 0.5em
+  box-sizing: border-box
+  text-decoration: none
+  color: #eeeeee
+  text-align: center
+  transition: all 0.2s
 
-.pagination span:hover
+.pagination button:disabled
+  color: #555555
+  background-color: #666666
+
+.pagination button:hover:enabled
+  background-color: #aaaaaa
   cursor: pointer

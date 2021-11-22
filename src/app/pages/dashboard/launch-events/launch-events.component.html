@@ -11,9 +11,11 @@
                 </tr>
             </table>
             <div class="pagination" *ngIf="events.length > 0">
-                <button class="badge badge-light" (click)="previousPage()" [disabled]="getCurrentPage() == 1">&lt;</button>
-                <button class="badge badge-light" (click)="nextPage()" [disabled]="getCurrentPage() == getTotalPages()">&gt;</button>
-                Page {{ getCurrentPage() }} / {{ getTotalPages() }}
+                <button (click)="firstPage()" [disabled]="getCurrentPage() == 1">&larrb;</button>
+                <button (click)="previousPage()" [disabled]="getCurrentPage() == 1">&larr;</button>
+                <button (click)="nextPage()" [disabled]="getCurrentPage() == getTotalPages()">&rarr;</button>
+                <button (click)="lastPage()" [disabled]="getCurrentPage() == getTotalPages()">&rarrb;</button>
+                {{ getCurrentPage() }} / {{ getTotalPages() }}
             </div>
         </div>
     </div>
