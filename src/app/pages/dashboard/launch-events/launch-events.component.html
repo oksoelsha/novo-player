@@ -10,13 +10,8 @@
                     <td class="event-game-listing">{{ event.data.listing }}</td>
                 </tr>
             </table>
-            <div class="pagination" *ngIf="events.length > 0">
-                <button (click)="firstPage()" [disabled]="getCurrentPage() == 1">&larrb;</button>
-                <button (click)="previousPage()" [disabled]="getCurrentPage() == 1">&larr;</button>
-                <button (click)="nextPage()" [disabled]="getCurrentPage() == getTotalPages()">&rarr;</button>
-                <button (click)="lastPage()" [disabled]="getCurrentPage() == getTotalPages()">&rarrb;</button>
-                {{ getCurrentPage() }} / {{ getTotalPages() }}
-            </div>
+            <app-pagination class="pagination-part" [total]="total" [pageSize]="pageSize" (page)="getEvents($event)"
+                *ngIf="events.length > 0"></app-pagination>
         </div>
     </div>
 </div>

@@ -9,23 +9,14 @@ import { EventsService } from 'src/app/services/events.service';
 })
 export class LaunchEventsComponent implements OnInit {
 
-  private readonly pageSize: number = 6;
+  readonly pageSize: number = 6;
   events: Event[] = [];
   total: number = 0;
-  currentPage: number = 0;
 
   constructor(private eventsService: EventsService) { }
 
   ngOnInit(): void {
-    this.getEvents();
-  }
-
-  getTotalPages(): number {
-    return Math.trunc((this.total -1) / this.pageSize) + 1;
-  }
-
-  getCurrentPage(): number {
-    return this.currentPage + 1;
+    this.getEvents(0);
   }
 
   getEventDate(timestamp: number): string {
@@ -38,28 +29,8 @@ export class LaunchEventsComponent implements OnInit {
     return EventSource[source];
   }
 
-  nextPage() {
-    this.currentPage++;
-    this.getEvents();
-  }
-
-  previousPage() {
-    this.currentPage--;
-    this.getEvents();
-  }
-
-  lastPage() {
-    this.currentPage = this.getTotalPages() - 1;
-    this.getEvents();
-  }
-
-  firstPage() {
-    this.currentPage = 0;
-    this.getEvents();
-  }
-
-  private getEvents() {
-    this.eventsService.getEvents(this.pageSize, this.currentPage).then((data: any) => {
+  private getEvents(page: number) {
+    this.eventsService.getEvents(this.pageSize, page).then((data: any) => {
       this.total = data.total;
       this.events = data.events;
     });

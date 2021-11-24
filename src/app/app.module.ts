@@ -34,6 +34,7 @@ import { MusicComponent } from './pages/home/music/music.component';
 import { GameDetailsComponent } from './pages/home/game-details/game-details.component';
 import { ManageListingsComponent } from './popups/manage-listings/manage-listings.component';
 import { LaunchEventsComponent } from './pages/dashboard/launch-events/launch-events.component';
+import { PaginationComponent } from './shared/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { LaunchEventsComponent } from './pages/dashboard/launch-events/launch-ev
     MusicComponent,
     GameDetailsComponent,
     ManageListingsComponent,
-    LaunchEventsComponent
+    LaunchEventsComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
