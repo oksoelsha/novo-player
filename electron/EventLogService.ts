@@ -10,6 +10,7 @@ export class EventLogService {
     private database: Datastore;
     private readonly databasePath: string = path.join(os.homedir(), 'Novo Player');
     private readonly databaseFile: string = path.join(this.databasePath, 'events');
+    private readonly MAXIMUM_LOG_ENTRIES: number = 600;
 
     constructor(private win: BrowserWindow) {
         this.database = new Datastore({ filename: this.databaseFile, autoload: true });
@@ -26,8 +27,18 @@ export class EventLogService {
     }
 
     logEvent(userEvent: Event) {
+        var self = this;
         var eventDO: EventDO = new EventDO(userEvent);
-        this.database.insert(eventDO, function (err: any, savedEvent: EventDO) {
+
+        this.database.count({}, function (err: any, count: number) {
+            if (count >= self.MAXIMUM_LOG_ENTRIES) {
+                self.database.find({}).sort({ timestamp: 1 }).limit(1).exec(function (err: any, entry: any) {
+                    self.database.remove({ _id: entry[0]._id }, {}, function (err: any, numRemoved: number) {
+                    });
+                });
+            }
+            self.database.insert(eventDO, function (err: any, savedEvent: EventDO) {
+            });
         });
     }
 
