@@ -4,10 +4,10 @@
         <div class="events-table">
             <table class="table table-sm text-white">
                 <tr *ngFor="let event of events">
-                    <td class="event-time">{{ getEventDate(event.timestamp) }}</td>
+                    <td class="event-time" [title]="getLongEventDate(event.timestamp)">{{ getEventDate(event.timestamp) }}</td>
                     <td class="event-source">{{ getLaunchSource(event.source) }}</td>
-                    <td class="event-game-name">{{ event.data.name }}</td>
-                    <td class="event-game-listing">{{ event.data.listing }}</td>
+                    <td class="event-game-name" [title]="event.data.name">{{ event.data.name }}</td>
+                    <td class="event-game-listing" [title]="event.data.listing">{{ event.data.listing }}</td>
                 </tr>
             </table>
             <app-pagination class="pagination-part" [total]="total" [pageSize]="pageSize" (page)="getEvents($event)"

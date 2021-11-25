@@ -25,6 +25,10 @@ export class LaunchEventsComponent implements OnInit {
       ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
   }
 
+  getLongEventDate(timestamp: number): string {
+    return new Date(timestamp).toLocaleString();
+  }
+
   getLaunchSource(source: number): string {
     return EventSource[source];
   }
