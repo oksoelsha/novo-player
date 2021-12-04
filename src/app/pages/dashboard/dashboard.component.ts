@@ -7,7 +7,7 @@ import { ScannerService } from 'src/app/services/scanner.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.sass']
+  styleUrls: ['../../common-styles.sass', './dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
