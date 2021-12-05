@@ -33,7 +33,7 @@
     "fast-xml-parser": "^3.17.4",
     "jquery": "^3.5.1",
     "nedb": "^1.8.0",
-    "ng-apexcharts": "^1.5.9",
+    "ng-apexcharts": "^1.6.0",
     "ngx-bootstrap": "^5.6.1",
     "node-stream-zip": "^1.11.2",
     "p-limit": "^3.0.2",
