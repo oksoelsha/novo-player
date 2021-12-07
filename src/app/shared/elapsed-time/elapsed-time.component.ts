@@ -22,7 +22,7 @@ export class ElapsedTimeComponent implements OnInit {
   }
 
   getStartTimeDisplay(): string {
-    return new Date(this.startTime).toTimeString();
+    return new Date(this.startTime).toLocaleString();
   }
 
   private updateTimes() {
