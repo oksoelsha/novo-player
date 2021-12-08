@@ -33,19 +33,19 @@ export class HomeComponent implements OnInit {
   @ViewChild('searchDropdown', { static: true }) private searchDropdown: NgbDropdown;
   @ViewChild('dragArea', { static: false }) private dragArea: ElementRef;
 
-  private readonly noScreenshotImage1: GameSecondaryData = new GameSecondaryData("assets/noscrsht.png", "", null);
-  private readonly noScreenshotImage2: GameSecondaryData = new GameSecondaryData("", "assets/noscrsht.png", null);
-  private readonly noScreenshotData: GameSecondaryData = new GameSecondaryData("", "", null);
+  private readonly noScreenshotImage1: GameSecondaryData = new GameSecondaryData('assets/noscrsht.png', '', null);
+  private readonly noScreenshotImage2: GameSecondaryData = new GameSecondaryData('', 'assets/noscrsht.png', null);
+  private readonly noScreenshotData: GameSecondaryData = new GameSecondaryData('', '', null);
 
-  private toggle: boolean = false;
+  private toggle = false;
   private gamesTable: Element;
-  private gameQuickSearch: string = ""
+  private gameQuickSearch = '';
   private quickTypeTimer: NodeJS.Timer = null;
 
   private draggedFilesAndFolders: string[] = [];
-  private dragCounter: number = 0;
+  private dragCounter = 0;
 
-  selectedListing: string = ""
+  selectedListing = '';
   games: Game[] = [];
   gamesEditMode: Map<string, boolean> = new Map();
   editedGameName: string;
@@ -55,14 +55,14 @@ export class HomeComponent implements OnInit {
   screenshot_a_2: GameSecondaryData;
   screenshot_b_1: GameSecondaryData;
   screenshot_b_2: GameSecondaryData;
-  transparent1: string = "";
-  transparent2: string = "transparent";
-  scanRunning: boolean = false;
+  transparent1 = '';
+  transparent2 = 'transparent';
+  scanRunning = false;
   listings: string[] = [];
-  openMenuEventCounter: number = 0;
-  searchMenuOpen: boolean = false;
-  musicMenuOpen: boolean = false;
-  popupOpen: boolean = false;
+  openMenuEventCounter = 0;
+  searchMenuOpen = false;
+  musicMenuOpen = false;
+  popupOpen = false;
   isOpenMSXPathDefined: boolean;
   isWebMSXPathDefined: boolean;
   musicFiles: string[] = [];
@@ -80,18 +80,18 @@ export class HomeComponent implements OnInit {
   keyupEvent(event: KeyboardEvent) {
     if (this.canHandleEvents()) {
       if (this.selectedGame != null) {
-        if (event.key == 'ArrowUp') {
-          var index = this.games.indexOf(this.selectedGame);
+        if (event.key === 'ArrowUp') {
+          const index = this.games.indexOf(this.selectedGame);
           if (index > 0) {
             this.showInfo(this.games[index - 1]);
           }
-        } else if (event.key == 'ArrowDown') {
-          var index = this.games.indexOf(this.selectedGame);
+        } else if (event.key === 'ArrowDown') {
+          const index = this.games.indexOf(this.selectedGame);
           if (index < (this.games.length - 1)) {
             this.showInfo(this.games[index + 1]);
           }
         }
-      } else if (event.key == 'ArrowDown' && this.games.length > 0) {
+      } else if (event.key === 'ArrowDown' && this.games.length > 0) {
         this.selectedGame = this.games[0];
         this.showInfo(this.games[0]);
       }
@@ -101,23 +101,23 @@ export class HomeComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   keydownEvent(event: KeyboardEvent) {
     if (this.canHandleEvents()) {
-      if (event.key.length == 1 && !this.ctrlOrCommandKey(event) && (
+      if (event.key.length === 1 && !this.ctrlOrCommandKey(event) && (
         (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
-        (event.key >= 'A' && event.key <= 'Z') || event.key == ' ' || event.key == '-')) {
+        (event.key >= 'A' && event.key <= 'Z') || event.key === ' ' || event.key === '-')) {
         if (this.quickTypeTimer != null) {
           clearTimeout(this.quickTypeTimer);
         }
         this.gameQuickSearch += event.key;
         this.quickTypeTimer = setTimeout(() => {
           this.jumpToNearestGame(this.gameQuickSearch);
-          this.gameQuickSearch = "";
-        }, 600)
-      } else if (this.ctrlOrCommandKey(event) && (event.key == 'f' || event.key == 'F')) {
+          this.gameQuickSearch = '';
+        }, 600);
+      } else if (this.ctrlOrCommandKey(event) && (event.key === 'f' || event.key === 'F')) {
         this.searchDropdown.open();
       } else if (this.selectedGame != null) {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
           this.launch(this.selectedGame);
-        } else if (event.key == 'Delete') {
+        } else if (event.key === 'Delete') {
           this.remove(event, this.selectedGame);
         }
       }
@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit {
       event.preventDefault();
       event.stopPropagation();
       this.dragCounter--;
-      if (this.dragCounter == 0) {
+      if (this.dragCounter === 0) {
         this.dragArea.nativeElement.classList.remove('drag-over');
       }
     }
@@ -162,7 +162,7 @@ export class HomeComponent implements OnInit {
       event.stopPropagation();
       this.dragCounter = 0;
       this.dragArea.nativeElement.classList.remove('drag-over');
-      let files = event.dataTransfer.files;
+      const files = event.dataTransfer.files;
       if (files.length > 0) {
         this.draggedFilesAndFolders = Array.from(files).map(f => f.path);
         this.scanParameters.open();
@@ -172,17 +172,17 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.initialize();
-    this.gamesTable = document.getElementById("games-table-data");
+    this.gamesTable = document.getElementById('games-table-data');
 
     if (sessionStorage.getItem('lastRemovedGame') != null) {
       this.lastRemovedGame = JSON.parse(sessionStorage.getItem('lastRemovedGame'));
     }
 
-    var self = this;
+    const self = this;
     this.settingsService.getSettings().then((settings: Settings) => {
       this.gamesService.getListings().then((data: string[]) => {
         this.listings = data;
-        let gameSha1Code:string = null;
+        let gameSha1Code: string = null;
         if (sessionStorage.getItem('selectedListing') != null) {
           self.selectedListing = sessionStorage.getItem('selectedListing');
           if (sessionStorage.getItem('selectedGame') != null) {
@@ -197,17 +197,17 @@ export class HomeComponent implements OnInit {
         }
         self.getGames(this.selectedListing, gameSha1Code);
       });
-      this.isOpenMSXPathDefined = settings.openmsxPath != null && settings.openmsxPath.trim() != "";
-      this.isWebMSXPathDefined = settings.webmsxPath != null && settings.webmsxPath.trim() != "";
+      this.isOpenMSXPathDefined = settings.openmsxPath != null && settings.openmsxPath.trim() !== '';
+      this.isWebMSXPathDefined = settings.webmsxPath != null && settings.webmsxPath.trim() !== '';
     });
   }
 
-  handleOpenMenuEvents(opened:boolean) {
-    opened? this.openMenuEventCounter++ : this.openMenuEventCounter--;
+  handleOpenMenuEvents(opened: boolean) {
+    opened ? this.openMenuEventCounter++ : this.openMenuEventCounter--;
   }
 
   setSelectedListing(listing: string) {
-    if (listing != this.selectedListing) {
+    if (listing !== this.selectedListing) {
       this.selectedGame = null;
       sessionStorage.removeItem('selectedGame');
       this.setScreenshots(this.noScreenshotData);
@@ -223,12 +223,12 @@ export class HomeComponent implements OnInit {
     this.gamesService.getGames(this.selectedListing).then((data: Game[]) => {
       this.games = data;
       this.gamesEditMode.clear();
-      for (let game of data) {
+      for (const game of data) {
         this.gamesEditMode.set(game.sha1Code, false);
-        if (sha1Code && game.sha1Code == sha1Code) {
+        if (sha1Code && game.sha1Code === sha1Code) {
           setTimeout(() => {
             this.showInfo(game);
-          },0);
+          }, 0);
         }
       }
     });
@@ -237,9 +237,9 @@ export class HomeComponent implements OnInit {
   launch(game: Game) {
     this.gamesService.launchGame(game).then((errorMessage: string) => {
       if (errorMessage) {
-        this.alertService.failure("Failed to start openMSX for: " + game.name + " [" + errorMessage + "]");
+        this.alertService.failure('Failed to start openMSX for: ' + game.name + ' [' + errorMessage + ']');
       } else {
-        this.alertService.info("openMSX window closed for: " + game.name);
+        this.alertService.info('openMSX window closed for: ' + game.name);
       }
     });
   }
@@ -261,55 +261,55 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       this.gameNameEdit.nativeElement.focus();
       this.gameNameEdit.nativeElement.select();
-    },0);
+    }, 0);
   }
 
   processNewGameName(event: any) {
     if (this.editedGameName && !this.editedGameName.startsWith(' ')) {
-      let renamedGame: Game = Object.assign({}, this.selectedGame);
+      const renamedGame: Game = Object.assign({}, this.selectedGame);
       renamedGame.name = this.editedGameName.trim();
       this.update(this.selectedGame, renamedGame);
       event.stopPropagation();
-      this.editedGameName = "";
+      this.editedGameName = '';
       this.gamesEditMode.set(this.selectedGame.sha1Code, false);
     }
   }
 
   cancelEditMode() {
     this.gamesEditMode.set(this.selectedGame.sha1Code, false);
-    this.editedGameName = "";
+    this.editedGameName = '';
   }
 
   remove(event: any, game: Game) {
     event.stopPropagation();
     this.gamesService.removeGame(game).then((removed: boolean) => {
       if (removed) {
-        this.alertService.success("Game was removed: " + game.name);
+        this.alertService.success('Game was removed: ' + game.name);
         this.lastRemovedGame = game;
-        if (this.selectedGame != null && game.sha1Code == this.selectedGame.sha1Code) {
+        if (this.selectedGame != null && game.sha1Code === this.selectedGame.sha1Code) {
           this.initialize();
         }
         sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
         this.removeGameFromList(game);
       } else {
-        this.alertService.failure("Game was not removed: " + game.name);
+        this.alertService.failure('Game was not removed: ' + game.name);
       }
-    })
+    });
   }
 
   undoRemove() {
     if (this.lastRemovedGame != null) {
       this.gamesService.saveGame(this.lastRemovedGame).then((added: boolean) => {
         if (added) {
-          this.alertService.success("Game was restored: " + this.lastRemovedGame.name);
-          if (this.lastRemovedGame.listing == this.selectedListing) {
+          this.alertService.success('Game was restored: ' + this.lastRemovedGame.name);
+          if (this.lastRemovedGame.listing === this.selectedListing) {
             this.addGameToSortedList(this.lastRemovedGame);
           }
           this.addListingToListings(this.lastRemovedGame.listing);
           sessionStorage.removeItem('lastRemovedGame');
           this.lastRemovedGame = null;
         } else {
-          this.alertService.failure("Game was not restored: " + this.lastRemovedGame.name);
+          this.alertService.failure('Game was not restored: ' + this.lastRemovedGame.name);
         }
       });
     }
@@ -318,21 +318,21 @@ export class HomeComponent implements OnInit {
   update(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then((err: boolean) => {
       if (err) {
-        this.alertService.failure("Game was not updated: " + oldGame.name + " - you cannot change a game's main file");
+        this.alertService.failure('Game was not updated: ' + oldGame.name + ' - you cannot change a game\'s main file');
       } else {
-        this.alertService.success("Game was updated: " + newGame.name);
+        this.alertService.success('Game was updated: ' + newGame.name);
         this.removeGameFromList(oldGame, false);
         this.addGameToSortedList(newGame);
         setTimeout(() => {
           this.showInfo(newGame);
-        },0);
+        }, 0);
       }
     });
   }
 
   move(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then(() => {
-      this.alertService.success("Game was moved: " + newGame.name + " -> " + newGame.listing);
+      this.alertService.success('Game was moved: ' + newGame.name + ' -> ' + newGame.listing);
       this.removeGameFromList(oldGame);
       this.initialize();
       this.addListingToListings(newGame.listing);
@@ -342,7 +342,7 @@ export class HomeComponent implements OnInit {
   setFavoritesFlag(flag: boolean) {
     this.gamesService.setFavoritesFlag(this.selectedGame, flag).then((error: boolean) => {
       if (error) {
-        this.alertService.failure("Failed to toggle the favorites flag for: " + this.selectedGame.name);
+        this.alertService.failure('Failed to toggle the favorites flag for: ' + this.selectedGame.name);
       } else {
         this.selectedGame.favorite = flag;
       }
@@ -360,18 +360,18 @@ export class HomeComponent implements OnInit {
   }
 
   updateListings(data: any) {
-    if (data.mode == ManageListingsComponent.mode.delete) {
-      if (this.selectedListing == data.oldListingName) {
+    if (data.mode === ManageListingsComponent.mode.delete) {
+      if (this.selectedListing === data.oldListingName) {
         this.switchListingIfCurrentIsEmpty();
       }
-    } else if (data.mode == ManageListingsComponent.mode.rename) {
-      if (this.selectedListing == data.oldListingName) {
+    } else if (data.mode === ManageListingsComponent.mode.rename) {
+      if (this.selectedListing === data.oldListingName) {
         this.setSelectedListing(data.newListingName);
       }
-    } else if (data.mode == ManageListingsComponent.mode.merge) {
-      if (this.selectedListing == data.oldListingName) {
+    } else if (data.mode === ManageListingsComponent.mode.merge) {
+      if (this.selectedListing === data.oldListingName) {
         this.setSelectedListing(data.newListingName);
-      } else if (this.selectedListing == data.newListingName) {
+      } else if (this.selectedListing === data.newListingName) {
         this.getGames(this.selectedListing);
       }
     }
@@ -385,10 +385,10 @@ export class HomeComponent implements OnInit {
       this.setScreenshots(secondaryData);
       this.setMusicFiles(secondaryData);
 
-      //decrement the open menu counter because there's a case where it doesn't get decremented with the closing of the menu.
-      //That case is for the game music tracks menu where the closing menu event does not fire if the if-statement around the
-      //html segment evaluates to false after clicking on a different game without music.
-      if (this.musicFiles.length == 0 && this.musicMenuOpen) {
+      // Decrement the open menu counter because there's a case where it doesn't get decremented with the closing of the menu.
+      // That case is for the game music tracks menu where the closing menu event does not fire if the if-statement around the
+      // html segment evaluates to false after clicking on a different game without music.
+      if (this.musicFiles.length === 0 && this.musicMenuOpen) {
         this.openMenuEventCounter--;
         this.musicMenuOpen = false;
       }
@@ -396,40 +396,40 @@ export class HomeComponent implements OnInit {
   }
 
   showFoundGame(game: Game) {
-    if (game.listing == this.selectedListing) {
+    if (game.listing === this.selectedListing) {
       this.showInfoBySha1Code(game.sha1Code);
     } else {
       this.getGames(game.listing, game.sha1Code);
     }
 
-    //this is needed for when the Enter key is pressed to select a game from the search menu
+    // this is needed for when the Enter key is pressed to select a game from the search menu
     this.searchDropdown.close();
   }
 
   getGameMedium(game: Game): string {
     if (game.romA != null) {
-      return "assets/images/media/rom.png"
+      return 'assets/images/media/rom.png';
     } else if (game.diskA != null) {
-      return "assets/images/media/disk.png"
+      return 'assets/images/media/disk.png';
     } else if (game.tape != null) {
-      return "assets/images/media/tape.png"
+      return 'assets/images/media/tape.png';
     } else if (game.harddisk != null) {
-      return "assets/images/media/harddisk.png"
+      return 'assets/images/media/harddisk.png';
     } else if (game.laserdisc != null) {
-      return "assets/images/media/laserdisc.png"
+      return 'assets/images/media/laserdisc.png';
     }
   }
 
   startScan(parameters: ScanParameters) {
-    this.alertService.info("Started scanning process...");
+    this.alertService.info('Started scanning process...');
     this.scanRunning = true;
     this.scanner.scan(parameters).then(result => {
-      this.alertService.info("Total games added = " + result)
+      this.alertService.info('Total games added = ' + result);
 
       this.gamesService.getListings().then((data: string[]) => {
         this.listings = data;
         if (!this.selectedListing) {
-          //this can happen after a scan that adds the first listing
+          // this can happen after a scan that adds the first listing
           this.selectedListing = this.listings[0];
         }
         this.getGames(this.selectedListing);
@@ -439,10 +439,10 @@ export class HomeComponent implements OnInit {
   }
 
   selectedGameClass(game: Game): string {
-    if (this.selectedGame != null && game.sha1Code == this.selectedGame.sha1Code) {
-      return "selected-game";
+    if (this.selectedGame != null && game.sha1Code === this.selectedGame.sha1Code) {
+      return 'selected-game';
     } else {
-      return "";
+      return '';
     }
   }
 
@@ -451,13 +451,13 @@ export class HomeComponent implements OnInit {
   }
 
   getMusicName(musicFile: string) {
-    let firstIndex = musicFile.lastIndexOf('/') + 1;
-    let lastIndex = musicFile.lastIndexOf('.');
+    const firstIndex = musicFile.lastIndexOf('/') + 1;
+    const lastIndex = musicFile.lastIndexOf('.');
     if (lastIndex < firstIndex) {
-      return "Unknown";
+      return 'Unknown';
     }
-    let filename = musicFile.substring(firstIndex, lastIndex);
-    let separaterIndex = filename.indexOf('_');
+    const filename = musicFile.substring(firstIndex, lastIndex);
+    const separaterIndex = filename.indexOf('_');
     if (separaterIndex < 0) {
       return filename;
     } else {
@@ -483,13 +483,13 @@ export class HomeComponent implements OnInit {
     if (this.toggle) {
       this.screenshot_a_1 = this.getScreenshot1Data(secondaryData);
       this.screenshot_b_1 = this.getScreenshot2Data(secondaryData);
-      this.transparent1 = "";
-      this.transparent2 = "transparent";
+      this.transparent1 = '';
+      this.transparent2 = 'transparent';
     } else {
       this.screenshot_a_2 = this.getScreenshot1Data(secondaryData);
       this.screenshot_b_2 = this.getScreenshot2Data(secondaryData);
-      this.transparent1 = "transparent";
-      this.transparent2 = "";
+      this.transparent1 = 'transparent';
+      this.transparent2 = '';
     }
     this.toggle = !this.toggle;
   }
@@ -504,10 +504,10 @@ export class HomeComponent implements OnInit {
   }
 
   private adjustScrollForSelectedGame(game: Game) {
-    let gamesTableTop: number = this.gamesTable.getBoundingClientRect().top;
-    let gamesTableBottom: number = this.gamesTable.getBoundingClientRect().bottom;
-    let tableCellTop: number = document.getElementById(game.sha1Code).getBoundingClientRect().top;
-    let tableCellBottom: number = document.getElementById(game.sha1Code).getBoundingClientRect().bottom;
+    const gamesTableTop: number = this.gamesTable.getBoundingClientRect().top;
+    const gamesTableBottom: number = this.gamesTable.getBoundingClientRect().bottom;
+    const tableCellTop: number = document.getElementById(game.sha1Code).getBoundingClientRect().top;
+    const tableCellBottom: number = document.getElementById(game.sha1Code).getBoundingClientRect().bottom;
 
     if (tableCellTop < gamesTableTop) {
       this.gamesTable.scrollTop = (tableCellTop + this.gamesTable.scrollTop) - gamesTableTop;
@@ -533,15 +533,15 @@ export class HomeComponent implements OnInit {
   }
 
   private removeGameFromList(game: Game, switchListingIfLastGameInCurrentListing: boolean = true) {
-    this.games.splice(this.games.findIndex((e) => e.sha1Code == game.sha1Code), 1);
+    this.games.splice(this.games.findIndex((e) => e.sha1Code === game.sha1Code), 1);
 
-    if (switchListingIfLastGameInCurrentListing && this.games.length == 0) {
+    if (switchListingIfLastGameInCurrentListing && this.games.length === 0) {
       this.switchListingIfCurrentIsEmpty();
     }
   }
 
   private switchListingIfCurrentIsEmpty() {
-    this.listings.splice(this.listings.findIndex((e) => e == this.selectedListing), 1);
+    this.listings.splice(this.listings.findIndex((e) => e === this.selectedListing), 1);
     if (this.listings.length > 0) {
       this.selectedListing = this.listings[0];
       this.getGames(this.selectedListing);
@@ -552,7 +552,7 @@ export class HomeComponent implements OnInit {
 
   private addGameToSortedList(game: Game) {
     let index: number;
-    for (index = 0; index < this.games.length && this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++);
+    for (index = 0; index < this.games.length && this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++) {}
     if (index < this.games.length) {
       this.games.splice(index, 0, game);
     } else {
@@ -561,16 +561,16 @@ export class HomeComponent implements OnInit {
   }
 
   private addListingToListings(listing: string) {
-    if (this.listings.findIndex((e) => e == listing) < 0) {
+    if (this.listings.findIndex((e) => e === listing) < 0) {
       let index: number;
-      for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++);
+      for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++) {}
       this.listings.splice(index, 0, listing);
     }
   }
 
   private jumpToNearestGame(charachters: string) {
     let index: number;
-    for (index = 0; index < this.games.length && !this.games[index].name.toLowerCase().startsWith(charachters.toLowerCase()); index++);
+    for (index = 0; index < this.games.length && !this.games[index].name.toLowerCase().startsWith(charachters.toLowerCase()); index++) {}
     if (index < this.games.length) {
       this.showInfo(this.games[index]);
     }
@@ -581,22 +581,22 @@ export class HomeComponent implements OnInit {
   }
 
   private showInfoBySha1Code(sha1Code: string) {
-    this.games.filter(g => g.sha1Code == sha1Code).forEach(match => this.showInfo(match));
+    this.games.filter(g => g.sha1Code === sha1Code).forEach(match => this.showInfo(match));
   }
 
   private getWebMSXParams(): any {
-    var webMSXParams = {};
+    const webMSXParams = {};
     if (this.selectedGame.romA != null) {
-      webMSXParams["ROM"] = this.selectedGame.romA;
+      webMSXParams['ROM'] = this.selectedGame.romA;
     }
     if (this.selectedGame.diskA != null) {
-      webMSXParams["DISK"] = this.selectedGame.diskA;
+      webMSXParams['DISK'] = this.selectedGame.diskA;
     }
-    if (this.selectedGame.extensionRom == "scc") {
-      webMSXParams["PRESETS"] = "SCC";
+    if (this.selectedGame.extensionRom === 'scc') {
+      webMSXParams['PRESETS'] = 'SCC';
     }
     if (this.selectedGame.tape != null) {
-      webMSXParams["TAPE"] = this.selectedGame.tape;
+      webMSXParams['TAPE'] = this.selectedGame.tape;
     }
     return webMSXParams;
   }

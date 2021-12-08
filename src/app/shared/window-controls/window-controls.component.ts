@@ -10,26 +10,26 @@ import { Remote } from 'electron';
 export class WindowControlsComponent {
 
   @Input('title-img') titleImg: string;
-  private remote: Remote = (<any>window).require('electron').remote;
-  maximizedClass: string = "";
+  private remote: Remote = (<any> window).require('electron').remote;
+  maximizedClass = '';
 
-  //the custom window controls were taken from
-  //https://github.com/binaryfunt/electron-seamless-titlebar-tutorial
-  //and modified to fit in an Electron-Angular app
+  // the custom window controls were taken from
+  // https://github.com/binaryfunt/electron-seamless-titlebar-tutorial
+  // and modified to fit in an Electron-Angular app
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     this.remote.getCurrentWindow().on('maximize', () => {
-      this.maximizedClass = "maximized";
+      this.maximizedClass = 'maximized';
 
-      //we have to access the document directly because changing the maximizedClass
-      //value above didn't trigger the two-way binding in Angular
-      document.getElementById("titlebar").classList.add("maximized");
+      // we have to access the document directly because changing the maximizedClass
+      // value above didn't trigger the two-way binding in Angular
+      document.getElementById('titlebar').classList.add('maximized');
     });
     this.remote.getCurrentWindow().on('unmaximize', () => {
-      this.maximizedClass = "";
+      this.maximizedClass = '';
 
-      //the same reason as above
-      document.getElementById("titlebar").classList.remove("maximized");
+      // the same reason as above
+      document.getElementById('titlebar').classList.remove('maximized');
     });
   }
 

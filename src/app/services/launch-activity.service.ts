@@ -20,7 +20,7 @@ export class LaunchActivityService {
   recordGameFinish(game: Game, time: number) {
     let index: number;
     for (index = 0; index < this.launchActivities.length &&
-      (this.launchActivities[index].game.name != game.name || this.launchActivities[index].time != time); index++);
+      (this.launchActivities[index].game.name !== game.name || this.launchActivities[index].time !== time); index++) {}
     this.launchActivities.splice(index, 1);
     this.subject.next(this.launchActivities);
   }
@@ -38,7 +38,7 @@ export class LaunchActivity {
   game: Game;
   time: number;
 
-  constructor(game: Game, time:number) {
+  constructor(game: Game, time: number) {
     this.game = game;
     this.time = time;
   }

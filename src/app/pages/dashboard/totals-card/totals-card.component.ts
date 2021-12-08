@@ -17,14 +17,15 @@ export class TotalsCardComponent implements OnInit {
   ngOnInit(): void {
     this.totalsEvent.subscribe((totals: Totals) => {
       this.totals = [
-        { name: "Listings", value: totals.listings },
-        { name: "Games", value: totals.games },
-        { name: "ROMs", value: totals.roms },
-        { name: "Disks", value: totals.disks },
-        { name: "Tapes", value: totals.tapes },
-        { name: "Harddisks", value: totals.harddisks },
-        { name: "Laserdiscs", value: totals.laserdiscs }
-      ];  
+        { name: 'Listings', value: totals.listings },
+        { name: 'Games', value: totals.games },
+        { name: 'ROMs', value: totals.roms },
+        { name: 'Disks', value: totals.disks },
+        { name: 'Tapes', value: totals.tapes },
+        { name: 'Harddisks', value: totals.harddisks },
+        { name: 'Laserdiscs', value: totals.laserdiscs }
+      ];
     });
   }
 }
+

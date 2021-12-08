@@ -12,15 +12,15 @@ export class MusicComponent implements AfterViewInit  {
   @ViewChild('audioPlayer', { static: false }) private audioPlayer: ElementRef<HTMLAudioElement>;
   @ViewChild('progressBar', { static: false }) private progressBar: ElementRef<HTMLCanvasElement>;
 
-  playButton: string = "active";
-  pauseButton: string = "hidden";
+  playButton: string = 'active';
+  pauseButton: string = 'hidden';
   totalTime: string;
   elapsedTime: string;
 
   readonly progressBarWidth = 100;
   readonly progressBarHeight = 6;
 
-  private firstTimeLoadingComponent:boolean = true;
+  private firstTimeLoadingComponent = true;
 
   private context: CanvasRenderingContext2D;
 
@@ -34,7 +34,7 @@ export class MusicComponent implements AfterViewInit  {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-      //if this is the first time loading this component, then defer the initialization until ngAfterViewInit() is called
+      // if this is the first time loading this component, then defer the initialization until ngAfterViewInit() is called
       if (!this.firstTimeLoadingComponent) {
         this.resetButtons();
         this.resetIndicators();
@@ -47,15 +47,15 @@ export class MusicComponent implements AfterViewInit  {
   }
 
   play() {
-    this.playButton = "hidden";
-    this.pauseButton = "active";
+    this.playButton = 'hidden';
+    this.pauseButton = 'active';
 
     this.audioPlayer.nativeElement.play();
   }
 
   pause() {
-    this.playButton = "active";
-    this.pauseButton = "hidden";
+    this.playButton = 'active';
+    this.pauseButton = 'hidden';
 
     this.audioPlayer.nativeElement.pause();
   }
@@ -65,7 +65,7 @@ export class MusicComponent implements AfterViewInit  {
   }
 
   updateProgress() {
-    var progress = this.audioPlayer.nativeElement.currentTime / this.audioPlayer.nativeElement.duration * this.progressBarWidth;
+    const progress = this.audioPlayer.nativeElement.currentTime / this.audioPlayer.nativeElement.duration * this.progressBarWidth;
     this.context.fillStyle = '#676767';
     this.context.fillRect(0, 0, progress, 6);
 
@@ -73,8 +73,8 @@ export class MusicComponent implements AfterViewInit  {
   }
 
   private resetButtons() {
-    this.playButton = "active";
-    this.pauseButton = "hidden";
+    this.playButton = 'active';
+    this.pauseButton = 'hidden';
 
     this.elapsedTime = this.convertElapsedTime(0);
   }
@@ -89,16 +89,16 @@ export class MusicComponent implements AfterViewInit  {
   }
 
   private convertElapsedTime(time: number): string {
-    var seconds: number = Math.floor(time % 60);
-    var secondsString: string;
+    const seconds: number = Math.floor(time % 60);
+    let secondsString: string;
     if (seconds < 10) {
-      secondsString = "0" + seconds;
+      secondsString = '0' + seconds;
     } else {
       secondsString = seconds.toString();
     }
 
-    var minutes: number = Math.floor(time / 60);
+    const minutes: number = Math.floor(time / 60);
 
-    return minutes + ":" + secondsString;
+    return minutes + ':' + secondsString;
   }
 }

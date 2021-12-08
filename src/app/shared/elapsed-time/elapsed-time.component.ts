@@ -10,7 +10,7 @@ export class ElapsedTimeComponent implements OnInit {
 
   @Input() startTime: number;
   private now: number;
-  private timer: Observable<number> = interval(2000); //every 2 seconds rather than 1 second is ok
+  private timer: Observable<number> = interval(2000); // every 2 seconds rather than 1 second is ok
   shortTime: boolean;
   elapsedTime: any;
 
@@ -26,7 +26,7 @@ export class ElapsedTimeComponent implements OnInit {
   }
 
   private updateTimes() {
-    this.now = Date.now()
+    this.now = Date.now();
     this.shortTime = (this.now - this.startTime) < 60000;
     if (!this.shortTime) {
       this.elapsedTime = this.getElapsedTime();
@@ -34,9 +34,9 @@ export class ElapsedTimeComponent implements OnInit {
   }
 
   private getElapsedTime(): any {
-    let diff:number = this.now - this.startTime;
-    let hours = Math.floor(diff / 3600000);
-    let minutes = Math.floor((diff % 3600000) / 60000);
+    const diff = this.now - this.startTime;
+    const hours = Math.floor(diff / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
 
     return {
       hours: hours,

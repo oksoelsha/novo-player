@@ -9,20 +9,20 @@ import { FileTypeUtils } from 'electron/utils/FileTypeUtils';
 })
 export class FileSystemChooserComponent implements OnInit {
 
+  private static extensionsMap: Map<string, any> = new Map([
+    ['ROM', { name: 'ROM Images', extensions: FileTypeUtils.getRomExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ['Disk', { name: 'Disk Images', extensions: FileTypeUtils.getDiskExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ['Tape', { name: 'Tape Images', extensions: FileTypeUtils.getTapeExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ['Harddisk', { name: 'Harddisk Images', extensions: FileTypeUtils.getHarddiskExtensions().concat(FileTypeUtils.getZipExtensions())}],
+    ['Laserdisc', { name: 'Laserdisc Images', extensions: FileTypeUtils.getLaserdiscExtensions().concat(FileTypeUtils.getZipExtensions())}]
+  ]);
+
   @Input ('directory-mode') directoryMode: boolean;
   @Input ('label') label: string;
   @Input ('filters-type') filtersType: string;
   @Input ('multi-selections') multiSelections: boolean;
   @Output() onChosen: EventEmitter<any> = new EventEmitter<any>();
-  private remote: Remote = (<any>window).require('electron').remote;
-
-  private static extensionsMap: Map<string,any> = new Map([
-    ["ROM", { name: 'ROM Images', extensions: FileTypeUtils.getRomExtensions().concat(FileTypeUtils.getZipExtensions())}],
-    ["Disk", { name: 'Disk Images', extensions: FileTypeUtils.getDiskExtensions().concat(FileTypeUtils.getZipExtensions())}],
-    ["Tape", { name: 'Tape Images', extensions: FileTypeUtils.getTapeExtensions().concat(FileTypeUtils.getZipExtensions())}],
-    ["Harddisk", { name: 'Harddisk Images', extensions: FileTypeUtils.getHarddiskExtensions().concat(FileTypeUtils.getZipExtensions())}],
-    ["Laserdisc", { name: 'Laserdisc Images', extensions: FileTypeUtils.getLaserdiscExtensions().concat(FileTypeUtils.getZipExtensions())}]
-  ]);
+  private remote: Remote = (<any> window).require('electron').remote;
 
   constructor() { }
 
@@ -30,8 +30,8 @@ export class FileSystemChooserComponent implements OnInit {
   }
 
   browse(clicked: any) {
-    var self = this;
-    var properties: string[];
+    const self = this;
+    let properties: string[];
 
     if (this.multiSelections) {
       properties = ['multiSelections'];
@@ -45,7 +45,7 @@ export class FileSystemChooserComponent implements OnInit {
       properties.push('openFile');
     }
 
-    var filters: object[];
+    let filters: object[];
     if (this.filtersType) {
       filters = [
         FileSystemChooserComponent.extensionsMap.get(this.filtersType)
@@ -54,10 +54,10 @@ export class FileSystemChooserComponent implements OnInit {
       filters = [];
     }
 
-    var options: Object = {
+    const options: Object = {
       properties: properties,
       filters: filters
-    }
+    };
 
     this.remote.dialog.showOpenDialog(this.remote.getCurrentWindow(), options).then((value) => {
       if (!value.canceled) {
@@ -67,6 +67,6 @@ export class FileSystemChooserComponent implements OnInit {
           self.onChosen.emit(value.filePaths[0]);
         }
       }
-    })
+    });
   }
 }

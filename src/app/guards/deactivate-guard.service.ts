@@ -13,7 +13,7 @@ export interface DeactivateComponent {
   providedIn: 'root'
 })
 export class DeactivateGuardService implements CanDeactivate<DeactivateComponent> {
-  component: Object;
+  component: DeactivateComponent;
   route: ActivatedRouteSnapshot;
 
   constructor(private modalService: BsModalService) { }
@@ -26,7 +26,7 @@ export class DeactivateGuardService implements CanDeactivate<DeactivateComponent
     if (!component.canExit()) {
       const subject = new Subject<boolean>();
 
-      const modal = this.modalService.show(ConfirmLeaveComponent, {'class': 'modal-dialog-primary'});
+      const modal = this.modalService.show(ConfirmLeaveComponent, { class: 'modal-dialog-primary' });
       modal.content.subject = subject;
 
       const onHideObservable = this.modalService.onHide.pipe(map(x => false));

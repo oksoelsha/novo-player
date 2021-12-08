@@ -7,8 +7,8 @@ export class Totals {
     harddisks: number;
     laserdiscs: number;
 
-    constructor(listings: number, games: number, roms:number, disks:number,
-        tapes:number, harddisks:number, laserdiscs:number) {
+    constructor(listings: number, games: number, roms: number, disks: number,
+        tapes: number, harddisks: number, laserdiscs: number) {
         this.listings = listings;
         this.games = games;
         this.roms = roms;

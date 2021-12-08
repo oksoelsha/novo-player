@@ -12,12 +12,12 @@ export class ScanParametersComponent extends PopupComponent {
   @Input() popupId: string;
   @Input('listings') listings: string[] = [];
   @Input('files-and-folders') items: string[] = [];
-  @Input('current-listing') currentListing: string = "";
+  @Input('current-listing') currentListing = '';
   @Output() parameters: EventEmitter<ScanParameters> = new EventEmitter<ScanParameters>();
 
-  selectedListing: string = "";
+  selectedListing = '';
   machines: string[] = [];
-  selectedMachine: string = "";
+  selectedMachine = '';
 
   constructor(private emulatorService: EmulatorService) {
     super();
@@ -55,7 +55,7 @@ export class ScanParameters {
   listing: string;
   machine: string;
 
-  constructor(items: string[], listing: string, machine:string) {
+  constructor(items: string[], listing: string, machine: string) {
     this.items = items;
     this.listing = listing;
     this.machine = machine;

@@ -13,7 +13,7 @@ export class MediaCardComponent implements OnInit {
   @Input() totalsEvent: Observable<Totals>;
 
   readonly chart: ApexChart = {
-    type: "donut",
+    type: 'donut',
     animations: {
       dynamicAnimation: {
         enabled: true,
@@ -24,7 +24,7 @@ export class MediaCardComponent implements OnInit {
   readonly stroke: ApexStroke = {
     width: 0
   };
-  readonly labels: string[] = ["ROMs", "Disks", "Tapes", "Harddisks", "Laserdics"];
+  readonly labels: string[] = ['ROMs', 'Disks', 'Tapes', 'Harddisks', 'Laserdics'];
   readonly legend: any = {
     position: 'right',
     fontSize: '12px',

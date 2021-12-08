@@ -8,30 +8,30 @@ import { ScanParameters } from '../popups/scan-parameters/scan-parameters.compon
   providedIn: 'root'
 })
 export class ScannerService {
-  private ipc: IpcRenderer
+  private ipc: IpcRenderer;
   private subject = new Subject<void>();
 
   constructor() {
-    if ((<any>window).require) {
+    if ((<any> window).require) {
       try {
-        this.ipc = (<any>window).require('electron').ipcRenderer
+        this.ipc = (<any> window).require('electron').ipcRenderer;
       } catch (error) {
-        throw error
+        throw error;
       }
     } else {
-      console.warn('Could not load electron ipc')
+      console.warn('Could not load electron ipc');
     }
   }
 
   scan(parameters: ScanParameters): Promise<number> {
     return new Promise<number>((resolve, reject) => {
-      this.ipc.once("scanResponse", (event, totalAddedToDatabase) => {
+      this.ipc.once('scanResponse', (event, totalAddedToDatabase) => {
         if (totalAddedToDatabase > 0) {
-          this.subject.next();          
+          this.subject.next();
         }
         resolve(totalAddedToDatabase);
       });
-      this.ipc.send("scan", parameters.items, parameters.listing, parameters.machine);
+      this.ipc.send('scan', parameters.items, parameters.listing, parameters.machine);
     });
   }
 

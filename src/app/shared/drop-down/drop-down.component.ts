@@ -12,16 +12,15 @@ export class DropDownComponent {
   @Input ('default-label') defaultLabel: string;
   @Input ('reset-button') resetButton: boolean;
   @Output() selection: EventEmitter<string> = new EventEmitter<string>();
+  @ViewChildren('dropDownItem') dropDownItems: QueryList<ElementRef>;
 
-  @ViewChildren("dropDownItem") dropDownItems: QueryList<ElementRef>;
-
-  private accumulatedPressedKeys: string = ""
+  private accumulatedPressedKeys = '';
   private quickTypeTimer: NodeJS.Timer = null;
 
   constructor() { }
 
   processKeyup(event: KeyboardEvent) {
-    if (event.key.length == 1 && !event.ctrlKey && !event.metaKey && (
+    if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && (
       (event.key >= 'a' && event.key <= 'z') || (event.key >= '0' && event.key <= '9') ||
       (event.key >= 'A' && event.key <= 'Z'))) {
         if (this.quickTypeTimer != null) {
@@ -30,9 +29,9 @@ export class DropDownComponent {
         this.accumulatedPressedKeys += event.key;
         this.quickTypeTimer = setTimeout(() => {
           this.jumpToNearestItem(this.accumulatedPressedKeys);
-          this.accumulatedPressedKeys = "";
-        }, 300)
-      } else if (event.key == 'Enter') {
+          this.accumulatedPressedKeys = '';
+        }, 300);
+      } else if (event.key === 'Enter') {
         event.stopPropagation();
       }
   }
@@ -43,13 +42,13 @@ export class DropDownComponent {
   }
 
   resetSelection() {
-    this.selectedItem = "";
-    this.selection.emit("");
+    this.selectedItem = '';
+    this.selection.emit('');
   }
 
   private jumpToNearestItem(accumulatedPressedKeys: string) {
     let index: number;
-    for (index = 0; index < this.list.length && !this.list[index].toLowerCase().startsWith(accumulatedPressedKeys.toLowerCase()); index++);
+    for (index = 0; index < this.list.length && !this.list[index].toLowerCase().startsWith(accumulatedPressedKeys.toLowerCase()); index++) {}
     if (index < this.list.length) {
       this.dropDownItems.toArray()[index].nativeElement.focus();
     }

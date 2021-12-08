@@ -15,9 +15,9 @@ export class PopupComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    let self = this;
-    window.addEventListener('click', function (e: any) {
-      if (e.target == document.getElementById(self.popupId)) {
+    const self = this;
+    window.addEventListener('click', (e: any) => {
+      if (e.target === document.getElementById(self.popupId)) {
         self.close();
       }
     });

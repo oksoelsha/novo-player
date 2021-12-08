@@ -10,27 +10,27 @@ export class EventsService {
   private ipc: IpcRenderer;
 
   constructor() {
-    if ((<any>window).require) {
+    if ((<any> window).require) {
       try {
-        this.ipc = (<any>window).require('electron').ipcRenderer
+        this.ipc = (<any> window).require('electron').ipcRenderer;
       } catch (error) {
-        throw error
+        throw error;
       }
     } else {
-      console.warn('Could not load electron ipc')
+      console.warn('Could not load electron ipc');
     }
   }
 
   logEvent(event: Event) {
-    this.ipc.send("logEvent", event);
+    this.ipc.send('logEvent', event);
   }
 
   async getEvents(pageSize: number, currentPage: number): Promise<Event[]> {
     return new Promise<Event[]>((resolve, reject) => {
-      this.ipc.once("getEventsResponse", (event, eventsData) => {
+      this.ipc.once('getEventsResponse', (event, eventsData) => {
         resolve(eventsData);
       });
-      this.ipc.send("getEvents", pageSize, currentPage);
+      this.ipc.send('getEvents', pageSize, currentPage);
     });
   }
 }

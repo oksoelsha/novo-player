@@ -9,25 +9,25 @@ import { PopupComponent } from '../popup.component';
 })
 export class ManageListingsComponent extends PopupComponent {
 
+  public static readonly mode = {
+    delete: 0,
+    rename: 1,
+    merge: 2
+  };
+
   @Input('listings') listings: string[] = [];
   @Output() updatedListing: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('listingRenameInput', { static: false }) private listingRenameInput: ElementRef;
   @ViewChild('listingsTable', { static: true }) private listingsTable: ElementRef;
 
   renamedListing: string;
-  renameMode: boolean = false;
-  deleteMode: boolean = false;
-  mergeMode: boolean = false;
+  renameMode = false;
+  deleteMode = false;
+  mergeMode = false;
   selectedListing: string;
   listingsSelectionMap: Map<string, boolean> = new Map();
   listingToMergeFrom: string;
   listingToMergeTo: string;
-
-  public static readonly mode = {
-    delete: 0,
-    rename:1,
-    merge: 2
-  };
 
   constructor(private gamesService: GamesService) {
     super();
@@ -64,7 +64,7 @@ export class ManageListingsComponent extends PopupComponent {
 
   renameListing(event: any) {
     if (this.renamedListing && !this.renamedListing.startsWith(' ')) {
-      //first check if the new name matches another listing -> in this case prompt for merge
+      // first check if the new name matches another listing -> in this case prompt for merge
       if (this.listings.indexOf(this.renamedListing.trim(), 0) >= 0) {
         this.enableMergeMode();
       } else {
@@ -75,7 +75,7 @@ export class ManageListingsComponent extends PopupComponent {
   }
 
   deleteListing() {
-    let listingToDelete = this.selectedListing;
+    const listingToDelete = this.selectedListing;
     this.gamesService.deleteListing(listingToDelete).then((removed: boolean) => {
       if (removed) {
         this.removeFromListings(listingToDelete);
@@ -94,8 +94,8 @@ export class ManageListingsComponent extends PopupComponent {
     this.renameMode = false;
     this.deleteMode = false;
     this.listingsSelectionMap.clear();
-    this.renamedListing = "";
-    this.selectedListing = "";
+    this.renamedListing = '';
+    this.selectedListing = '';
   }
 
   resetMergeMode() {
@@ -115,20 +115,20 @@ export class ManageListingsComponent extends PopupComponent {
 
   private addToListings(listing: string) {
     let index: number;
-    for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++);
+    for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++) {}
     if (index < this.listings.length) {
       this.listings.splice(index, 0, listing);
     } else {
       this.listings.push(listing);
-    }      
+    }
   }
 
-  //This method can be moved to a utility class because a similar one is used in the home component
+  // This method can be moved to a utility class because a similar one is used in the home component
   private adjustScrollForRenamedListing(listing: string) {
-    let listingsTableTop: number = this.listingsTable.nativeElement.getBoundingClientRect().top;
-    let listingsTableBottom: number = this.listingsTable.nativeElement.getBoundingClientRect().bottom;
-    let tableCellTop: number = document.getElementById(listing).getBoundingClientRect().top;
-    let tableCellBottom: number = document.getElementById(listing).getBoundingClientRect().bottom;
+    const listingsTableTop: number = this.listingsTable.nativeElement.getBoundingClientRect().top;
+    const listingsTableBottom: number = this.listingsTable.nativeElement.getBoundingClientRect().bottom;
+    const tableCellTop: number = document.getElementById(listing).getBoundingClientRect().top;
+    const tableCellBottom: number = document.getElementById(listing).getBoundingClientRect().bottom;
 
     if (tableCellTop < listingsTableTop) {
       this.listingsTable.nativeElement.scrollTop = (tableCellTop + this.listingsTable.nativeElement.scrollTop) - listingsTableTop;
@@ -140,7 +140,7 @@ export class ManageListingsComponent extends PopupComponent {
   private doRenameListing(oldName: string, newName: string, isMergeMode: boolean) {
     this.gamesService.renameListing(oldName, newName).then((err: boolean) => {
       if (err) {
-        //show an error?
+        // show an error?
       } else {
         this.removeFromListings(oldName);
         if (!isMergeMode) {

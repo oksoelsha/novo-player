@@ -12,8 +12,8 @@ export class AlertsComponent implements OnDestroy {
   private subscription: Subscription;
   private timer: NodeJS.Timer = null;
 
-  alertMessage: string = "";
-  alertClass: string = "";
+  alertMessage = '';
+  alertClass = '';
 
   constructor(private alertService: AlertsService) {
     this.subscription = this.alertService.getAlert().subscribe(alert => {
@@ -39,7 +39,7 @@ export class AlertsComponent implements OnDestroy {
   }
 
   private resetFields() {
-    this.alertMessage = "";
-    this.alertClass = "";
+    this.alertMessage = '';
+    this.alertClass = '';
   }
 }

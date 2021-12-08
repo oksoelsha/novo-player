@@ -22,7 +22,7 @@ export class WebMSXComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.settingsService.getSettings().then((settings: Settings) => {
-      this.emulatorService.getWebMSXPath(settings.webmsxPath, "wmsx.js").then((fullpath: string) => {
+      this.emulatorService.getWebMSXPath(settings.webmsxPath, 'wmsx.js').then((fullpath: string) => {
         this.error = (fullpath == null);
         if (!this.error) {
           this.loadWebMSX(fullpath);
@@ -39,17 +39,17 @@ export class WebMSXComponent implements OnInit, OnDestroy {
   }
 
   startWebmsx() {
-    var doneLoadingWMSXCheckInterval = setInterval(() => {
-      if (typeof window["WMSX"] !== 'undefined' && typeof window["WMSX"]["start"] !== 'undefined') {
+    const doneLoadingWMSXCheckInterval = setInterval(() => {
+      if (typeof window['WMSX'] !== 'undefined' && typeof window['WMSX']['start'] !== 'undefined') {
         clearInterval(doneLoadingWMSXCheckInterval);
-        window["WMSX"]["start"]();
+        window['WMSX']['start']();
       }
     }, 20);
   }
 
   ngOnDestroy(): void {
     if (!this.error) {
-      window["WMSX"]["shutdown"]();
+      window['WMSX']['shutdown']();
       this.renderer.removeChild(document.body, this.wmsxScript);
     }
   }

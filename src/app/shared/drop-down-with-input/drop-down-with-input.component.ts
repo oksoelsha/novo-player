@@ -16,9 +16,9 @@ export class DropDownWithInputComponent {
 
   @ViewChild('dropdownWithInput', { static: true }) private listingsDropdown: NgbDropdown;
 
-  selectedOrEnteredItemDisplay: string = "";
-  selectedOrEnteredItem: string = "";
-  selectedItem: string = "";
+  selectedOrEnteredItemDisplay = '';
+  selectedOrEnteredItem = '';
+  selectedItem = '';
   enteredItem: string;
 
   constructor() { }
@@ -32,18 +32,18 @@ export class DropDownWithInputComponent {
 
   setSelectedItem(item: string) {
     this.selectedOrEnteredItemDisplay = this.selectedOrEnteredItem = item;
-    this.enteredItem = "";
+    this.enteredItem = '';
     this.selection.emit(item);
   }
 
   setEnteredItem(event: KeyboardEvent) {
-    let enteredValue: string = this.enteredItem.trim();
+    const enteredValue: string = this.enteredItem.trim();
     if (enteredValue) {
-      let index = this.list.findIndex((e) => e == enteredValue);
+      const index = this.list.findIndex((e) => e === enteredValue);
       this.setSelectedItemAndAdjustForDisplay(enteredValue, index < 0);
       this.selection.emit(enteredValue);
     } else {
-      this.enteredItem = "";
+      this.enteredItem = '';
     }
 
     this.listingsDropdown.close();

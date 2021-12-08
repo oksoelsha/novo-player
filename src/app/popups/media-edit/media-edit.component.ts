@@ -24,7 +24,7 @@ export class MediaEditComponent extends PopupComponent {
   laserdisc: string;
 
   extensions: string[] = [];
-  extensionRomDisplay: string = "";
+  extensionRomDisplay = '';
 
   constructor(private emulatorService: EmulatorService) {
     super();
@@ -47,14 +47,14 @@ export class MediaEditComponent extends PopupComponent {
       if (this.extensionRom) {
         this.extensionRomDisplay = this.extensionRom;
       } else {
-        this.extensionRomDisplay = "Select extension";
+        this.extensionRomDisplay = 'Select extension';
       }
     });
   }
 
   resetExtensionRomSelection() {
-    this.extensionRom = "";
-    this.extensionRomDisplay = "Select extension";
+    this.extensionRom = '';
+    this.extensionRomDisplay = 'Select extension';
   }
 
   close(): void {
@@ -62,7 +62,7 @@ export class MediaEditComponent extends PopupComponent {
   }
 
   save() {
-    let updatedGame: Game = Object.assign({}, this.game);
+    const updatedGame: Game = Object.assign({}, this.game);
 
     updatedGame.romA = this.romA;
     updatedGame.romB = this.romB;

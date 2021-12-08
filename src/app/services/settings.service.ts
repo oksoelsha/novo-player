@@ -6,30 +6,30 @@ import { Settings } from '../models/settings';
   providedIn: 'root'
 })
 export class SettingsService {
-  private ipc: IpcRenderer
+  private ipc: IpcRenderer;
 
   constructor() {
-    if ((<any>window).require) {
+    if ((<any> window).require) {
       try {
-        this.ipc = (<any>window).require('electron').ipcRenderer
+        this.ipc = (<any> window).require('electron').ipcRenderer;
       } catch (error) {
-        throw error
+        throw error;
       }
     } else {
-      console.warn('Could not load electron ipc')
+      console.warn('Could not load electron ipc');
     }
   }
 
   getSettings(): Promise<Settings> {
     return new Promise<Settings>((resolve, reject) => {
-      this.ipc.once("getSettingsResponse", (event, arg) => {
+      this.ipc.once('getSettingsResponse', (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getSettings");
+      this.ipc.send('getSettings');
     });
   }
 
   saveSettings(settings: Settings) {
-    this.ipc.send("saveSettings", settings);
+    this.ipc.send('saveSettings', settings);
   }
 }

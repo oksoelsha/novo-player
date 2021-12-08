@@ -10,13 +10,13 @@ export class PaginationComponent implements OnInit {
   @Input() total: number;
   @Input() pageSize: number;
   @Output() page: EventEmitter<number> = new EventEmitter<number>();
-  currentPage: number = 0;
-  totalPages:number = 0;
+  currentPage = 0;
+  totalPages = 0;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.totalPages = Math.trunc((this.total -1) / this.pageSize) + 1;
+    this.totalPages = Math.trunc((this.total - 1) / this.pageSize) + 1;
   }
 
   getCurrentPage(): number {

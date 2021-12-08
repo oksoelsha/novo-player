@@ -17,16 +17,16 @@ export class HardwareEditComponent extends PopupComponent {
   @Output() updatedGame: EventEmitter<Game> = new EventEmitter<Game>();
 
   machines: string[] = [];
-  selectedMachine: string = "";
+  selectedMachine = '';
   fddModes: string[] = [];
-  selectedFDDMode: string = "";
+  selectedFDDMode = '';
   inputDevices: string[] = [];
-  selectedInputDevice: string = "";
-  connectGFX9000: boolean = false;
+  selectedInputDevice = '';
+  connectGFX9000 = false;
 
-  readonly infoMsg:string = "Works with openMSX 0.16 or later";
+  readonly infoMsg = 'Works with openMSX 0.16 or later';
 
-  constructor(private emulatorService: EmulatorService) { 
+  constructor(private emulatorService: EmulatorService) {
     super();
   }
 
@@ -64,11 +64,11 @@ export class HardwareEditComponent extends PopupComponent {
   }
 
   save() {
-    let updatedGame: Game = Object.assign({}, this.game);
+    const updatedGame: Game = Object.assign({}, this.game);
 
     updatedGame.machine = this.selectedMachine;
-    updatedGame.fddMode = FDDMode.find(i => i.label == this.selectedFDDMode).value;
-    updatedGame.inputDevice = InputDevice.find(i => i.label == this.selectedInputDevice).value;
+    updatedGame.fddMode = FDDMode.find(i => i.label === this.selectedFDDMode).value;
+    updatedGame.inputDevice = InputDevice.find(i => i.label === this.selectedInputDevice).value;
     updatedGame.connectGFX9000 = this.connectGFX9000;
 
     this.updatedGame.emit(updatedGame);

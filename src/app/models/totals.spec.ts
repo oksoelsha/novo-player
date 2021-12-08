@@ -8,7 +8,7 @@ describe('Totals', () => {
 
 describe('Totals', () => {
   it('should be set fields correctly', () => {
-    var totals: Totals = new Totals(1, 2, 3, 4, 5, 6, 7);
+    const totals: Totals = new Totals(1, 2, 3, 4, 5, 6, 7);
     expect(totals.listings).toEqual(1);
     expect(totals.games).toEqual(2);
     expect(totals.roms).toEqual(3);

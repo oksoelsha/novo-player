@@ -7,20 +7,20 @@ import { Router, NavigationCancel, NavigationEnd } from '@angular/router';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  title: string = "Novo Player";
+  title = 'Novo Player';
   links: Link[];
-  selectedIndex: number = 0;
-  oldSelectedIndex: number = 0;
+  selectedIndex = 0;
+  oldSelectedIndex = 0;
 
   constructor(private router: Router) {
     router.events.subscribe((val) => {
       if (val instanceof NavigationCancel) {
-        //The navigation away from a form with unsaved data was canceled
-        //therefore restore the old index so that the navigation bar selection
-        //goes back to where it was, which is the current form page
+        // The navigation away from a form with unsaved data was canceled
+        // therefore restore the old index so that the navigation bar selection
+        // goes back to where it was, which is the current form page
         this.selectedIndex = this.oldSelectedIndex;
-      } else if (val instanceof NavigationEnd && val.url.startsWith("/wmsx;")) {
-        //When when detect navigation to WebMSX page, reset all selected navigation icons
+      } else if (val instanceof NavigationEnd && val.url.startsWith('/wmsx;')) {
+        // When when detect navigation to WebMSX page, reset all selected navigation icons
         this.selectedIndex = -1;
         this.oldSelectedIndex = 0;
       }
@@ -29,10 +29,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.links = [
-      new Link("/", "assets/images/navigation/ic_home_white_24dp.png", "Main Screen"),
-      new Link("/dashboard", "assets/images/navigation/ic_dashboard_white_24dp.png", "Dashboard"),
-      new Link("/settings", "assets/images/navigation/ic_settings_applications_white_24dp.png", "Settings", true),
-      new Link("/help", "assets/images/navigation/ic_help_white_24dp.png", "About"),
+      new Link('/', 'assets/images/navigation/ic_home_white_24dp.png', 'Main Screen'),
+      new Link('/dashboard', 'assets/images/navigation/ic_dashboard_white_24dp.png', 'Dashboard'),
+      new Link('/settings', 'assets/images/navigation/ic_settings_applications_white_24dp.png', 'Settings', true),
+      new Link('/help', 'assets/images/navigation/ic_help_white_24dp.png', 'About'),
     ];
   }
 
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
 class Link {
   route: string;
   image: string;
-  tooltip:string;
+  tooltip: string;
   splitTopFromBottom: boolean;
 
   constructor(route: string, image: string, tooltip: string, splitTopFromBottom: boolean = false) {

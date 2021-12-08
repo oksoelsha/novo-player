@@ -8,9 +8,9 @@ import { VersionsService } from 'src/app/services/versions.service';
 })
 export class HelpComponent implements OnInit {
 
-  extraDataVersion: string = "";
-  screenshotsVersion: string = "";
-  gameMusicVersion: string = "";
+  extraDataVersion = '';
+  screenshotsVersion = '';
+  gameMusicVersion = '';
 
   constructor(private versionsService: VersionsService) { }
 
@@ -23,7 +23,7 @@ export class HelpComponent implements OnInit {
       if (version) {
         this.screenshotsVersion = version;
       } else {
-        this.screenshotsVersion = "Undefined";
+        this.screenshotsVersion = 'Undefined';
       }
     });
 
@@ -31,7 +31,7 @@ export class HelpComponent implements OnInit {
       if (version) {
         this.gameMusicVersion = version;
       } else {
-        this.gameMusicVersion = "Undefined";
+        this.gameMusicVersion = 'Undefined';
       }
     });
   }

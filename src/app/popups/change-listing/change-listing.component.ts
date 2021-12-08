@@ -15,11 +15,10 @@ export class ChangeListingComponent extends PopupComponent {
   @Output() updatedGame: EventEmitter<Game> = new EventEmitter<Game>();
 
   destinationListings: string[] = [];
-  selectedListing: string = "";
+  selectedListing = '';
+  opened = false;
 
-  opened: boolean = false;
-
-  constructor() { 
+  constructor() {
     super();
   }
 
@@ -29,18 +28,17 @@ export class ChangeListingComponent extends PopupComponent {
 
     this.destinationListings  = Object.assign([], this.listings);
     this.destinationListings.splice(this.destinationListings.indexOf(this.game.listing), 1);
-//    this.selectedListing = this.destinationListings[0];
   }
 
   close(): void {
-    this.selectedListing = "";
+    this.selectedListing = '';
 
     this.opened = false;
     super.close();
   }
 
   move() {
-    let updatedGame: Game = Object.assign({}, this.game);
+    const updatedGame: Game = Object.assign({}, this.game);
     updatedGame.listing = this.selectedListing;
 
     this.updatedGame.emit(updatedGame);

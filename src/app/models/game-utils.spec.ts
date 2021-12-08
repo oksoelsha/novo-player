@@ -3,7 +3,7 @@ import { Game } from './game';
 
 describe('GameUtils', () => {
   it('Generation functions should return true if corresponding bit is set', () => {
-    var game: Game = new Game("name", "123abc", 32);
+    const game: Game = new Game('name', '123abc', 32);
     game.setGenerations(15);
     expect(GameUtils.isMSX(game)).toBeTruthy();
     expect(GameUtils.isMSX2(game)).toBeTruthy();
@@ -14,7 +14,7 @@ describe('GameUtils', () => {
 
 describe('GameUtils', () => {
   it('Generation functions should return false if corresponding bit is not set', () => {
-    var game: Game = new Game("name", "123abc", 64);
+    const game: Game = new Game('name', '123abc', 64);
     game.setGenerations(0);
     expect(GameUtils.isMSX(game)).toBeFalsy();
     expect(GameUtils.isMSX2(game)).toBeFalsy();
@@ -25,7 +25,7 @@ describe('GameUtils', () => {
 
 describe('GameUtils', () => {
   it('Sound functions should return true if corresponding bit is set', () => {
-    var game: Game = new Game("name", "123abc", 64);
+    const game: Game = new Game('name', '123abc', 64);
     game.setSounds(255);
     expect(GameUtils.isPSG(game)).toBeTruthy();
     expect(GameUtils.isSCC(game)).toBeTruthy();
@@ -40,7 +40,7 @@ describe('GameUtils', () => {
 
 describe('GameUtils', () => {
   it('Sound functions should return false if corresponding bit is not set', () => {
-    var game: Game = new Game("name", "123abc", 256);
+    const game: Game = new Game('name', '123abc', 256);
     game.setSounds(0);
     expect(GameUtils.isPSG(game)).toBeFalsy();
     expect(GameUtils.isSCC(game)).toBeFalsy();
@@ -55,26 +55,26 @@ describe('GameUtils', () => {
 
 describe('GameUtils', () => {
   it('Genre function should return null if an out-of-range index is given', () => {
-    var game: Game = new Game("name", "123abc", 256);
-    expect(GameUtils.getGenre(0)).toBeNull()
-    expect(GameUtils.getGenre(51)).toBeNull()
+    const game: Game = new Game('name', '123abc', 256);
+    expect(GameUtils.getGenre(0)).toBeNull();
+    expect(GameUtils.getGenre(51)).toBeNull();
   });
 });
 
 describe('GameUtils', () => {
   it('Genre function should a genre if a valid index is given', () => {
-    var game: Game = new Game("name", "123abc", 256);
-    expect(GameUtils.getGenre(1)).toEqual('Action')
-    expect(GameUtils.getGenre(32)).toEqual('Shoot-\'em-up | First-person shooter')
-    expect(GameUtils.getGenre(50)).toEqual('Dexterity')
+    const game: Game = new Game('name', '123abc', 256);
+    expect(GameUtils.getGenre(1)).toEqual('Action');
+    expect(GameUtils.getGenre(32)).toEqual('Shoot-\'em-up | First-person shooter');
+    expect(GameUtils.getGenre(50)).toEqual('Dexterity');
   });
 });
 
 describe('GameUtils', () => {
   it('getMonikor function should return a valid monikor for a given game', () => {
-    var game: Game = new Game("name", "123abc", 256);
-    game.setListing("listing");
-    expect(GameUtils.getMonikor(game).name).toEqual('name')
-    expect(GameUtils.getMonikor(game).listing).toEqual('listing')
+    const game: Game = new Game('name', '123abc', 256);
+    game.setListing('listing');
+    expect(GameUtils.getMonikor(game).name).toEqual('name');
+    expect(GameUtils.getMonikor(game).listing).toEqual('listing');
   });
 });

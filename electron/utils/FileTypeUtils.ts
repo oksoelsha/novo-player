@@ -1,18 +1,18 @@
 export class FileTypeUtils {
-    public static readonly MAX_DISK_FILE_SIZE = 737280
-    public static readonly EXTENSION_ROM_IDE = "ide"
+    public static readonly MAX_DISK_FILE_SIZE = 737280;
+    public static readonly EXTENSION_ROM_IDE = 'ide';
 
-    private static readonly romExtensions: Array<string> = ["rom", "ri", "col", "mx1", "mx2"]
-    private static readonly diskExtensions: Array<string> = ["dsk", "di1", "di2", "dmk", "xsa", "fd1", "fd2"]
-    private static readonly tapeExtensions: Array<string> = ["cas", "wav", "tsx"]
-    private static readonly harddiskExtensions: Array<string> = ["dsk", "hdd"]
-    private static readonly laserdiscExtensions: Array<string> = ["ogv"]
-    private static readonly zipExtensions: Array<string> = ["zip", "gz"]
-    private static readonly xmlExtensions: Array<string> = ["xml"]
+    private static readonly romExtensions: Array<string> = ['rom', 'ri', 'col', 'mx1', 'mx2'];
+    private static readonly diskExtensions: Array<string> = ['dsk', 'di1', 'di2', 'dmk', 'xsa', 'fd1', 'fd2'];
+    private static readonly tapeExtensions: Array<string> = ['cas', 'wav', 'tsx'];
+    private static readonly harddiskExtensions: Array<string> = ['dsk', 'hdd'];
+    private static readonly laserdiscExtensions: Array<string> = ['ogv'];
+    private static readonly zipExtensions: Array<string> = ['zip', 'gz'];
+    private static readonly xmlExtensions: Array<string> = ['xml'];
 
     static isMSXFile(filename: string): boolean {
         return this.isROM(filename) || this.isZip(filename) || this.isDisk(filename) || this.isTape(filename) ||
-            this.isHarddisk(filename) || this.isLaserdisc(filename)
+            this.isHarddisk(filename) || this.isLaserdisc(filename);
     }
 
     static isROM(filename: string): boolean {
@@ -72,7 +72,7 @@ export class FileTypeUtils {
     }
 
     private static isType(filename: string, typeList: Array<string>) {
-        var ext = filename.substr(filename.lastIndexOf('.') + 1).toLowerCase();
+        const ext = filename.substr(filename.lastIndexOf('.') + 1).toLowerCase();
         return typeList.indexOf(ext) > -1;
     }
 }

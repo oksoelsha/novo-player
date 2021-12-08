@@ -13,7 +13,7 @@ export class LaunchActivityComponent implements OnDestroy {
   launchActivities: LaunchActivity[] = [];
 
   constructor(private launchActivityService: LaunchActivityService) {
-    var self = this;
+    const self = this;
     this.launchActivitySubscription = this.launchActivityService.getUpdatedActivities().subscribe(launchActivity => {
       self.launchActivities = launchActivity;
     });
@@ -25,10 +25,10 @@ export class LaunchActivityComponent implements OnDestroy {
   }
 
   getTimeDisplay(time: number): string {
-    var date = new Date(time);
-    var hours = date.getHours();
-    var minutes = "0" + date.getMinutes();
-    var seconds = "0" + date.getSeconds();
+    const date = new Date(time);
+    const hours = date.getHours();
+    const minutes = '0' + date.getMinutes();
+    const seconds = '0' + date.getSeconds();
 
     return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
   }

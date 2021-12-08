@@ -9,9 +9,9 @@ export class VersionsService {
   private ipc: IpcRenderer;
 
   constructor(private settingsService: SettingsService) {
-    if ((<any>window).require) {
+    if ((<any> window).require) {
       try {
-        this.ipc = (<any>window).require('electron').ipcRenderer;
+        this.ipc = (<any> window).require('electron').ipcRenderer;
       } catch (error) {
         throw error;
       }
@@ -22,28 +22,28 @@ export class VersionsService {
 
   getExtraDataVersion(): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      this.ipc.once("getExtraDataVersionResponse", (event, arg) => {
+      this.ipc.once('getExtraDataVersionResponse', (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getExtraDataVersion");
+      this.ipc.send('getExtraDataVersion');
     });
   }
 
   getScreenshotsVersion(): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      this.ipc.once("getScreenshotsVersionResponse", (event, arg) => {
+      this.ipc.once('getScreenshotsVersionResponse', (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getScreenshotsVersion");
+      this.ipc.send('getScreenshotsVersion');
     });
   }
 
   getGameMusicVersion(): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      this.ipc.once("getGameMusicVersionResponse", (event, arg) => {
+      this.ipc.once('getGameMusicVersionResponse', (event, arg) => {
         resolve(arg);
       });
-      this.ipc.send("getGameMusicVersion");
+      this.ipc.send('getGameMusicVersion');
     });
   }
 }

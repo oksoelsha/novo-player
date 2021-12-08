@@ -9,9 +9,9 @@ describe('WebMSXComponent', () => {
   let fixture: ComponentFixture<WebMSXComponent>;
 
   beforeEach(async () => {
-    let game: Game = new Game("name", "12345", 12345);
-    game.setCompany("company");
-    game.setYear("1986");
+    const game = new Game('name', '12345', 12345);
+    game.setCompany('company');
+    game.setYear('1986');
     await TestBed.configureTestingModule({
       imports: [RouterModule.forRoot([], { relativeLinkResolution: 'legacy' })],
       providers: [

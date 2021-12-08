@@ -9,9 +9,9 @@ import { EventsService } from 'src/app/services/events.service';
 })
 export class LaunchEventsComponent implements OnInit {
 
-  readonly pageSize: number = 6;
+  readonly pageSize = 6;
   events: Event[] = [];
-  total: number = 0;
+  total = 0;
 
   constructor(private eventsService: EventsService) { }
 
@@ -20,9 +20,9 @@ export class LaunchEventsComponent implements OnInit {
   }
 
   getEventDate(timestamp: number): string {
-    let date = new Date(timestamp);
-    return ("0" + date.getDate()).slice(-2) + "-" + (date.getMonth() + 1) + " " +
-      ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+    const date = new Date(timestamp);
+    return ('0' + date.getDate()).slice(-2) + '-' + (date.getMonth() + 1) + ' ' +
+      ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
   }
 
   getLongEventDate(timestamp: number): string {
