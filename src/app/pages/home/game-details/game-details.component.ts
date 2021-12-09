@@ -69,7 +69,7 @@ export class GameDetailsComponent {
   constructor(private gamesService: GamesService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['selectedGame'].isFirstChange() || changes['selectedGame'].currentValue.sha1Code !== changes['selectedGame'].previousValue.sha1Code) {
+    if (changes.selectedGame.isFirstChange() || changes.selectedGame.currentValue.sha1Code !== changes.selectedGame.previousValue.sha1Code) {
       this.setSelectedGameMedium();
     }
   }

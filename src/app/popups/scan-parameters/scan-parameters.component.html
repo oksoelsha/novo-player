@@ -1,10 +1,10 @@
 <form id="scanParametersForm" #scanParametersForm="ngForm">
   <div class="add-buttons">
     <app-fs-chooser directoryMode=true multiSelections=true label="+Directory"
-      (onChosen)="filesAndFolders = filesAndFolders.concat($event)"></app-fs-chooser>
+      (chosen)="filesAndFolders = filesAndFolders.concat($event)"></app-fs-chooser>
   </div>
   <div class="add-buttons">
-    <app-fs-chooser label="+File" multiSelections=true (onChosen)="filesAndFolders = filesAndFolders.concat($event)">
+    <app-fs-chooser label="+File" multiSelections=true (chosen)="filesAndFolders = filesAndFolders.concat($event)">
     </app-fs-chooser>
   </div>
   <div class="files-and-directories-table">

@@ -12,15 +12,7 @@ export class GamesService {
   private ipc: IpcRenderer;
 
   constructor(private launchActivityService: LaunchActivityService) {
-    if ((<any> window).require) {
-      try {
-        this.ipc = (<any> window).require('electron').ipcRenderer;
-      } catch (error) {
-        throw error;
-      }
-    } else {
-      console.warn('Could not load electron ipc');
-    }
+    this.ipc = window.require('electron').ipcRenderer;
   }
 
   async getListings(): Promise<string[]> {

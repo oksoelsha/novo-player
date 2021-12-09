@@ -4,7 +4,7 @@
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="openmsx-path" [(ngModel)]="openmsxPath"
         placement="bottom" ngbTooltip="Folder where openmsx is" />
-      <app-fs-chooser directoryMode=true label="Browse" (onChosen)="updateControl('openmsx-path', $event)">
+      <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('openmsx-path', $event)">
       </app-fs-chooser>
     </div>
   </div>
@@ -14,7 +14,7 @@
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="screenshots-path" [(ngModel)]="screenshotsPath"
         placement="bottom" ngbTooltip="Folder where optional screenshots are" />
-      <app-fs-chooser directoryMode=true label="Browse" (onChosen)="updateControl('screenshots-path', $event)">
+      <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('screenshots-path', $event)">
       </app-fs-chooser>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="game-music-path" [(ngModel)]="gameMusicPath"
         placement="bottom" ngbTooltip="Folder where optional game music is" />
-      <app-fs-chooser directoryMode=true label="Browse" (onChosen)="updateControl('game-music-path', $event)">
+      <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('game-music-path', $event)">
       </app-fs-chooser>
     </div>
   </div>
@@ -45,7 +45,7 @@
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="webmsx-path" [(ngModel)]="webmsxPath"
         placement="bottom" ngbTooltip="Folder where offline WebMSX is. Use the embedded folder within release/stable" />
-      <app-fs-chooser directoryMode=true label="Browse" (onChosen)="updateControl('webmsx-path', $event)">
+      <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('webmsx-path', $event)">
       </app-fs-chooser>
     </div>
   </div>

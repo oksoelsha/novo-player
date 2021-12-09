@@ -11,7 +11,7 @@ export class WebLinkComponent {
   @Input() address: string;
   @Input() label: string;
 
-  private readonly remote: Remote = (<any> window).require('electron').remote;
+  private readonly remote: Remote = window.require('electron').remote;
 
   constructor() { }
 

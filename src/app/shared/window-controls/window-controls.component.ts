@@ -10,7 +10,7 @@ import { Remote } from 'electron';
 export class WindowControlsComponent {
 
   @Input() titleImg: string;
-  private remote: Remote = (<any> window).require('electron').remote;
+  private remote: Remote = window.require('electron').remote;
   maximizedClass = '';
 
   // the custom window controls were taken from

@@ -18,9 +18,7 @@ export class DeactivateGuardService implements CanDeactivate<DeactivateComponent
 
   constructor(private modalService: BsModalService) { }
 
-  canDeactivate(component: DeactivateComponent,
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+  canDeactivate(component: DeactivateComponent, route: ActivatedRouteSnapshot, state: RouterStateSnapshot,
     nextState: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (!component.canExit()) {

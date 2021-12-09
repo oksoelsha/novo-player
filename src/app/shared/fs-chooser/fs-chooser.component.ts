@@ -21,8 +21,8 @@ export class FileSystemChooserComponent implements OnInit {
   @Input() label: string;
   @Input() filtersType: string;
   @Input() multiSelections: boolean;
-  @Output() onChosen: EventEmitter<any> = new EventEmitter<any>();
-  private remote: Remote = (<any> window).require('electron').remote;
+  @Output() chosen: EventEmitter<any> = new EventEmitter<any>();
+  private remote: Remote = window.require('electron').remote;
 
   constructor() { }
 
@@ -62,9 +62,9 @@ export class FileSystemChooserComponent implements OnInit {
     this.remote.dialog.showOpenDialog(this.remote.getCurrentWindow(), options).then((value) => {
       if (!value.canceled) {
         if (this.multiSelections) {
-          self.onChosen.emit(value.filePaths);
+          self.chosen.emit(value.filePaths);
         } else {
-          self.onChosen.emit(value.filePaths[0]);
+          self.chosen.emit(value.filePaths[0]);
         }
       }
     });

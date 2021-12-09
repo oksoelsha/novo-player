@@ -69,12 +69,8 @@ export class HomeComponent implements OnInit {
   selectedMusicFile: string;
   favorites: Game[] = [];
 
-  constructor(private gamesService: GamesService,
-    private scanner: ScannerService,
-    private alertService: AlertsService,
-    private settingsService: SettingsService,
-    private eventsService: EventsService,
-    private router: Router) { }
+  constructor(private gamesService: GamesService, private scanner: ScannerService, private alertService: AlertsService,
+    private settingsService: SettingsService, private eventsService: EventsService, private router: Router) { }
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
@@ -585,18 +581,18 @@ export class HomeComponent implements OnInit {
   }
 
   private getWebMSXParams(): any {
-    const webMSXParams = {};
+    const webMSXParams: any = {};
     if (this.selectedGame.romA != null) {
-      webMSXParams['ROM'] = this.selectedGame.romA;
+      webMSXParams.ROM = this.selectedGame.romA;
     }
     if (this.selectedGame.diskA != null) {
-      webMSXParams['DISK'] = this.selectedGame.diskA;
+      webMSXParams.DISK = this.selectedGame.diskA;
     }
     if (this.selectedGame.extensionRom === 'scc') {
-      webMSXParams['PRESETS'] = 'SCC';
+      webMSXParams.PRESETS = 'SCC';
     }
     if (this.selectedGame.tape != null) {
-      webMSXParams['TAPE'] = this.selectedGame.tape;
+      webMSXParams.TAPE = this.selectedGame.tape;
     }
     return webMSXParams;
   }

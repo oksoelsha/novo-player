@@ -8,15 +8,7 @@ export class EmulatorService {
   private ipc: IpcRenderer;
 
   constructor() {
-    if ((<any> window).require) {
-      try {
-        this.ipc = (<any> window).require('electron').ipcRenderer;
-      } catch (error) {
-        throw error;
-      }
-    } else {
-      console.warn('Could not load electron ipc');
-    }
+    this.ipc = window.require('electron').ipcRenderer;
   }
 
   async getMachines(): Promise<string[]> {

@@ -22,7 +22,7 @@ export class SearchComponent {
   constructor(private gamesService: GamesService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['parentMenuOpen'].currentValue === true) {
+    if (changes.parentMenuOpen.currentValue === true) {
       setTimeout(() => {
         this.inputField.nativeElement.value = '';
         this.inputField.nativeElement.focus();

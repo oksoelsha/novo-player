@@ -12,15 +12,7 @@ export class ScannerService {
   private subject = new Subject<void>();
 
   constructor() {
-    if ((<any> window).require) {
-      try {
-        this.ipc = (<any> window).require('electron').ipcRenderer;
-      } catch (error) {
-        throw error;
-      }
-    } else {
-      console.warn('Could not load electron ipc');
-    }
+    this.ipc = window.require('electron').ipcRenderer;
   }
 
   scan(parameters: ScanParameters): Promise<number> {

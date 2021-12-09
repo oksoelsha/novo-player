@@ -24,7 +24,7 @@ export class DropDownWithInputComponent {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['defaultSelection']) {
+    if (changes.defaultSelection) {
       this.setSelectedItemAndAdjustForDisplay(this.defaultSelection);
       this.selection.emit(this.defaultSelection);
     }
