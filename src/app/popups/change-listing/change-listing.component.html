@@ -2,7 +2,7 @@
     <div>
         <span class="mr-2">Destination listing</span>
         <span class="listing-input">
-            <app-drop-down-with-input *ngIf="opened" default-label="Enter a listing" default-new-label="New listing"
+            <app-drop-down-with-input *ngIf="opened" defaultLabel="Enter a listing" defaultNewLabel="New listing"
                 [list]="destinationListings" (selection)="selectedListing = $event"></app-drop-down-with-input>
         </span>
     </div>

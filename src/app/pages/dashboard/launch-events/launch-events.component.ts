@@ -3,7 +3,7 @@ import { Event, EventSource } from 'src/app/models/event';
 import { EventsService } from 'src/app/services/events.service';
 
 @Component({
-  selector: 'dashboard-launch-events-card',
+  selector: 'app-dashboard-launch-events-card',
   templateUrl: './launch-events.component.html',
   styleUrls: ['../dashboard.component.sass', './launch-events.component.sass']
 })

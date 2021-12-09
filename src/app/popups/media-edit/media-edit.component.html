@@ -6,7 +6,7 @@
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="romA" [(ngModel)]="romA"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filters-type="ROM" (onChosen)="romA = $event"></app-fs-chooser>
+          <app-fs-chooser label="Browse" filtersType="ROM" (onChosen)="romA = $event"></app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -16,15 +16,15 @@
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="romB" [(ngModel)]="romB"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filters-type="ROM" (onChosen)="romB = $event"></app-fs-chooser>
+          <app-fs-chooser label="Browse" filtersType="ROM" (onChosen)="romB = $event"></app-fs-chooser>
         </div>
       </td>
     </tr>
     <tr>
       <td class="medium">Extension</td>
       <td class="medium-input">
-        <app-drop-down [list]="extensions" default-label="Select extension" [selected-item]="extensionRom"
-          reset-button=true (selection)="extensionRom = $event"></app-drop-down>
+        <app-drop-down [list]="extensions" defaultLabel="Select extension" [selectedItem]="extensionRom"
+          resetButton=true (selection)="extensionRom = $event"></app-drop-down>
       </td>
     </tr>
     <tr>
@@ -36,7 +36,7 @@
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="diskA" [(ngModel)]="diskA"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filters-type="Disk" (onChosen)="diskA = $event"></app-fs-chooser>
+          <app-fs-chooser label="Browse" filtersType="Disk" (onChosen)="diskA = $event"></app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -46,7 +46,7 @@
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="diskB" [(ngModel)]="diskB"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filters-type="Disk" (onChosen)="diskB = $event"></app-fs-chooser>
+          <app-fs-chooser label="Browse" filtersType="Disk" (onChosen)="diskB = $event"></app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -59,7 +59,7 @@
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="tape" [(ngModel)]="tape"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filters-type="Tape" (onChosen)="tape = $event"></app-fs-chooser>
+          <app-fs-chooser label="Browse" filtersType="Tape" (onChosen)="tape = $event"></app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -72,7 +72,7 @@
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="harddisk" [(ngModel)]="harddisk"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filters-type="Harddisk" (onChosen)="harddisk = $event"></app-fs-chooser>
+          <app-fs-chooser label="Browse" filtersType="Harddisk" (onChosen)="harddisk = $event"></app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -85,7 +85,7 @@
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="laserdisc" [(ngModel)]="laserdisc"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filters-type="Laserdisc" (onChosen)="laserdisc = $event"></app-fs-chooser>
+          <app-fs-chooser label="Browse" filtersType="Laserdisc" (onChosen)="laserdisc = $event"></app-fs-chooser>
         </div>
       </td>
     </tr>

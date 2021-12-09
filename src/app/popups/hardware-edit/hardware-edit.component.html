@@ -3,7 +3,7 @@
         <tr>
             <td class="medium">Machine</td>
             <td class="medium-input">
-                <app-drop-down [list]="machines" [selected-item]="selectedMachine"
+                <app-drop-down [list]="machines" [selectedItem]="selectedMachine"
                     (selection)="selectedMachine = $event">
                 </app-drop-down>
             </td>
@@ -11,7 +11,7 @@
         <tr>
             <td class="medium">FDD Mode</td>
             <td class="medium-input">
-                <app-drop-down [list]="fddModes" [selected-item]="selectedFDDMode"
+                <app-drop-down [list]="fddModes" [selectedItem]="selectedFDDMode"
                     (selection)="selectedFDDMode = $event">
                 </app-drop-down>
             </td>
@@ -20,7 +20,7 @@
         <tr>
             <td class="medium">Input Device</td>
             <td class="medium-input">
-                <app-drop-down [list]="inputDevices" [selected-item]="selectedInputDevice"
+                <app-drop-down [list]="inputDevices" [selectedItem]="selectedInputDevice"
                     (selection)="selectedInputDevice = $event">
                 </app-drop-down>
             </td>

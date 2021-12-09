@@ -9,7 +9,7 @@ import { LaunchActivityService } from './launch-activity.service';
   providedIn: 'root'
 })
 export class GamesService {
-  private ipc: IpcRenderer
+  private ipc: IpcRenderer;
 
   constructor(private launchActivityService: LaunchActivityService) {
     if ((<any> window).require) {
@@ -26,7 +26,7 @@ export class GamesService {
   async getListings(): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
       this.ipc.once('getListingsResponse', (event, listings) => {
-        listings.sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        listings.sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()));
         resolve(listings);
       });
       this.ipc.send('getListings');
@@ -36,7 +36,7 @@ export class GamesService {
   async getGames(listing: string): Promise<Game[]> {
     return new Promise<Game[]>((resolve, reject) => {
       this.ipc.once('getGamesResponse', (event, games) => {
-        games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
         resolve(games);
       });
       this.ipc.send('getGames', listing);

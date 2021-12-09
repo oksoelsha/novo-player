@@ -1,19 +1,19 @@
 import { AfterViewInit, Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'home-game-music',
+  selector: 'app-home-game-music',
   templateUrl: './music.component.html',
   styleUrls: ['./music.component.sass']
 })
 export class MusicComponent implements AfterViewInit  {
 
-  @Input('music-url') musicUrl: string;
-  @Input('title') title: string;
+  @Input() musicUrl: string;
+  @Input() title: string;
   @ViewChild('audioPlayer', { static: false }) private audioPlayer: ElementRef<HTMLAudioElement>;
   @ViewChild('progressBar', { static: false }) private progressBar: ElementRef<HTMLCanvasElement>;
 
-  playButton: string = 'active';
-  pauseButton: string = 'hidden';
+  playButton = 'active';
+  pauseButton = 'hidden';
   totalTime: string;
   elapsedTime: string;
 

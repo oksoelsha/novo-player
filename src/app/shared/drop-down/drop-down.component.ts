@@ -7,10 +7,10 @@ import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChil
 })
 export class DropDownComponent {
 
-  @Input ('list') list: string[];
-  @Input ('selected-item') selectedItem: string;
-  @Input ('default-label') defaultLabel: string;
-  @Input ('reset-button') resetButton: boolean;
+  @Input() list: string[];
+  @Input() selectedItem: string;
+  @Input() defaultLabel: string;
+  @Input() resetButton: boolean;
   @Output() selection: EventEmitter<string> = new EventEmitter<string>();
   @ViewChildren('dropDownItem') dropDownItems: QueryList<ElementRef>;
 

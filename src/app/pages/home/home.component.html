@@ -50,7 +50,7 @@
             <img src="assets/images/general/search-13-16.png">
           </button>
           <div ngbDropdownMenu class="pt-0 pb-0">
-            <home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></home-game-search>
+            <app-home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></app-home-game-search>
           </div>
         </div>
       </div>
@@ -150,10 +150,10 @@
             </div>    
           </div>
           <div class="d-inline-block">
-            <home-game-music [music-url]="selectedMusicFile" [title]="getMusicName(selectedMusicFile)"></home-game-music>
+            <app-home-game-music [musicUrl]="selectedMusicFile" [title]="getMusicName(selectedMusicFile)"></app-home-game-music>
           </div>
         </div>
-        <home-game-details [selected-game]="selectedGame"></home-game-details>
+        <app-home-game-details [selectedGame]="selectedGame"></app-home-game-details>
       </div>
     </div>
   </div>
@@ -167,7 +167,7 @@
 <app-popup popupId="scan-parameters-id" titleHeader="Scan Parameters" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-scan-parameters [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
-      [files-and-folders]="draggedFilesAndFolders" [current-listing]="selectedListing" (parameters)="startScan($event)"
+      [filesAndFolders]="draggedFilesAndFolders" [currentListing]="selectedListing" (parameters)="startScan($event)"
       #scanParameters></app-scan-parameters>
   </ng-template>
 </app-popup>

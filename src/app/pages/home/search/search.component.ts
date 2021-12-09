@@ -4,7 +4,7 @@ import { Game } from 'src/app/models/game';
 import { GamesService } from 'src/app/services/games.service';
 
 @Component({
-  selector: 'home-game-search',
+  selector: 'app-home-game-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.sass']
 })

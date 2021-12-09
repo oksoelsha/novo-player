@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { LaunchActivity, LaunchActivityService } from 'src/app/services/launch-activity.service';
 
 @Component({
-  selector: 'dashboard-launch-activity-card',
+  selector: 'app-dashboard-launch-activity-card',
   templateUrl: './launch-activity.component.html',
   styleUrls: ['../../../common-styles.sass', '../dashboard.component.sass', './launch-activity.component.sass']
 })

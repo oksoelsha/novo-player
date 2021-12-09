@@ -9,9 +9,9 @@ import { PopupComponent } from '../popup.component';
 })
 export class ChangeListingComponent extends PopupComponent {
 
-  @Input () popupId: string;
-  @Input ('game') game: Game;
-  @Input ('listings') listings: string[];
+  @Input() popupId: string;
+  @Input() game: Game;
+  @Input() listings: string[];
   @Output() updatedGame: EventEmitter<Game> = new EventEmitter<Game>();
 
   destinationListings: string[] = [];

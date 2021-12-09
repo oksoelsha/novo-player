@@ -9,7 +9,7 @@ import { WebMSXComponent } from './pages/web-msx/web-msx.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'settings', component: SettingsComponent, canDeactivate:[DeactivateGuardService] },
+  { path: 'settings', component: SettingsComponent, canDeactivate: [DeactivateGuardService] },
   { path: 'help', component: HelpComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'wmsx', component: WebMSXComponent },

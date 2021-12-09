@@ -10,9 +10,9 @@ import { PopupComponent } from '../popup.component';
 export class ScanParametersComponent extends PopupComponent {
 
   @Input() popupId: string;
-  @Input('listings') listings: string[] = [];
-  @Input('files-and-folders') items: string[] = [];
-  @Input('current-listing') currentListing = '';
+  @Input() listings: string[] = [];
+  @Input() filesAndFolders: string[] = [];
+  @Input() currentListing = '';
   @Output() parameters: EventEmitter<ScanParameters> = new EventEmitter<ScanParameters>();
 
   selectedListing = '';
@@ -35,17 +35,17 @@ export class ScanParametersComponent extends PopupComponent {
   }
 
   close(): void {
-    this.items = [];
+    this.filesAndFolders = [];
 
     super.close();
   }
 
   removeItem(index: number) {
-    this.items.splice(index, 1);
+    this.filesAndFolders.splice(index, 1);
   }
 
   submitParameters(): void {
-    this.parameters.emit(new ScanParameters(this.items, this.selectedListing, this.selectedMachine));
+    this.parameters.emit(new ScanParameters(this.filesAndFolders, this.selectedListing, this.selectedMachine));
     this.close();
   }
 }

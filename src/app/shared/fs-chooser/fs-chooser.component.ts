@@ -17,10 +17,10 @@ export class FileSystemChooserComponent implements OnInit {
     ['Laserdisc', { name: 'Laserdisc Images', extensions: FileTypeUtils.getLaserdiscExtensions().concat(FileTypeUtils.getZipExtensions())}]
   ]);
 
-  @Input ('directory-mode') directoryMode: boolean;
-  @Input ('label') label: string;
-  @Input ('filters-type') filtersType: string;
-  @Input ('multi-selections') multiSelections: boolean;
+  @Input() directoryMode: boolean;
+  @Input() label: string;
+  @Input() filtersType: string;
+  @Input() multiSelections: boolean;
   @Output() onChosen: EventEmitter<any> = new EventEmitter<any>();
   private remote: Remote = (<any> window).require('electron').remote;
 

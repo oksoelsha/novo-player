@@ -4,14 +4,13 @@ import { GameUtils } from 'src/app/models/game-utils';
 import { GamesService } from 'src/app/services/games.service';
 
 @Component({
-  selector: 'home-game-details',
+  selector: 'app-home-game-details',
   templateUrl: './game-details.component.html',
   styleUrls: ['./game-details.component.sass']
 })
 export class GameDetailsComponent {
 
-  @Input('selected-game') selectedGame: Game;
-
+  @Input() selectedGame: Game;
   @ViewChild('gameDetailSimpleText', { static: true }) private gameDetailSimpleText: TemplateRef<object>;
   @ViewChild('gameDetailFiles', { static: true }) private gameDetailFiles: TemplateRef<object>;
   @ViewChild('gameDetailMedium', { static: true }) private gameDetailMedium: TemplateRef<object>;

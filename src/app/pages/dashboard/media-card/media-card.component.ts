@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Totals } from 'src/app/models/totals';
 
 @Component({
-  selector: 'dashboard-media-card',
+  selector: 'app-dashboard-media-card',
   templateUrl: './media-card.component.html',
   styleUrls: ['../dashboard.component.sass', './media-card.component.sass']
 })

@@ -8,10 +8,10 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DropDownWithInputComponent {
 
-  @Input ('list') list: string[] = [];
-  @Input ('default-label') defaultLabel: string;
-  @Input ('default-new-label') defaultNewLabel: string;
-  @Input ('default-selection') defaultSelection: string;
+  @Input() list: string[] = [];
+  @Input() defaultLabel: string;
+  @Input() defaultNewLabel: string;
+  @Input() defaultSelection: string;
   @Output() selection: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('dropdownWithInput', { static: true }) private listingsDropdown: NgbDropdown;

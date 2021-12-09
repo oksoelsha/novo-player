@@ -15,7 +15,7 @@ export class ManageListingsComponent extends PopupComponent {
     merge: 2
   };
 
-  @Input('listings') listings: string[] = [];
+  @Input() listings: string[] = [];
   @Output() updatedListing: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('listingRenameInput', { static: false }) private listingRenameInput: ElementRef;
   @ViewChild('listingsTable', { static: true }) private listingsTable: ElementRef;

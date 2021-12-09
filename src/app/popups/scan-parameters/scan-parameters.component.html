@@ -1,14 +1,14 @@
 <form id="scanParametersForm" #scanParametersForm="ngForm">
   <div class="add-buttons">
-    <app-fs-chooser directory-mode=true multi-selections=true label="+Directory"
-      (onChosen)="items = items.concat($event)"></app-fs-chooser>
+    <app-fs-chooser directoryMode=true multiSelections=true label="+Directory"
+      (onChosen)="filesAndFolders = filesAndFolders.concat($event)"></app-fs-chooser>
   </div>
   <div class="add-buttons">
-    <app-fs-chooser label="+File" multi-selections=true (onChosen)="items = items.concat($event)">
+    <app-fs-chooser label="+File" multiSelections=true (onChosen)="filesAndFolders = filesAndFolders.concat($event)">
     </app-fs-chooser>
   </div>
   <div class="files-and-directories-table">
-    <ng-container *ngFor="let item of items; let i = index">
+    <ng-container *ngFor="let item of filesAndFolders; let i = index">
       <div class="table-row">
         <div class="table-item">{{ item }}</div>
         <div class="table-item-delete" (click)="removeItem(i)">&times;</div>
@@ -19,18 +19,18 @@
     <tr>
       <td class="pr-2">Listing</td>
       <td>
-        <app-drop-down-with-input default-label="Enter a listing" default-new-label="New listing" [list]="listings"
-          [default-selection]="currentListing" (selection)="selectedListing = $event"></app-drop-down-with-input>
+        <app-drop-down-with-input defaultLabel="Enter a listing" defaultNewLabel="New listing" [list]="listings"
+          [defaultSelection]="currentListing" (selection)="selectedListing = $event"></app-drop-down-with-input>
       </td>
     </tr>
     <tr>
       <td class="pr-2">Machine</td>
       <td>
-        <app-drop-down [list]="machines" [selected-item]="machines[0]" (selection)="selectedMachine = $event">
+        <app-drop-down [list]="machines" [selectedItem]="machines[0]" (selection)="selectedMachine = $event">
         </app-drop-down>
       </td>
     </tr>
   </table>
-  <button class="btn btn-primary btn-sm mt-3" [disabled]="items.length == 0 || !selectedListing"
+  <button class="btn btn-primary btn-sm mt-3" [disabled]="filesAndFolders.length == 0 || !selectedListing"
     (click)="submitParameters()" (keydown.enter)="submitParameters()">Start</button>
 </form>

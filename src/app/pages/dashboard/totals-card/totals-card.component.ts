@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Totals } from 'src/app/models/totals';
 
 @Component({
-  selector: 'dashboard-totals-card',
+  selector: 'app-dashboard-totals-card',
   templateUrl: './totals-card.component.html',
   styleUrls: ['../dashboard.component.sass', './totals-card.component.sass']
 })

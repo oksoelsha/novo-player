@@ -10,8 +10,8 @@ import { PopupComponent } from '../popup.component';
 })
 export class MediaEditComponent extends PopupComponent {
 
-  @Input () popupId: string;
-  @Input ('game') game: Game;
+  @Input() popupId: string;
+  @Input() game: Game;
   @Output() updatedGame: EventEmitter<Game> = new EventEmitter<Game>();
 
   romA: string;
