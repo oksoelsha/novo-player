@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { Game } from 'src/app/models/game';
 import { GameUtils } from 'src/app/models/game-utils';
 import { GamesService } from 'src/app/services/games.service';
@@ -8,7 +8,7 @@ import { GamesService } from 'src/app/services/games.service';
   templateUrl: './game-details.component.html',
   styleUrls: ['./game-details.component.sass']
 })
-export class GameDetailsComponent {
+export class GameDetailsComponent implements OnChanges {
 
   @Input() selectedGame: Game;
   @ViewChild('gameDetailSimpleText', { static: true }) private gameDetailSimpleText: TemplateRef<object>;
@@ -69,7 +69,8 @@ export class GameDetailsComponent {
   constructor(private gamesService: GamesService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.selectedGame.isFirstChange() || changes.selectedGame.currentValue.sha1Code !== changes.selectedGame.previousValue.sha1Code) {
+    if (changes.selectedGame.isFirstChange() ||
+      changes.selectedGame.currentValue.sha1Code !== changes.selectedGame.previousValue.sha1Code) {
       this.setSelectedGameMedium();
     }
   }

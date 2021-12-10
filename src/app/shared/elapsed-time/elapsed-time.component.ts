@@ -38,9 +38,6 @@ export class ElapsedTimeComponent implements OnInit {
     const hours = Math.floor(diff / 3600000);
     const minutes = Math.floor((diff % 3600000) / 60000);
 
-    return {
-      hours: hours,
-      minutes: minutes
-    };
+    return { hours, minutes };
   }
 }

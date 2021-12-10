@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { Game } from 'src/app/models/game';
 import { GamesService } from 'src/app/services/games.service';
@@ -8,7 +8,7 @@ import { GamesService } from 'src/app/services/games.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.sass']
 })
-export class SearchComponent {
+export class SearchComponent implements OnChanges {
 
   @Input() parentMenuOpen = false;
   @Output() selectedGame: EventEmitter<Game> = new EventEmitter<Game>();

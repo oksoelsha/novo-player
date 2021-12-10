@@ -48,7 +48,8 @@ export class DropDownComponent {
 
   private jumpToNearestItem(accumulatedPressedKeys: string) {
     let index: number;
-    for (index = 0; index < this.list.length && !this.list[index].toLowerCase().startsWith(accumulatedPressedKeys.toLowerCase()); index++) {}
+    for (index = 0; index < this.list.length &&
+      !this.list[index].toLowerCase().startsWith(accumulatedPressedKeys.toLowerCase()); index++) {}
     if (index < this.list.length) {
       this.dropDownItems.toArray()[index].nativeElement.focus();
     }

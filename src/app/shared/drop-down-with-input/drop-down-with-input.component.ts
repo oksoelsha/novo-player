@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,7 +6,7 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './drop-down-with-input.component.html',
   styleUrls: ['../../common-styles.sass', './drop-down-with-input.component.sass']
 })
-export class DropDownWithInputComponent {
+export class DropDownWithInputComponent implements OnChanges {
 
   @Input() list: string[] = [];
   @Input() defaultLabel: string;

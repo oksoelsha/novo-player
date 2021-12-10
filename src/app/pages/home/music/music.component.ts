@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-home-game-music',
   templateUrl: './music.component.html',
   styleUrls: ['./music.component.sass']
 })
-export class MusicComponent implements AfterViewInit  {
+export class MusicComponent implements AfterViewInit, OnChanges {
 
   @Input() musicUrl: string;
   @Input() title: string;

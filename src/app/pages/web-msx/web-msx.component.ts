@@ -16,7 +16,8 @@ export class WebMSXComponent implements OnInit, OnDestroy {
   selectedGame: Game;
   error: boolean;
 
-  constructor(private renderer: Renderer2, private route: ActivatedRoute, private settingsService: SettingsService, private emulatorService: EmulatorService) {
+  constructor(private renderer: Renderer2, private route: ActivatedRoute, private settingsService: SettingsService,
+    private emulatorService: EmulatorService) {
     this.selectedGame = JSON.parse(route.snapshot.paramMap.get('gameParams'));
   }
 

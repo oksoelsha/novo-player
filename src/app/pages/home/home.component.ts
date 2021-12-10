@@ -51,10 +51,10 @@ export class HomeComponent implements OnInit {
   editedGameName: string;
   selectedGame: Game;
   lastRemovedGame: Game = null;
-  screenshot_a_1: GameSecondaryData;
-  screenshot_a_2: GameSecondaryData;
-  screenshot_b_1: GameSecondaryData;
-  screenshot_b_2: GameSecondaryData;
+  screenshotA1: GameSecondaryData;
+  screenshotA2: GameSecondaryData;
+  screenshotB1: GameSecondaryData;
+  screenshotB2: GameSecondaryData;
   transparent1 = '';
   transparent2 = 'transparent';
   scanRunning = false;
@@ -463,8 +463,8 @@ export class HomeComponent implements OnInit {
 
   private initialize() {
     this.selectedGame = null;
-    this.screenshot_a_1 = this.screenshot_a_2 = this.noScreenshotImage1;
-    this.screenshot_b_1 = this.screenshot_b_2 = this.noScreenshotImage2;
+    this.screenshotA1 = this.screenshotA2 = this.noScreenshotImage1;
+    this.screenshotB1 = this.screenshotB2 = this.noScreenshotImage2;
   }
 
   private canHandleEvents(): boolean {
@@ -477,13 +477,13 @@ export class HomeComponent implements OnInit {
 
   private setScreenshots(secondaryData: GameSecondaryData) {
     if (this.toggle) {
-      this.screenshot_a_1 = this.getScreenshot1Data(secondaryData);
-      this.screenshot_b_1 = this.getScreenshot2Data(secondaryData);
+      this.screenshotA1 = this.getScreenshot1Data(secondaryData);
+      this.screenshotB1 = this.getScreenshot2Data(secondaryData);
       this.transparent1 = '';
       this.transparent2 = 'transparent';
     } else {
-      this.screenshot_a_2 = this.getScreenshot1Data(secondaryData);
-      this.screenshot_b_2 = this.getScreenshot2Data(secondaryData);
+      this.screenshotA2 = this.getScreenshot1Data(secondaryData);
+      this.screenshotB2 = this.getScreenshot2Data(secondaryData);
       this.transparent1 = 'transparent';
       this.transparent2 = '';
     }
@@ -548,7 +548,8 @@ export class HomeComponent implements OnInit {
 
   private addGameToSortedList(game: Game) {
     let index: number;
-    for (index = 0; index < this.games.length && this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++) {}
+    for (index = 0; index < this.games.length &&
+      this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++) {}
     if (index < this.games.length) {
       this.games.splice(index, 0, game);
     } else {
@@ -559,7 +560,8 @@ export class HomeComponent implements OnInit {
   private addListingToListings(listing: string) {
     if (this.listings.findIndex((e) => e === listing) < 0) {
       let index: number;
-      for (index = 0; index < this.listings.length && this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++) {}
+      for (index = 0; index < this.listings.length &&
+        this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++) {}
       this.listings.splice(index, 0, listing);
     }
   }

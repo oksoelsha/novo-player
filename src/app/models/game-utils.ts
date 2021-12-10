@@ -56,6 +56,7 @@ export class GameUtils {
         'Dexterity',
     ];
 
+    /* tslint:disable:no-bitwise */
     static isMSX(game: Game): boolean {
         return (game.generations & game.MASK_GENERATION_MSX) > 0;
     }
@@ -103,6 +104,7 @@ export class GameUtils {
     static isMidi(game: Game): boolean {
         return (game.sounds & game.MASK_SOUND_MIDI) > 0;
     }
+    /* tslint:enable:no-bitwise */
 
     static getGenre(genre: number): string {
         if (genre < 1 || genre >= this.genres.length) {

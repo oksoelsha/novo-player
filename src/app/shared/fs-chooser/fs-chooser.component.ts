@@ -54,10 +54,7 @@ export class FileSystemChooserComponent implements OnInit {
       filters = [];
     }
 
-    const options: Object = {
-      properties: properties,
-      filters: filters
-    };
+    const options: object = { properties, filters };
 
     this.remote.dialog.showOpenDialog(this.remote.getCurrentWindow(), options).then((value) => {
       if (!value.canceled) {
