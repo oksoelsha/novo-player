@@ -25,4 +25,13 @@ export class EventsService {
       this.ipc.send('getEvents', pageSize, currentPage);
     });
   }
+
+  async getTopTenLaunchedGames(pageSize: number, currentPage: number): Promise<[]> {
+    return new Promise<[]>((resolve, reject) => {
+      this.ipc.once('getTopTenLaunchedGamesResponse', (event, data) => {
+        resolve(data);
+      });
+      this.ipc.send('getTopTenLaunchedGames', pageSize, currentPage);
+    });
+  }
 }

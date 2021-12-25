@@ -1,27 +1,28 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
 import * as fs from 'fs'
-import * as os from 'os';
 import { SettingsService } from 'SettingsService'
 import { FileTypeUtils } from './utils/FileTypeUtils';
 import { PlatformUtils } from './utils/PlatformUtils';
 
 export class EmulatorHardwareService {
 
-    private readonly HARDWARE_CONFIG_FILENAME: string = "hardwareconfig.xml";
+    private readonly HARDWARE_CONFIG_FILENAME = 'hardwareconfig.xml';
 
-    constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
+    constructor(private win: BrowserWindow, private settingsService: SettingsService) {
+        this.init();
+    }
 
-    init() {
+    private init() {
         ipcMain.on('getMachines', (event, arg) => {
-            var machines = this.getFromEmulator("machines");
+            var machines = this.getFromEmulator('machines');
             this.win.webContents.send('getMachinesResponse', machines);
-        })
+        });
 
         ipcMain.on('getExtensions', (event, arg) => {
-            var extensions = this.getFromEmulator("extensions");
+            var extensions = this.getFromEmulator('extensions');
             this.win.webContents.send('getExtensionsResponse', extensions);
-        })
+        });
     }
 
     private getFromEmulator(hardware: string): string[] {

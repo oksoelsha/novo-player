@@ -21,56 +21,58 @@ class TCLCommands {
 export class EmulatorLaunchService {
 
     private static readonly fieldsToArgs = [
-        ["machine", "machine"],
-        ["romA", "carta"],
-        ["romB", "cartb"],
-        ["diskA", "diska"],
-        ["diskB", "diskb"],
-        ["tape", "cassetteplayer"],
-        ["harddisk", "hda"],
-        ["extensionRom", "ext"],
-        ["laserdisc", "laserdisc"],
+        ['machine', 'machine'],
+        ['romA', 'carta'],
+        ['romB', 'cartb'],
+        ['diskA', 'diska'],
+        ['diskB', 'diskb'],
+        ['tape', 'cassetteplayer'],
+        ['harddisk', 'hda'],
+        ['extensionRom', 'ext'],
+        ['laserdisc', 'laserdisc']
     ];
 
-    private static readonly Input_Device_JOYSTICK: string = 'plug joyporta joystick1';
-    private static readonly Input_Device_JOYSTICK_KEYBOARD: string = 'plug joyporta keyjoystick1';
-    private static readonly Input_Device_MOUSE: string = 'plug joyporta mouse';
-    private static readonly Input_Device_ARKANOID_PAD: string = 'plug joyporta arkanoidpad';
-    private static readonly Input_Device_TRACKBALL: string = 'plug joyportb trackball';
-    private static readonly Input_Device_TOUCHPAD: string = 'plug joyportb touchpad';
+    private static readonly Input_Device_JOYSTICK = 'plug joyporta joystick1';
+    private static readonly Input_Device_JOYSTICK_KEYBOARD = 'plug joyporta keyjoystick1';
+    private static readonly Input_Device_MOUSE = 'plug joyporta mouse';
+    private static readonly Input_Device_ARKANOID_PAD = 'plug joyporta arkanoidpad';
+    private static readonly Input_Device_TRACKBALL = 'plug joyportb trackball';
+    private static readonly Input_Device_TOUCHPAD = 'plug joyportb touchpad';
 
-    private static readonly FDD_MODE_DISABLE_SECOND: string = 'after boot { keymatrixdown 6 2; after time 14 \\\"keymatrixup 6 2\\\" }';
-    private static readonly FDD_MODE_DISABLE_BOTH: string = 'after boot { keymatrixdown 6 1; after time 14 \\\"keymatrixup 6 1\\\" }';
+    private static readonly FDD_MODE_DISABLE_SECOND = 'after boot { keymatrixdown 6 2; after time 14 \\\"keymatrixup 6 2\\\" }';
+    private static readonly FDD_MODE_DISABLE_BOTH = 'after boot { keymatrixdown 6 1; after time 14 \\\"keymatrixup 6 1\\\" }';
 
-    private static readonly ENABLE_GFX9000_CMD: string = 'ext gfx9000; ' +
+    private static readonly ENABLE_GFX9000_CMD = 'ext gfx9000; ' +
         'ext slotexpander; ' + 'after time 10 \\\"set videosource GFX9000\\\"';
 
     private static readonly tclCommandArgs: TCLCommands[] = [
         new TCLCommands('inputDevice', [
-            ["1", EmulatorLaunchService.Input_Device_JOYSTICK],
-            ["2", EmulatorLaunchService.Input_Device_JOYSTICK_KEYBOARD],
-            ["3", EmulatorLaunchService.Input_Device_MOUSE],
-            ["4", EmulatorLaunchService.Input_Device_ARKANOID_PAD],
-            ["5", EmulatorLaunchService.Input_Device_TRACKBALL],
-            ["6", EmulatorLaunchService.Input_Device_TOUCHPAD]
+            ['1', EmulatorLaunchService.Input_Device_JOYSTICK],
+            ['2', EmulatorLaunchService.Input_Device_JOYSTICK_KEYBOARD],
+            ['3', EmulatorLaunchService.Input_Device_MOUSE],
+            ['4', EmulatorLaunchService.Input_Device_ARKANOID_PAD],
+            ['5', EmulatorLaunchService.Input_Device_TRACKBALL],
+            ['6', EmulatorLaunchService.Input_Device_TOUCHPAD]
         ])
         ,
         new TCLCommands('fddMode', [
-            ["1", EmulatorLaunchService.FDD_MODE_DISABLE_SECOND],
-            ["2", EmulatorLaunchService.FDD_MODE_DISABLE_BOTH]
+            ['1', EmulatorLaunchService.FDD_MODE_DISABLE_SECOND],
+            ['2', EmulatorLaunchService.FDD_MODE_DISABLE_BOTH]
         ])
         ,
         new TCLCommands('connectGFX9000', [
-            ["true", EmulatorLaunchService.ENABLE_GFX9000_CMD]
+            ['true', EmulatorLaunchService.ENABLE_GFX9000_CMD]
         ])
     ];
 
-    private static readonly LAUNCH_ERROR_SPLIT_MSG_UNCAUGHT = "Uncaught exception: ";
-    private static readonly LAUNCH_ERROR_SPLIT_MSG_ERROR_IN = "Error in ";
+    private static readonly LAUNCH_ERROR_SPLIT_MSG_UNCAUGHT = 'Uncaught exception: ';
+    private static readonly LAUNCH_ERROR_SPLIT_MSG_ERROR_IN = 'Error in ';
 
-    constructor(private win: BrowserWindow, private settingsService: SettingsService, private eventLogService: EventLogService) { }
+    constructor(private win: BrowserWindow, private settingsService: SettingsService, private eventLogService: EventLogService) {
+        this.init();
+    }
 
-    init() {
+    private init() {
         ipcMain.on('launchGame', (event, game: Game, time: number) => {
             this.launch(game, time)
         })
@@ -87,11 +89,11 @@ export class EmulatorLaunchService {
                 if (splitText) {
                     errorMessage = error.message.substring(error.message.indexOf(splitText) + splitText.length);
                 } else {
-                    errorMessage = "Error launching openMSX";
+                    errorMessage = 'Error launching openMSX';
                 }
                 self.win.webContents.send('launchGameResponse' + time, errorMessage);
             } else {
-                //this is called when openMSX window is closed
+                // this is called when openMSX window is closed
                 self.win.webContents.send('launchGameResponse' + time);
             }
         });
@@ -131,9 +133,9 @@ export class EmulatorLaunchService {
         }
 
         if (commandLineArgs.length > 0) {
-            return " -command \"" + commandLineArgs.join(';') + "\"";
+            return ' -command "' + commandLineArgs.join(';') + '"';
         } else {
-            return "";
+            return '';
         }
     }
 }

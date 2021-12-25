@@ -35,6 +35,7 @@ import { GameDetailsComponent } from './pages/home/game-details/game-details.com
 import { ManageListingsComponent } from './popups/manage-listings/manage-listings.component';
 import { LaunchEventsComponent } from './pages/dashboard/launch-events/launch-events.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
+import { InsightsComponent } from './pages/dashboard/insights/insights.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { PaginationComponent } from './shared/pagination/pagination.component';
     GameDetailsComponent,
     ManageListingsComponent,
     LaunchEventsComponent,
-    PaginationComponent
+    PaginationComponent,
+    InsightsComponent
   ],
   imports: [
     BrowserModule,

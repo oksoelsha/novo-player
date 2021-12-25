@@ -3,7 +3,7 @@ import { PersistenceUtils } from "../utils/PersistenceUtils";
 
 export class GameDO {
     name: string;
-    _id: string;        //this will be used for the sha1Code field
+    _id: string;        // this will be used for the sha1Code field
     size: number;
     machine: string;
 

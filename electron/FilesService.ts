@@ -10,9 +10,11 @@ export class FilesService {
 
     private imageDataPrefix: string = 'data:image/png;base64,';
 
-    constructor(private win: BrowserWindow, private settingsService: SettingsService) { }
+    constructor(private win: BrowserWindow, private settingsService: SettingsService) {
+        this.init();
+    }
 
-    init() {
+    private init() {
         ipcMain.on('getSecondaryData', (event, sha1Code, genMsxId, suffix) => {
             var secondaryData = this.getSecondaryData(genMsxId, suffix);
             this.win.webContents.send('getSecondaryDataResponse' + sha1Code, secondaryData);
@@ -54,7 +56,7 @@ export class FilesService {
         try {
             data1 = this.imageDataPrefix + fs.readFileSync(screenshotsPath1).toString('base64');
         } catch (err) {
-            data1 = "";
+            data1 = '';
         }
 
         var data2: string;
@@ -68,10 +70,10 @@ export class FilesService {
             try {
                 data2 = this.imageDataPrefix + fs.readFileSync(screenshotsPath2).toString('base64');
             } catch (err) {
-                data2 = "";
+                data2 = '';
             }
         } else {
-            data2 = "";
+            data2 = '';
         }
 
         let musicFiles: string[] = this.getMusicFiles(genMsxId);
@@ -107,11 +109,11 @@ export class FilesService {
     }
 
     private getScreenshotVersion(): string {
-        return this.getVersionValue(this.settingsService.getSettings().screenshotsPath, "version.txt");
+        return this.getVersionValue(this.settingsService.getSettings().screenshotsPath, 'version.txt');
     }
 
     private getGameMusicVersion(): string {
-        return this.getVersionValue(this.settingsService.getSettings().gameMusicPath, "version.txt");
+        return this.getVersionValue(this.settingsService.getSettings().gameMusicPath, 'version.txt');
     }
 
     private getVersionValue(filepath: string, filename: string) :string {

@@ -5,11 +5,11 @@ export class PlatformUtils {
 
     static getHardwarePath(openmsxPath: string, hardwareType: string): string {
         if (this.isWindows()) {
-            return path.join(openmsxPath, "share/" + hardwareType);
+            return path.join(openmsxPath, 'share/' + hardwareType);
         } else if (this.isLinux()) {
-            return path.join("/usr/share/openmsx/", hardwareType);
+            return path.join('/usr/share/openmsx/', hardwareType);
         } else if (this.isMacOS()) {
-            return path.join(openmsxPath, "openmsx.app/share/" + hardwareType);
+            return path.join(openmsxPath, 'openmsx.app/share/' + hardwareType);
         } else {
             return this.unsupportedPlatform();
         }
@@ -17,11 +17,11 @@ export class PlatformUtils {
 
     static getOpenmsxBinary(): string {
         if (this.isWindows()) {
-            return "openmsx.exe";
+            return 'openmsx.exe';
         } else if (this.isLinux()) {
-            return "openmsx";
+            return 'openmsx';
         } else if (this.isMacOS()) {
-            return "openmsx.app/Contents/MacOS/openmsx";
+            return 'openmsx.app/Contents/MacOS/openmsx';
         } else {
             return this.unsupportedPlatform();
         }
@@ -52,15 +52,15 @@ export class PlatformUtils {
     }
 
     private static isWindows(): boolean {
-        return os.platform() == "win32";
+        return os.platform() == 'win32';
     }
 
     private static isLinux(): boolean {
-        return os.platform() == "linux";
+        return os.platform() == 'linux';
     }
 
     private static isMacOS(): boolean {
-        return os.platform() == "darwin";
+        return os.platform() == 'darwin';
     }
 
     private static unsupportedPlatform(): string {

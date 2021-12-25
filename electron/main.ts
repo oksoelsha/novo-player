@@ -11,7 +11,7 @@ import { EmulatorHardwareService } from './EmulatorHardwareService'
 import { HashService } from './HashService'
 import { EventLogService } from './EventLogService'
 
-let win: BrowserWindow
+let win: BrowserWindow;
 
 app.on('ready', startApp);
 
@@ -19,7 +19,7 @@ app.on('activate', () => {
     if (win === null) {
         startApp();
     }
-})
+});
 
 function startApp() {
     createWindow();
@@ -45,43 +45,35 @@ function createWindow() {
 
     win.once('ready-to-show', () => {
         win.show();
-    })
+    });
 
     win.on('closed', () => {
         win = null;
-    })
+    });
 }
 
 function initializeServices() {
-    let settingsService = new SettingsService(win);
-    settingsService.init();
+    const settingsService = new SettingsService(win);
 
-    let extraDataService = new ExtraDataService(win);
-    extraDataService.init();
+    const extraDataService = new ExtraDataService(win);
 
-    let emulatorRepositoryService = new EmulatorRepositoryService(settingsService)
-    emulatorRepositoryService.init();
+    const emulatorRepositoryService = new EmulatorRepositoryService(settingsService);
 
-    let hashService = new HashService();
+    const hashService = new HashService();
 
-    let gamesService = new GamesService(win, emulatorRepositoryService, hashService);
-    gamesService.init();
+    const gamesService = new GamesService(win, emulatorRepositoryService, hashService);
 
-    let filesService = new FilesService(win, settingsService);
-    filesService.init();
+    new FilesService(win, settingsService);
 
-    let eventLogService = new EventLogService(win);
-    eventLogService.init();
+    const eventLogService = new EventLogService(win);
 
-    let emulatorLaunchService = new EmulatorLaunchService(win, settingsService, eventLogService);
-    emulatorLaunchService.init();
+    const emulatorLaunchService = new EmulatorLaunchService(win, settingsService, eventLogService);
 
-    let emulatorHardwareService = new EmulatorHardwareService(win, settingsService);
-    emulatorHardwareService.init();
+    const emulatorHardwareService = new EmulatorHardwareService(win, settingsService);
 
     //services that are rare to execute and have internal state -> create new instance per request
     ipcMain.on('scan', (event, directories: string[], listing: string, machine: string) => {
-        let scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService, hashService);
+        const scanService = new ScanService(win, extraDataService, emulatorRepositoryService, gamesService, hashService);
         scanService.start(directories, listing, machine);
     })
 }

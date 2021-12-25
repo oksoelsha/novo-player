@@ -20,9 +20,19 @@ export class GamesService {
     constructor(private win: BrowserWindow, private emulatorRepositoryService: EmulatorRepositoryService, private hashService: HashService) {
         this.database = new Datastore({ filename: this.databaseFile, autoload: true });
         this.repositoryInfo = this.emulatorRepositoryService.getRepositoryInfo();
+        this.init();
     }
 
-    init() {
+    saveGameFromScan(game: Game): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            var gameDO: GameDO = new GameDO(game);
+            this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
+                return resolve(err == null);
+            });
+        });
+    }
+
+    private init() {
         ipcMain.on('getListings', (event, arg) => {
             this.getListings();
         });
@@ -65,15 +75,6 @@ export class GamesService {
 
         ipcMain.on('getFavorites', (event) => {
             this.getFavorites();
-        });
-    }
-
-    saveGameFromScan(game: Game): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            var gameDO: GameDO = new GameDO(game);
-            this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
-                return resolve(err == null);
-            });
         });
     }
 

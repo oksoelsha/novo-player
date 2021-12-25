@@ -6,11 +6,13 @@ export class ExtraDataService implements UpdateListerner {
 
     private extraDataPath: string = path.join(__dirname, '/../../../dist/novo-player/assets/data/extra-data.dat');
     private extraDataInfo: Map<string, ExtraData> = new Map();
-    private extraDataVersion: string = "";
+    private extraDataVersion = '';
 
-    constructor(private win: BrowserWindow) {}
+    constructor(private win: BrowserWindow) {
+        this.init();
+    }
 
-    init(): void {
+    private init(): void {
         ipcMain.on('getExtraDataVersion', (event, arg) => {
             this.sendExtraDataVersion();
         });
@@ -72,7 +74,7 @@ export class ExtraDataService implements UpdateListerner {
             } else {
                 var lineParts: string[] = line.split(/\s/);
                 if (lineParts.length >= 3) {
-                    if (lineParts[1] == "Version") {
+                    if (lineParts[1] == 'Version') {
                         this.extraDataVersion = lineParts[2];
                     }
                 }

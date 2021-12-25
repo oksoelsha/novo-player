@@ -11,9 +11,9 @@ import { HashService } from 'HashService'
 export class ScanService {
     private extraDataInfo: Map<string, ExtraData>;
     private repositoryInfo: Map<string, RepositoryData>;
-    private totalFilesToScan: number = 0;
-    private scannedFilesCounter: number = 0;
-    private totalAddedGamesCounter: number = 0;
+    private totalFilesToScan = 0;
+    private scannedFilesCounter = 0;
+    private totalAddedGamesCounter = 0;
 
     constructor(
         private win: BrowserWindow,
@@ -27,14 +27,14 @@ export class ScanService {
     }
 
     start(items: string[], listing:string, machine: string) {
-            //before scanning, first get total files in given file and directories
+            // before scanning, first get total files in given file and directories
             this.totalFilesToScan = this.countTotalFilesToScan(items);
 
             this.scan(items, listing, machine);
     }
 
     private countTotalFilesToScan(items: string[]): number {
-        var count: number = 0;
+        let count = 0;
         for (const item of items) {
             count += this.getTotalFiles(item);
         }
@@ -50,7 +50,7 @@ export class ScanService {
                 if (fs.statSync(fullPath).isDirectory()) {
                     count += this.getTotalFiles(fullPath) - 1;
                 }
-            })
+            });
             return count;
         } else {
             return 1;

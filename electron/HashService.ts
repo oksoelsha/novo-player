@@ -16,8 +16,8 @@ export class HashService {
 
     getSha1Code(filename: string): Promise<any> {
         var sha1: Promise<any>;
-        if (fs.statSync(filename)["size"] > 10485760) {
-            //any files larger than 10Mb are considered large that we need to send them to the more limited promise batch size
+        if (fs.statSync(filename)['size'] > 10485760) {
+            // any files larger than 10Mb are considered large that we need to send them to the more limited promise batch size
             sha1 = this.largeFileScanBatchSize(() => this.getSha1(filename));
         } else {
             sha1 = this.smallFileScanBatchSize(() => this.getSha1(filename));
@@ -49,7 +49,7 @@ export class HashService {
                             stm.on('end', function () {
                                 const hash = shasum.digest('hex');
                                 zip.close();
-                                return resolve({"hash": hash, "size": entries[msxFileIndex].size, "filename": entries[msxFileIndex].name});
+                                return resolve({hash: hash, size: entries[msxFileIndex].size, filename: entries[msxFileIndex].name});
                             })
                         })
                     } else {
@@ -65,7 +65,7 @@ export class HashService {
                 })
                 s.on('end', function () {
                     const hash = shasum.digest('hex');
-                    return resolve({"hash": hash, "size": fs.statSync(filename)["size"], "filename": filename});
+                    return resolve({hash: hash, size: fs.statSync(filename)['size'], filename: filename});
                 })
             });
         }

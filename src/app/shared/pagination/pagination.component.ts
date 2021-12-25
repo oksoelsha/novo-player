@@ -9,6 +9,7 @@ export class PaginationComponent implements OnInit {
 
   @Input() total: number;
   @Input() pageSize: number;
+  @Input() hideFirstAndLastNav: boolean;
   @Output() page: EventEmitter<number> = new EventEmitter<number>();
   currentPage = 0;
   totalPages = 0;

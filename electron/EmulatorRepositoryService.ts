@@ -11,9 +11,18 @@ export class EmulatorRepositoryService implements UpdateListerner {
 
     constructor(private settingsService: SettingsService) {
         settingsService.addListerner(this);
+        this.init();
     }
 
-    init(): void {
+    getRepositoryInfo(): Map<string, RepositoryData> {
+        return this.repositoryInfo;
+    }
+
+    reinit(): void {
+        this.init();
+    }
+
+    private init(): void {
         var self = this;
         let gamesDataMap: Map<string, RepositoryData> = new Map<string, RepositoryData>();
         let softwaredbFilenames: string[] = [
@@ -47,79 +56,71 @@ export class EmulatorRepositoryService implements UpdateListerner {
         this.repositoryInfo = gamesDataMap
     }
 
-    getRepositoryInfo(): Map<string, RepositoryData> {
-        return this.repositoryInfo;
-    }
-
-    reinit(): void {
-        this.init();
-    }
-
     private processDump(software: any, dump: any, gamesDataMap: Map<string, RepositoryData>): void {
         if (dump.hasOwnProperty('rom')) {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
                 software.year, software.country);
 
             if (dump.hasOwnProperty('original')) {
-                repositoryData.setDump(dump.original)
+                repositoryData.setDump(dump.original);
             }
     
             if (dump.rom.hasOwnProperty('type')) {
-                repositoryData.setMapper(dump.rom.type)
+                repositoryData.setMapper(dump.rom.type);
             } else {
-                repositoryData.setMapper('Mirrored ROM')
+                repositoryData.setMapper('Mirrored ROM');
             }
 
             if (dump.rom.hasOwnProperty('start')) {
-                repositoryData.setStart(dump.rom.start)
+                repositoryData.setStart(dump.rom.start);
             }
 
             if (dump.rom.hasOwnProperty('remark')) {
-                repositoryData.setRemark(dump.rom.remark)
+                repositoryData.setRemark(dump.rom.remark);
             }
 
-            gamesDataMap.set(dump.rom.hash, repositoryData)
+            gamesDataMap.set(dump.rom.hash, repositoryData);
         }
         if (dump.hasOwnProperty('megarom')) {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
                 software.year, software.country);
 
             if (dump.hasOwnProperty('original')) {
-                repositoryData.setDump(dump.original)
+                repositoryData.setDump(dump.original);
             }
 
-            repositoryData.setMapper(dump.megarom.type)
+            repositoryData.setMapper(dump.megarom.type);
 
             if (dump.megarom.hasOwnProperty('remark')) {
-                repositoryData.setRemark(dump.megarom.remark)
+                repositoryData.setRemark(dump.megarom.remark);
             }
 
-            gamesDataMap.set(dump.megarom.hash, repositoryData)
+            gamesDataMap.set(dump.megarom.hash, repositoryData);
         }
         if (dump.hasOwnProperty('dsk')) {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
                 software.year, software.country);
 
             if (dump.dsk.hasOwnProperty('remark')) {
-                repositoryData.setRemark(dump.dsk.remark)
+                repositoryData.setRemark(dump.dsk.remark);
             }
 
-            gamesDataMap.set(dump.dsk.format.hash, repositoryData)
+            gamesDataMap.set(dump.dsk.format.hash, repositoryData);
         }
         if (dump.hasOwnProperty('cas')) {
             let repositoryData = new RepositoryData(software.title, software.system, software.company,
                 software.year, software.country);
 
             if (dump.cas.hasOwnProperty('remark')) {
-                repositoryData.setRemark(dump.cas.remark.text)
+                repositoryData.setRemark(dump.cas.remark.text);
             }
 
             if (dump.cas.hasOwnProperty('start')) {
-                repositoryData.setStart(dump.cas.start.text)
+                repositoryData.setStart(dump.cas.start.text);
             }
 
-            for (var f in dump.cas.format) {
-                gamesDataMap.set(dump.cas.format[f].hash, repositoryData)
+            for (let f in dump.cas.format) {
+                gamesDataMap.set(dump.cas.format[f].hash, repositoryData);
             }
         }
     }

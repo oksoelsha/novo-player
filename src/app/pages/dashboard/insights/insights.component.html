@@ -1,0 +1,16 @@
+<div class="card text-white widget widget-wide ml-3 mb-3">
+    <div class="card-body container">
+        <h5 class="card-title">Insights</h5>
+        <div class="events-table">
+            <table class="table table-sm text-white">
+                <tr *ngFor="let item of topTenList">
+                    <td class="col-game-name" title="{{ item.game.name }}">{{ item.game.name }}</td>
+                    <td class="col-game-listing" title="{{ item.game.listing }}">{{ item.game.listing }}</td>
+                    <td>{{ item.count }}</td>
+                </tr>
+            </table>
+            <app-pagination class="pagination-part" [total]="total" [pageSize]="pageSize" (page)="getTopTenLaunchedGames($event)"
+                hideFirstAndLastNav=true *ngIf="topTenList.length > 0"></app-pagination>
+        </div>
+    </div>
+</div>

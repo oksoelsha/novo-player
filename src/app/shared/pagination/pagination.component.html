@@ -1,7 +1,7 @@
 <div class="pagination">
-    <button (click)="firstPage()" [disabled]="getCurrentPage() == 1">&larrb;</button>
+    <button *ngIf="!hideFirstAndLastNav" (click)="firstPage()" [disabled]="getCurrentPage() == 1">&larrb;</button>
     <button (click)="previousPage()" [disabled]="getCurrentPage() == 1">&larr;</button>
     <button (click)="nextPage()" [disabled]="getCurrentPage() == totalPages">&rarr;</button>
-    <button (click)="lastPage()" [disabled]="getCurrentPage() == totalPages">&rarrb;</button>
+    <button *ngIf="!hideFirstAndLastNav" (click)="lastPage()" [disabled]="getCurrentPage() == totalPages">&rarrb;</button>
     {{ getCurrentPage() }} / {{ totalPages }}
 </div>

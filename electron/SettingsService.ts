@@ -11,25 +11,14 @@ export class SettingsService {
     settingsFile: string = path.join(this.settingsPath, 'settings.nps');
     listeners: UpdateListerner[] = [];
 
-    constructor(private win: BrowserWindow) { }
-
-    init() {
-        this.createFolderIfNecessary();
-
-        ipcMain.on('getSettings', (event, arg) => {
-            this.settings = this.getSettings();
-            this.win.webContents.send('getSettingsResponse', this.settings)
-        })
-
-        ipcMain.on('saveSettings', (event, arg) => {
-            this.saveSettings(arg)
-        })
+    constructor(private win: BrowserWindow) {
+        this.init();
     }
 
     getSettings(): Settings {
         if (this.settings === undefined) {
             if (!fs.existsSync(this.settingsFile)) {
-                return new Settings("", "", "", "", "");
+                return new Settings('', '', '', '', '');
             } else {
                 let fileData = fs.readFileSync(this.settingsFile);
                 return JSON.parse(fileData.toString());
@@ -39,15 +28,28 @@ export class SettingsService {
         }
     }
 
+    addListerner(listener: UpdateListerner) {
+        this.listeners.push(listener);
+    }
+
+    private init() {
+        this.createFolderIfNecessary();
+
+        ipcMain.on('getSettings', (event, arg) => {
+            this.settings = this.getSettings();
+            this.win.webContents.send('getSettingsResponse', this.settings)
+        });
+
+        ipcMain.on('saveSettings', (event, arg) => {
+            this.saveSettings(arg)
+        });
+    }
+
     private saveSettings(settings: Settings) {
         let data = JSON.stringify(settings);
         fs.writeFileSync(this.settingsFile, data);
         this.settings = settings;
         this.updateListerners();
-    }
-
-    addListerner(listener: UpdateListerner) {
-        this.listeners.push(listener);
     }
 
     private createFolderIfNecessary() {
