@@ -11,6 +11,7 @@ export class InsightsComponent implements OnInit {
   readonly pageSize = 5;
   topTenList: any[] = [];
   total = 0;
+  private cachedTopTenPageList: any[] = new Array(2);
 
   constructor(private eventsService: EventsService) { }
 
@@ -19,10 +20,14 @@ export class InsightsComponent implements OnInit {
   }
 
   getTopTenLaunchedGames(page: number) {
-    this.eventsService.getTopTenLaunchedGames(this.pageSize, page).then((data: any) => {
-      this.total = data.total;
-      this.topTenList = data.counts;
-    });
+    if (this.cachedTopTenPageList[page] != null) {
+      this.topTenList = this.cachedTopTenPageList[page];
+    } else {
+      this.eventsService.getTopTenLaunchedGames(this.pageSize, page).then((data: any) => {
+        this.total = data.total;
+        this.topTenList = data.counts;
+        this.cachedTopTenPageList[page] = data.counts;
+      });
+    }
   }
-
 }
