@@ -3,7 +3,7 @@
 <div id="app-area">
   <div id="navigation-menu">
     <div *ngFor="let link of links; let i = index" [ngClass]="[(link.splitTopFromBottom)?'split-top-from-bottom':'', (selectedIndex == i)?'selected':'']">
-      <a href="#" (click)="setSelection(i)" [routerLink]="link.route"><img src="{{ link.image }}" title="{{ link.tooltip }}"/></a>
+      <a href="#" (click)="setSelection(i)" [routerLink]="link.route"><img src="{{ link.image }}" title="{{ link.tooltip }}" draggable="false"/></a>
     </div>
   </div>
   <div id="content">

@@ -1,6 +1,6 @@
 <div class="d-inline-block ml-2">
-    <img src="assets/images/music/play-6-16.png" [class]="playButton" (click)="play()">
-    <img src="assets/images/music/pause-16.png" [class]="pauseButton" (click)="pause()">
+    <img src="assets/images/music/play-6-16.png" [class]="playButton" (click)="play()" draggable="false">
+    <img src="assets/images/music/pause-16.png" [class]="pauseButton" (click)="pause()" draggable="false">
     <canvas id="progress-bar" [width]="progressBarWidth" [height]="progressBarHeight" #progressBar></canvas>
     <div class="d-inline-block ml-2 alignment">{{ elapsedTime }} / {{ totalTime }}</div>
     <div id="music-title" class="d-inline-block ml-2 alignment">{{ title }}</div>

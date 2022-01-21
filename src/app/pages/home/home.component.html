@@ -67,7 +67,7 @@
         <table>
           <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}"
             class="{{ selectedGameClass(game) }}">
-            <td class="medium-img"><img src="{{ getGameMedium(game) }}" /></td>
+            <td class="medium-img"><img src="{{ getGameMedium(game) }}" draggable="false"></td>
             <td *ngIf="!gamesEditMode.get(game.sha1Code)" class="name">{{ game.name }}</td>
             <td *ngIf="gamesEditMode.get(game.sha1Code)" class="name">
               <input id="gameNameEditInput" #gameNameEditInput type="text" [(ngModel)]="editedGameName"
@@ -78,8 +78,8 @@
             <td class="year">{{ game.year }}</td>
             <td>
               <span>
-                <img src="assets/images/operations/play.png" (click)="launch(game)" placement="top" ngbTooltip="Launch on openMSX">
-                <img src="assets/images/operations/remove.png" (click)="remove($event, game)" placement="top" ngbTooltip="Remove from listing">
+                <img src="assets/images/operations/play.png" (click)="launch(game)" placement="top" ngbTooltip="Launch on openMSX" draggable="false">
+                <img src="assets/images/operations/remove.png" (click)="remove($event, game)" placement="top" ngbTooltip="Remove from listing" draggable="false">
               </span>
             </td>
           </tr>
@@ -140,7 +140,7 @@
         <div *ngIf="musicFiles.length > 0" class="d-inline-block">
           <div class="d-inline-block" ngbDropdown (openChange)="handleOpenMenuEvents($event); musicMenuOpen = $event;">
             <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
-              <img src="assets/images/music/musical-note.png">
+              <img src="assets/images/music/musical-note.png" draggable="false">
             </button>
             <div ngbDropdownMenu class="dropdown-scroll pt-0 pb-0">
               <button *ngFor="let musicFile of musicFiles" ngbDropdownItem type="button"

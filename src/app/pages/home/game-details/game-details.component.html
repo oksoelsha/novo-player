@@ -29,17 +29,17 @@
 <ng-template #gameDetailCountry>
     <div id="game-detail-country">
         <img *ngIf="countryFlags.get(selectedGame.country)"
-            src="assets/images/flags/{{ countryFlags.get(selectedGame.country) }}.png" />
+            src="assets/images/flags/{{ countryFlags.get(selectedGame.country) }}.png" draggable="false"/>
         {{ selectedGame.country }}
     </div>
 </ng-template>
 
 <ng-template #gameDetailGenerations>
     <div id="game-detail-generations">
-        <img *ngIf="isGenerationMSX()" src="assets/images/generations/msx.png" />
-        <img *ngIf="isGenerationMSX2()" src="assets/images/generations/msx2.png" />
-        <img *ngIf="isGenerationMSX2Plus()" src="assets/images/generations/msx2p.png" />
-        <img *ngIf="isGenerationTurboR()" src="assets/images/generations/msxturbor.png" />
+        <img *ngIf="isGenerationMSX()" src="assets/images/generations/msx.png" draggable="false"/>
+        <img *ngIf="isGenerationMSX2()" src="assets/images/generations/msx2.png" draggable="false"/>
+        <img *ngIf="isGenerationMSX2Plus()" src="assets/images/generations/msx2p.png" draggable="false"/>
+        <img *ngIf="isGenerationTurboR()" src="assets/images/generations/msxturbor.png" draggable="false"/>
     </div>
 </ng-template>
 
