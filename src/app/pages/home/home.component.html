@@ -153,7 +153,9 @@
             <app-home-game-music [musicUrl]="selectedMusicFile" [title]="getMusicName(selectedMusicFile)"></app-home-game-music>
           </div>
         </div>
-        <app-home-game-details [selectedGame]="selectedGame"></app-home-game-details>
+        <div id="game-details">
+          <app-home-game-details [selectedGame]="selectedGame"></app-home-game-details>
+        </div>
       </div>
     </div>
   </div>
