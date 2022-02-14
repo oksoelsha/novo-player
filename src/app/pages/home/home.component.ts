@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { EventsService } from 'src/app/services/events.service';
 import { Event, EventSource, EventType } from 'src/app/models/event';
 import { GameUtils } from 'src/app/models/game-utils';
+import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('changeListing') changeListing: ChangeListingComponent;
   @ViewChild('searchDropdown', { static: true }) private searchDropdown: NgbDropdown;
   @ViewChild('dragArea', { static: false }) private dragArea: ElementRef;
+  @ViewChild(ContextMenuComponent) public rightClickMenu: ContextMenuComponent;
 
   private readonly noScreenshotImage1: GameSecondaryData = new GameSecondaryData('assets/noscrsht.png', '', null);
   private readonly noScreenshotImage2: GameSecondaryData = new GameSecondaryData('', 'assets/noscrsht.png', null);
@@ -60,6 +62,7 @@ export class HomeComponent implements OnInit {
   scanRunning = false;
   listings: string[] = [];
   openMenuEventCounter = 0;
+  contextMenuOpened = false;
   searchMenuOpen = false;
   musicMenuOpen = false;
   popupOpen = false;
@@ -70,7 +73,8 @@ export class HomeComponent implements OnInit {
   favorites: Game[] = [];
 
   constructor(private gamesService: GamesService, private scanner: ScannerService, private alertService: AlertsService,
-    private settingsService: SettingsService, private eventsService: EventsService, private router: Router) { }
+    private settingsService: SettingsService, private eventsService: EventsService, private router: Router,
+    private contextMenuService: ContextMenuService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
@@ -402,6 +406,26 @@ export class HomeComponent implements OnInit {
     this.searchDropdown.close();
   }
 
+  onContextMenu($event: MouseEvent, game: Game): void {
+    this.contextMenuOpened = true;
+    this.showInfo(game);
+    this.contextMenuService.show.next({
+      contextMenu: this.rightClickMenu,
+      event: $event,
+      item: game,
+    });
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
+  isMenuItemAddFavorite = (game: Game): boolean => {
+    return !game?.favorite;
+  }
+
+  isMenuItemRemoveFavorite = (game: Game): boolean => {
+    return game?.favorite;
+  }
+
   getGameMedium(game: Game): string {
     if (game.romA != null) {
       return 'assets/images/media/rom.png';
@@ -468,7 +492,7 @@ export class HomeComponent implements OnInit {
   }
 
   private canHandleEvents(): boolean {
-    return !this.isEditMode() && !(this.openMenuEventCounter > 0) && !this.popupOpen;
+    return !this.isEditMode() && !(this.openMenuEventCounter > 0) && !this.popupOpen && !this.contextMenuOpened;
   }
 
   private ctrlOrCommandKey(event: KeyboardEvent): boolean {

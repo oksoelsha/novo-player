@@ -3,11 +3,11 @@
     <div class="table-buttons">
       <div ngbDropdown class="d-inline-block mr-1" (openChange)="handleOpenMenuEvents($event)">
         <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle></button>
-        <div ngbDropdownMenu class="pt-0 pb-0">
+        <div ngbDropdownMenu>
           <button ngbDropdownItem type="button" (click)="undoRemove()" [disabled]="lastRemovedGame == null">
             Restore last deleted game
           </button>
-          <div class="dropdown-divider mt-0 mb-0"></div>
+          <div class="dropdown-divider"></div>
           <button ngbDropdownItem type="button" (click)="scanParameters.open()" [disabled]="scanRunning">
             Scan physical media for MSX software
           </button>
@@ -21,7 +21,7 @@
           {{ selectedListing }}
           <span class="badge badge-light">{{ games.length }}</span>
         </button>
-        <div ngbDropdownMenu class="pt-0 pb-0">
+        <div ngbDropdownMenu>
           <button *ngFor="let listing of listings" ngbDropdownItem type="button"
             (click)="setSelectedListing(listing)">
             {{ listing }}
@@ -33,7 +33,7 @@
           <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
             <img src="assets/images/general/star-2-16.png">
           </button>
-          <div ngbDropdownMenu class="pt-0 pb-0">
+          <div ngbDropdownMenu>
             <button *ngFor="let favorite of favorites" ngbDropdownItem type="button" (click)="showFoundGame(favorite)">
               <div class="favorite-name">
                 {{ favorite.name }}
@@ -49,7 +49,7 @@
           <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
             <img src="assets/images/general/search-13-16.png">
           </button>
-          <div ngbDropdownMenu class="pt-0 pb-0">
+          <div ngbDropdownMenu>
             <app-home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></app-home-game-search>
           </div>
         </div>
@@ -66,7 +66,7 @@
       <div id="games-table-data" tabindex="0" (keydown)="processKeyEventsOnTable($event)">
         <table>
           <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}"
-            class="{{ selectedGameClass(game) }}">
+            class="{{ selectedGameClass(game) }}" (contextmenu)="onContextMenu($event, game)">
             <td class="medium-img"><img src="{{ getGameMedium(game) }}" draggable="false"></td>
             <td *ngIf="!gamesEditMode.get(game.sha1Code)" class="name">{{ game.name }}</td>
             <td *ngIf="gamesEditMode.get(game.sha1Code)" class="name">
@@ -102,7 +102,7 @@
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
             Launch
           </button>
-          <div ngbDropdownMenu class="pt-0 pb-0">
+          <div ngbDropdownMenu>
             <button ngbDropdownItem type="button" (click)="launch(selectedGame)" [disabled]="!isOpenMSXPathDefined">
               on openMSX
             </button>
@@ -115,7 +115,7 @@
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
             Actions
           </button>
-          <div ngbDropdownMenu class="pt-0 pb-0">
+          <div ngbDropdownMenu>
             <button ngbDropdownItem type="button" (click)="edit(selectedGame)">
               Rename
             </button>
@@ -125,7 +125,7 @@
             <button ngbDropdownItem type="button" (click)="hardwareEdit.open()">
               Edit Hardware
             </button>
-            <div class="dropdown-divider mt-0 mb-0"></div>
+            <div class="dropdown-divider"></div>
             <button *ngIf="!selectedGame.favorite" ngbDropdownItem type="button" (click)="setFavoritesFlag(true)">
               Add to Favorites
             </button>
@@ -142,7 +142,7 @@
             <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
               <img src="assets/images/music/musical-note.png" draggable="false">
             </button>
-            <div ngbDropdownMenu class="dropdown-scroll pt-0 pb-0">
+            <div ngbDropdownMenu class="dropdown-scroll">
               <button *ngFor="let musicFile of musicFiles" ngbDropdownItem type="button"
                 (click)="setSelectedMusicFile(musicFile)">
                 {{ getMusicName(musicFile) }}
@@ -202,3 +202,37 @@
       (updatedListing)="updateListings($event)" #manageListings></app-manage-listings>
   </ng-template>
 </app-popup>
+
+<context-menu (close)="contextMenuOpened = false" [menuClass]="'context-menu'">
+  <ng-template contextMenuItem [subMenu]="launchSubMenu">
+    Launch
+  </ng-template>
+  <context-menu #launchSubMenu>
+    <ng-template contextMenuItem (execute)="launch($event.item)">
+      on openMSX
+    </ng-template>
+    <ng-template contextMenuItem (execute)="launchWebmsx($event.item)">
+      on WebMSX
+    </ng-template>
+  </context-menu>
+  <ng-template contextMenuItem divider="true"></ng-template>
+  <ng-template contextMenuItem (execute)="edit($event.item)">
+    Rename
+  </ng-template>
+  <ng-template contextMenuItem (execute)="mediaEdit.open()">
+    Edit Media
+  </ng-template>
+  <ng-template contextMenuItem (execute)="hardwareEdit.open()">
+    Edit Hardware
+  </ng-template>
+  <ng-template contextMenuItem divider="true"></ng-template>
+  <ng-template contextMenuItem [visible]="isMenuItemAddFavorite" (execute)="setFavoritesFlag(true)">
+    Add to Favorites
+  </ng-template>
+  <ng-template contextMenuItem [visible]="isMenuItemRemoveFavorite" (execute)="setFavoritesFlag(false)">
+    Remove from Favorites
+  </ng-template>
+  <ng-template contextMenuItem (execute)="changeListing.open()">
+    Move to another listing
+  </ng-template>
+</context-menu>

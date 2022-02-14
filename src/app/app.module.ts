@@ -36,6 +36,7 @@ import { ManageListingsComponent } from './popups/manage-listings/manage-listing
 import { LaunchEventsComponent } from './pages/dashboard/launch-events/launch-events.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { InsightsComponent } from './pages/dashboard/insights/insights.component';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,10 @@ import { InsightsComponent } from './pages/dashboard/insights/insights.component
     ModalModule.forRoot(),
     NgToggleModule,
     NgbModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    ContextMenuModule.forRoot({
+      useBootstrap4: true,
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],

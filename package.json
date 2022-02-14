@@ -17,6 +17,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~12.2.8",
+    "@angular/cdk": "^12.2.0",
     "@angular/common": "~12.2.8",
     "@angular/compiler": "~12.2.8",
     "@angular/core": "~12.2.8",
@@ -35,6 +36,7 @@
     "nedb": "^1.8.0",
     "ng-apexcharts": "^1.6.0",
     "ngx-bootstrap": "^5.6.1",
+    "ngx-contextmenu": "^6.0.0",
     "node-stream-zip": "^1.11.2",
     "p-limit": "^3.0.2",
     "popper.js": "^1.16.1",
