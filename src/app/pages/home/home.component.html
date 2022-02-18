@@ -8,9 +8,6 @@
             Restore last deleted game
           </button>
           <div class="dropdown-divider"></div>
-          <button ngbDropdownItem type="button" (click)="scanParameters.open()" [disabled]="scanRunning">
-            Scan physical media for MSX software
-          </button>
           <button ngbDropdownItem type="button" (click)="manageListings.open()" [disabled]="!listings.length">
             Manage listings
           </button>
@@ -29,9 +26,15 @@
         </div>
       </div>
       <div class="action-button">
-        <div ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
-          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
-            <img src="assets/images/general/star-2-16.png">
+        <div class="d-inline-block">
+          <button class="btn btn-secondary btn-sm" type="button" (click)="scanParameters.open()" [disabled]="scanRunning"
+            title="Add Games">
+            <strong>+</strong>
+          </button>
+        </div>
+        <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
+          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle title="Favorites">
+            &starf;
           </button>
           <div ngbDropdownMenu>
             <button *ngFor="let favorite of favorites" ngbDropdownItem type="button" (click)="showFoundGame(favorite)">
@@ -46,13 +49,14 @@
         </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;"
           #searchDropdown="ngbDropdown">
-          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle>
-            <img src="assets/images/general/search-13-16.png">
+          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle title="Search">
+            <div class="search-symbol">&#9906;</div>
           </button>
           <div ngbDropdownMenu>
             <app-home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></app-home-game-search>
           </div>
         </div>
+
       </div>
     </div>
     <div id="games-table">
@@ -166,7 +170,7 @@
   <div>Drop files and folders</div>
 </div>
 
-<app-popup popupId="scan-parameters-id" titleHeader="Scan Parameters" (openStatus)="popupOpen = $event">
+<app-popup popupId="scan-parameters-id" titleHeader="Add Games" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-scan-parameters [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
       [filesAndFolders]="draggedFilesAndFolders" [currentListing]="selectedListing" (parameters)="startScan($event)"
