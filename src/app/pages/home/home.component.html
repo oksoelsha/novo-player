@@ -25,15 +25,15 @@
           </button>
         </div>
       </div>
-      <div class="action-button">
+      <div class="action-buttons">
         <div class="d-inline-block">
-          <button class="btn btn-secondary btn-sm" type="button" (click)="scanParameters.open()" [disabled]="scanRunning"
+          <button class="btn btn-secondary btn-sm action-button" type="button" (click)="scanParameters.open()" [disabled]="scanRunning"
             title="Add Games">
             <strong>+</strong>
           </button>
         </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
-          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle title="Favorites">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle title="Favorites">
             &starf;
           </button>
           <div ngbDropdownMenu>
@@ -49,8 +49,8 @@
         </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;"
           #searchDropdown="ngbDropdown">
-          <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle title="Search">
-            <div class="search-symbol">&#9906;</div>
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle title="Search">
+            ⌕
           </button>
           <div ngbDropdownMenu>
             <app-home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></app-home-game-search>

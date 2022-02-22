@@ -20,32 +20,34 @@
 
 .table-buttons
   margin-bottom: .25rem
+  position: relative
 
 .inline-dropdown
   display: inline-block
   margin-right: .25rem
 
+.action-buttons
+  position: absolute
+  bottom: 0
+  right: 0
+
 .action-button
-  float: right
-
-.action-button div button
-  font-size: 1rem
+  font-size: 1.25rem
   width: 2rem
+  outline: none
+  padding: 0
+  border: 0
+  transform: scale(0.75)
+  transition: 0.1s
 
-.action-button div button:after
+.action-button:after
   display: none
-
-.action-button img
-  pointer-events: none
 
 .favorite-name
   font-size: .875rem
 
 .favorite-listing
   font-size: .75rem
-
-.search-symbol
-  transform: rotate(-45deg)
 
 #games-table
   display: flex
