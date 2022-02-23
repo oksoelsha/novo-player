@@ -363,6 +363,7 @@ export class HomeComponent implements OnInit {
     if (data.mode === ManageListingsComponent.mode.delete) {
       if (this.selectedListing === data.oldListingName) {
         this.switchListingIfCurrentIsEmpty();
+        this.initialize();
       }
     } else if (data.mode === ManageListingsComponent.mode.rename) {
       if (this.selectedListing === data.oldListingName) {
