@@ -27,13 +27,14 @@
       </div>
       <div class="action-buttons">
         <div class="d-inline-block">
-          <button class="btn btn-secondary btn-sm action-button" type="button" (click)="scanParameters.open()" [disabled]="scanRunning"
-            title="Add Games">
+          <button class="btn btn-secondary btn-sm action-button" type="button" (click)="scanParameters.open()"
+            [disabled]="scanRunning" placement="top" ngbTooltip="Add Games">
             <strong>+</strong>
           </button>
         </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
-          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle title="Favorites">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle placement="top"
+            ngbTooltip="Favorites">
             &starf;
           </button>
           <div ngbDropdownMenu>
@@ -49,7 +50,7 @@
         </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;"
           #searchDropdown="ngbDropdown">
-          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle title="Search">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle placement="top" ngbTooltip="Search">
             ⌕
           </button>
           <div ngbDropdownMenu>
