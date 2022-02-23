@@ -19,7 +19,7 @@ export class DropDownWithInputComponent implements OnChanges {
   selectedOrEnteredItemDisplay = '';
   selectedOrEnteredItem = '';
   selectedItem = '';
-  enteredItem: string;
+  enteredItem = '';
 
   constructor() { }
 
@@ -47,6 +47,7 @@ export class DropDownWithInputComponent implements OnChanges {
     }
 
     this.listingsDropdown.close();
+    this.enteredItem = '';
     event.preventDefault();
   }
 
