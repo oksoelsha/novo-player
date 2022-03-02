@@ -1,54 +1,66 @@
 <form id="settingsForm" #settingsForm="ngForm" (ngSubmit)="submitSettings(settingsForm.form)">
   <div class="form-group">
-    <label for="inputOpenmsxPath">openMSX Path</label>
+    <label for="inputOpenmsxPath">{{ 'settings.openmsxpath' | translate }}</label>
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="openmsx-path" [(ngModel)]="openmsxPath"
-        placement="bottom" ngbTooltip="Folder where openmsx is" />
+        placement="bottom" [ngbTooltip]="'settings.openmsxpathtooltip' | translate" />
       <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('openmsx-path', $event)">
       </app-fs-chooser>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="inputScreenshotsPath">Screenshots Path</label>
+    <label for="inputScreenshotsPath">{{ 'settings.screenshotspath' | translate }}</label>
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="screenshots-path" [(ngModel)]="screenshotsPath"
-        placement="bottom" ngbTooltip="Folder where optional screenshots are" />
+        placement="bottom" [ngbTooltip]="'settings.screenshotspathtooltip' | translate" />
       <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('screenshots-path', $event)">
       </app-fs-chooser>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="inputGameMusicPath">Game Music Path</label>
+    <label for="inputGameMusicPath">{{ 'settings.gamemusicpath' | translate }}</label>
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="game-music-path" [(ngModel)]="gameMusicPath"
-        placement="bottom" ngbTooltip="Folder where optional game music is" />
+        placement="bottom" [ngbTooltip]="'settings.gamemusicpathtooltip' | translate" />
       <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('game-music-path', $event)">
       </app-fs-chooser>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="inputDefaultListing" placement="right" ngbTooltip="Listing to show when Novo Player starts">Default Listing</label>
+    <label for="inputDefaultListing" placement="right" [ngbTooltip]="'settings.defaultlistingtooltip' | translate">
+      {{ 'settings.defaultlisting' | translate }}
+    </label>
     <span *ngIf="listings.length == 0">
-      : No listings defined yet
+      : {{ 'settings.nolistingsdefined' | translate }}
     </span>
     <div>
-      <app-drop-down [list]="listings" [selectedItem]="defaultListing" defaultLabel="Select a listing"
+      <app-drop-down [list]="listings" [selectedItem]="defaultListing" [defaultLabel]="'settings.selectalisting' | translate"
         (selection)="updateField('defaultListing', $event)"></app-drop-down>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="inputWebMSXPath">WebMSX Path</label>
+    <label for="inputWebMSXPath">{{ 'settings.webmsxpath' | translate }}</label>
     <div class="input-group">
       <input type="text" class="form-control form-control-sm col-sm-6" name="webmsx-path" [(ngModel)]="webmsxPath"
-        placement="bottom" ngbTooltip="Folder where offline WebMSX is. Use the embedded folder within release/stable" />
+        placement="bottom" [ngbTooltip]="'settings.webmsxpathtooltip' | translate" />
       <app-fs-chooser directoryMode=true label="Browse" (chosen)="updateControl('webmsx-path', $event)">
       </app-fs-chooser>
     </div>
   </div>
 
-  <button class="btn btn-primary btn-sm" [disabled]="submitDisabled">Save</button>
+  <div class="form-group">
+    <label for="inputLanguage" placement="right" [ngbTooltip]="'settings.languagetooltip' | translate">
+      {{ 'settings.language' | translate }}
+    </label>
+    <div>
+      <app-drop-down [list]="languages" [selectedItem]="language" [defaultLabel]="'settings.systemdefault' | translate"
+        (selection)="updateField('language', $event)"></app-drop-down>
+    </div>
+  </div>
+
+  <button class="btn btn-primary btn-sm" [disabled]="submitDisabled">{{ 'common.save' | translate }}</button>
 </form>

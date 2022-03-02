@@ -5,6 +5,7 @@ import { DeactivateComponent } from '../../guards/deactivate-guard.service';
 import { Settings } from 'src/app/models/settings';
 import { AlertsService } from '../../shared/alerts/alerts.service';
 import { GamesService } from 'src/app/services/games.service';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 
 @Component({
   selector: 'app-settings',
@@ -21,18 +22,24 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   webmsxPath = '';
   submitDisabled = true;
   listings: string[] = [];
+  language = '';
+  languages: string[] = [];
+  languageReverseMap: Map<string,string>;
 
-  constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesService: GamesService) { }
+  constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesService: GamesService,
+    private localizationService: LocalizationService) { }
 
   ngOnInit() {
-    const self = this;
     this.gamesService.getListings().then((data: string[]) => this.listings = data);
+    this.setLanguages();
+    const self = this;
     this.settingsService.getSettings().then((settings: Settings) => {
       self.openmsxPath = settings.openmsxPath;
       self.screenshotsPath = settings.screenshotsPath;
       self.gameMusicPath = settings.gameMusicPath;
       self.defaultListing = settings.defaultListing;
       self.webmsxPath = settings.webmsxPath;
+      self.setSelectedLanguage(settings);
     });
   }
 
@@ -62,9 +69,31 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
 
   submitSettings(form: any) {
     const settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path'], form.value['game-music-path'],
-      this.defaultListing, form.value['webmsx-path']);
+      this.defaultListing, form.value['webmsx-path'], this.languageReverseMap.get(this.language));
     this.settingsService.saveSettings(settings);
+    this.localizationService.useLanguage(this.languageReverseMap.get(this.language));
     this.submitDisabled = true;
     this.alertService.success('Settings saved successfully');
+  }
+
+  private setLanguages() {
+    this.languageReverseMap = new Map();
+    for(var language of LocalizationService.Languages) {
+      var translatedLanguageCode = this.getLanguageDisplayName(language);
+      this.languageReverseMap.set(translatedLanguageCode, language);
+      this.languages.push(translatedLanguageCode);
+    }
+  }
+
+  private getLanguageDisplayName(language: string) {
+    return this.localizationService.translate('language.' + language);
+  }
+
+  private setSelectedLanguage(settings: Settings) {
+    if(settings.language != null) {
+      this.language = this.getLanguageDisplayName(settings.language);
+    } else {
+      this.language = this.getLanguageDisplayName('en-US'); //TODO add system default
+    }
   }
 }

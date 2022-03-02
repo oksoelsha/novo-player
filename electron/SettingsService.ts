@@ -18,7 +18,7 @@ export class SettingsService {
     getSettings(): Settings {
         if (this.settings === undefined) {
             if (!fs.existsSync(this.settingsFile)) {
-                return new Settings('', '', '', '', '');
+                return new Settings('', '', '', '', '', '');
             } else {
                 let fileData = fs.readFileSync(this.settingsFile);
                 return JSON.parse(fileData.toString());

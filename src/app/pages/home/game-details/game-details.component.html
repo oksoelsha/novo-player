@@ -30,7 +30,7 @@
     <div id="game-detail-country">
         <img *ngIf="countryFlags.get(selectedGame.country)"
             src="assets/images/flags/{{ countryFlags.get(selectedGame.country) }}.png" draggable="false"/>
-        {{ selectedGame.country }}
+        {{ 'country.' + selectedGame.country | translate }}
     </div>
 </ng-template>
 

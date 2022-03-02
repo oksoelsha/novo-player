@@ -27,6 +27,8 @@
     "@angular/platform-browser-dynamic": "~12.2.8",
     "@angular/router": "~12.2.8",
     "@ng-bootstrap/ng-bootstrap": "^9.1.1",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
     "@nth-cloud/ng-toggle": "^8.0.2",
     "apexcharts": "^3.26.0",
     "bootstrap": "^4.6.0",

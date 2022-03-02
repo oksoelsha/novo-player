@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 import { Game } from 'src/app/models/game';
 import { GameUtils } from 'src/app/models/game-utils';
 import { GamesService } from 'src/app/services/games.service';
@@ -22,22 +23,22 @@ export class GameDetailsComponent implements OnChanges {
   @ViewChild('gameDetailGenerationMSXLink', { static: true }) private gameDetailGenerationMSXLink: TemplateRef<object>;
 
   private readonly gameDetails = [
-    { name: 'Common Name', value: 'title', blockName: 'gameDetailSimpleText' },
-    { name: 'Files', blockName: 'gameDetailFiles' },
-    { name: 'Medium', blockName: 'gameDetailMedium' },
-    { name: 'System', value: 'system', blockName: 'gameDetailSimpleText' },
-    { name: 'Company', value: 'company', blockName: 'gameDetailSimpleText' },
-    { name: 'Year', value: 'year', blockName: 'gameDetailSimpleText' },
-    { name: 'Country', value: 'country', blockName: 'gameDetailCountry' },
+    { name: this.localizationService.translate('home.commonname'), value: 'title', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.files'), blockName: 'gameDetailFiles' },
+    { name: this.localizationService.translate('home.medium'), blockName: 'gameDetailMedium' },
+    { name: this.localizationService.translate('home.system'), value: 'system', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.company'), value: 'company', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.year'), value: 'year', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.country'), value: 'country', blockName: 'gameDetailCountry' },
     { name: 'SHA1', value: 'sha1Code', blockName: 'gameDetailSimpleText' },
-    { name: 'Size', value: 'size', blockName: 'gameDetailSize' },
-    { name: 'Generations', value: 'generations', blockName: 'gameDetailGenerations' },
-    { name: 'Sound', value: 'sounds', blockName: 'gameDetailSounds' },
-    { name: 'Genres', value: 'genre1', blockName: 'gameDetailGenres' },
-    { name: 'Dump', value: 'dump', blockName: 'gameDetailSimpleText' },
-    { name: 'Mapper', value: 'mapper', blockName: 'gameDetailSimpleText' },
-    { name: 'Start', value: 'start', blockName: 'gameDetailSimpleText' },
-    { name: 'Remark', value: 'remark', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.size'), value: 'size', blockName: 'gameDetailSize' },
+    { name: this.localizationService.translate('home.generations'), value: 'generations', blockName: 'gameDetailGenerations' },
+    { name: this.localizationService.translate('home.sound'), value: 'sounds', blockName: 'gameDetailSounds' },
+    { name: this.localizationService.translate('home.genres'), value: 'genre1', blockName: 'gameDetailGenres' },
+    { name: this.localizationService.translate('home.dump'), value: 'dump', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.mapper'), value: 'mapper', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.start'), value: 'start', blockName: 'gameDetailSimpleText' },
+    { name: this.localizationService.translate('home.remark'), value: 'remark', blockName: 'gameDetailSimpleText' },
     { name: 'Generation-MSX', value: 'generationMSXId', blockName: 'gameDetailGenerationMSXLink' },
   ];
   private readonly fileFields: string[] = ['romA', 'romB', 'diskA', 'diskB', 'tape', 'harddisk', 'laserdisc'];
@@ -66,7 +67,7 @@ export class GameDetailsComponent implements OnChanges {
 
   private selectedGameMedium: Promise<string>;
 
-  constructor(private gamesService: GamesService) { }
+  constructor(private gamesService: GamesService, private localizationService: LocalizationService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selectedGame.isFirstChange() ||
@@ -166,17 +167,17 @@ export class GameDetailsComponent implements OnChanges {
 
   private setSelectedGameMedium() {
     if (this.selectedGame.romA != null) {
-      this.selectedGameMedium = Promise.resolve('ROM');
+      this.selectedGameMedium = Promise.resolve(this.localizationService.translate('medium.rom'));
     } else if (this.selectedGame.diskA != null) {
-      this.selectedGameMedium = Promise.resolve('Disk');
+      this.selectedGameMedium = Promise.resolve(this.localizationService.translate('medium.disk'));
       // TODO - get disk group
     } else if (this.selectedGame.tape != null) {
-      this.selectedGameMedium = Promise.resolve('Tape');
+      this.selectedGameMedium = Promise.resolve(this.localizationService.translate('medium.tape'));
       // TODO - get tape group
     } else if (this.selectedGame.harddisk != null) {
-      this.selectedGameMedium = Promise.resolve('Harddisk');
+      this.selectedGameMedium = Promise.resolve(this.localizationService.translate('medium.harddisk'));
     } else if (this.selectedGame.laserdisc != null) {
-      this.selectedGameMedium = Promise.resolve('Laserdisc');
+      this.selectedGameMedium = Promise.resolve(this.localizationService.translate('medium.laserdisc'));
     } else {
       // shouldn't happen
       this.selectedGameMedium = Promise.resolve('');

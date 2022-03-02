@@ -17,6 +17,7 @@ import { EventsService } from 'src/app/services/events.service';
 import { Event, EventSource, EventType } from 'src/app/models/event';
 import { GameUtils } from 'src/app/models/game-utils';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 
 @Component({
   selector: 'app-home',
@@ -74,7 +75,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private gamesService: GamesService, private scanner: ScannerService, private alertService: AlertsService,
     private settingsService: SettingsService, private eventsService: EventsService, private router: Router,
-    private contextMenuService: ContextMenuService) { }
+    private contextMenuService: ContextMenuService, private localizationService: LocalizationService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
@@ -199,6 +200,7 @@ export class HomeComponent implements OnInit {
       });
       this.isOpenMSXPathDefined = settings.openmsxPath != null && settings.openmsxPath.trim() !== '';
       this.isWebMSXPathDefined = settings.webmsxPath != null && settings.webmsxPath.trim() !== '';
+      this.localizationService.useLanguage(settings.language);
     });
   }
 

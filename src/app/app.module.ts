@@ -37,6 +37,14 @@ import { LaunchEventsComponent } from './pages/dashboard/launch-events/launch-ev
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { InsightsComponent } from './pages/dashboard/insights/insights.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { InternationalizationModule } from './internationalization/internationalization.module';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/locales/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -80,6 +88,15 @@ import { ContextMenuModule } from 'ngx-contextmenu';
     NgApexchartsModule,
     ContextMenuModule.forRoot({
       useBootstrap4: true,
+    }),
+    HttpClientModule,
+    InternationalizationModule.forRoot({ locale_id: 'en-US' }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
     })
   ],
   providers: [],

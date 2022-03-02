@@ -1,6 +1,6 @@
 <div class="card text-white widget widget-wide ml-3 mb-3">
     <div class="card-body container">
-        <h5 class="card-title">Insights</h5>
+        <h5 class="card-title">{{ 'dashboard.insights' | translate }}</h5>
         <div *ngIf="isTopTenMode()">
             <span class="badge badge-primary badge-size">Top Ten Launched</span>
             <a class="badge badge-dark badge-size badge-link" (click)="setLaunchTimesMode()">Launch Times</a>

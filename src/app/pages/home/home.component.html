@@ -9,7 +9,7 @@
           </button>
           <div class="dropdown-divider"></div>
           <button ngbDropdownItem type="button" (click)="manageListings.open()" [disabled]="!listings.length">
-            Manage listings
+            {{ 'home.managelistings' | translate }}
           </button>
         </div>
       </div>
@@ -28,13 +28,13 @@
       <div class="action-buttons">
         <div class="d-inline-block">
           <button class="btn btn-secondary btn-sm action-button" type="button" (click)="scanParameters.open()"
-            [disabled]="scanRunning" placement="top" ngbTooltip="Add Games">
+            [disabled]="scanRunning" placement="top" [ngbTooltip]="'home.addgames' | translate">
             <strong>+</strong>
           </button>
         </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
           <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle placement="top"
-            ngbTooltip="Favorites">
+            [ngbTooltip]="'home.favorites' | translate">
             &starf;
           </button>
           <div ngbDropdownMenu>
@@ -50,22 +50,22 @@
         </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;"
           #searchDropdown="ngbDropdown">
-          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle placement="top" ngbTooltip="Search">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle placement="top"
+            [ngbTooltip]="'home.search' | translate">
             ⌕
           </button>
           <div ngbDropdownMenu>
             <app-home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></app-home-game-search>
           </div>
         </div>
-
       </div>
     </div>
     <div id="games-table">
       <table *ngIf="games">
         <tr>
-          <th class="name-title">Name</th>
-          <th class="company-title">Company</th>
-          <th class="year-title">Year</th>
+          <th class="name-title">{{ 'home.name' | translate }}</th>
+          <th class="company-title">{{ 'home.company' | translate }}</th>
+          <th class="year-title">{{ 'home.year' | translate }}</th>
         </tr>
       </table>
       <div id="games-table-data" tabindex="0" (keydown)="processKeyEventsOnTable($event)">
@@ -83,8 +83,10 @@
             <td class="year">{{ game.year }}</td>
             <td>
               <span>
-                <img src="assets/images/operations/play.png" (click)="launch(game)" placement="top" ngbTooltip="Launch on openMSX" draggable="false">
-                <img src="assets/images/operations/remove.png" (click)="remove($event, game)" placement="top" ngbTooltip="Remove from listing" draggable="false">
+                <img src="assets/images/operations/play.png" (click)="launch(game)" placement="top"
+                  [ngbTooltip]="'home.launchonopenmsx' | translate" draggable="false">
+                <img src="assets/images/operations/remove.png" (click)="remove($event, game)" placement="top"
+                  [ngbTooltip]="'home.removefromlisting' | translate" draggable="false">
               </span>
             </td>
           </tr>
@@ -105,40 +107,40 @@
       <div class="additional-info" *ngIf="selectedGame">
         <div ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event)">
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
-            Launch
+            {{ 'home.launch' | translate }}
           </button>
           <div ngbDropdownMenu>
             <button ngbDropdownItem type="button" (click)="launch(selectedGame)" [disabled]="!isOpenMSXPathDefined">
-              on openMSX
+              {{ 'home.onopenmsx' | translate }}
             </button>
             <button ngbDropdownItem type="button" (click)="launchWebmsx(selectedGame)" [disabled]="!isWebMSXPathDefined">
-              on WebMSX
+              {{ 'home.onwebmsx' | translate }}
             </button>
           </div>
         </div>
         <div ngbDropdown class="d-inline-block" (openChange)="handleOpenMenuEvents($event)">
           <button class="btn btn-secondary btn-sm mr-2" ngbDropdownToggle type="button">
-            Actions
+            {{ 'home.actions' | translate }}
           </button>
           <div ngbDropdownMenu>
             <button ngbDropdownItem type="button" (click)="edit(selectedGame)">
-              Rename
+              {{ 'home.rename' | translate }}
             </button>
             <button ngbDropdownItem type="button" (click)="mediaEdit.open()">
-              Edit Media
+              {{ 'home.editmedia' | translate }}
             </button>
             <button ngbDropdownItem type="button" (click)="hardwareEdit.open()">
-              Edit Hardware
+              {{ 'home.edithardware' | translate }}
             </button>
             <div class="dropdown-divider"></div>
             <button *ngIf="!selectedGame.favorite" ngbDropdownItem type="button" (click)="setFavoritesFlag(true)">
-              Add to Favorites
+              {{ 'home.addtofavorites' | translate }}
             </button>
             <button *ngIf="selectedGame.favorite" ngbDropdownItem type="button" (click)="setFavoritesFlag(false)">
-              Remove from Favorites
+              {{ 'home.removefromfavorites' | translate }}
             </button>
             <button ngbDropdownItem type="button" (click)="changeListing.open()">
-              Move to another listing
+              {{ 'home.movetoanotherlisting' | translate }}
             </button>
           </div>
         </div>
@@ -168,10 +170,10 @@
 
 <div id="drag-area" #dragArea>
   <img src="assets/images/general/download-2-64.png">
-  <div>Drop files and folders</div>
+  <div>{{ 'home.dropfilesandfolders' | translate }}</div>
 </div>
 
-<app-popup popupId="scan-parameters-id" titleHeader="Add Games" (openStatus)="popupOpen = $event">
+<app-popup popupId="scan-parameters-id" [titleHeader]="'home.addgames' | translate" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-scan-parameters [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
       [filesAndFolders]="draggedFilesAndFolders" [currentListing]="selectedListing" (parameters)="startScan($event)"
@@ -179,7 +181,7 @@
   </ng-template>
 </app-popup>
 
-<app-popup popupId="media-edit-id" titleHeader="Media Edit" (openStatus)="popupOpen = $event">
+<app-popup popupId="media-edit-id" [titleHeader]="'home.editmedia' | translate" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-media-edit [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
       (updatedGame)="update(selectedGame, $event)" #mediaEdit>
@@ -187,7 +189,7 @@
   </ng-template>
 </app-popup>
 
-<app-popup popupId="hardware-edit-id" titleHeader="Hardware Edit" (openStatus)="popupOpen = $event">
+<app-popup popupId="hardware-edit-id" [titleHeader]="'home.edithardware' | translate" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-hardware-edit [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
       (updatedGame)="update(selectedGame, $event)" #hardwareEdit>
@@ -195,7 +197,7 @@
   </ng-template>
 </app-popup>
 
-<app-popup popupId="change-listing-id" titleHeader="Move to Another Listing" (openStatus)="popupOpen = $event">
+<app-popup popupId="change-listing-id" [titleHeader]="'home.movetoanotherlisting' | translate" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-change-listing [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
       [listings]="listings" (updatedGame)="move(selectedGame, $event)" #changeListing>
@@ -203,7 +205,7 @@
   </ng-template>
 </app-popup>
 
-<app-popup popupId="manage-listings-id" titleHeader="Manage Listings" (openStatus)="popupOpen = $event">
+<app-popup popupId="manage-listings-id" [titleHeader]="'home.managelistings' | translate" (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-manage-listings [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
       (updatedListing)="updateListings($event)" #manageListings></app-manage-listings>
@@ -212,34 +214,34 @@
 
 <context-menu (close)="contextMenuOpened = false" [menuClass]="'context-menu'">
   <ng-template contextMenuItem [subMenu]="launchSubMenu">
-    Launch
+    {{ 'home.launch' | translate }}
   </ng-template>
   <context-menu #launchSubMenu>
     <ng-template contextMenuItem (execute)="launch($event.item)">
-      on openMSX
+      {{ 'home.onopenmsx' | translate }}
     </ng-template>
     <ng-template contextMenuItem (execute)="launchWebmsx($event.item)">
-      on WebMSX
+      {{ 'home.onwebmsx' | translate }}
     </ng-template>
   </context-menu>
   <ng-template contextMenuItem divider="true"></ng-template>
   <ng-template contextMenuItem (execute)="edit($event.item)">
-    Rename
+    {{ 'home.rename' | translate }}
   </ng-template>
   <ng-template contextMenuItem (execute)="mediaEdit.open()">
-    Edit Media
+    {{ 'home.editmedia' | translate }}
   </ng-template>
   <ng-template contextMenuItem (execute)="hardwareEdit.open()">
-    Edit Hardware
+    {{ 'home.edithardware' | translate }}
   </ng-template>
   <ng-template contextMenuItem divider="true"></ng-template>
   <ng-template contextMenuItem [visible]="isMenuItemAddFavorite" (execute)="setFavoritesFlag(true)">
-    Add to Favorites
+    {{ 'home.addtofavorites' | translate }}
   </ng-template>
   <ng-template contextMenuItem [visible]="isMenuItemRemoveFavorite" (execute)="setFavoritesFlag(false)">
-    Remove from Favorites
+    {{ 'home.removefromfavorites' | translate }}
   </ng-template>
   <ng-template contextMenuItem (execute)="changeListing.open()">
-    Move to another listing
+    {{ 'home.movetoanotherlisting' | translate }}
   </ng-template>
 </context-menu>
