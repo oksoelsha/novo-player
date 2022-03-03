@@ -1,10 +1,11 @@
 <form id="scanParametersForm" #scanParametersForm="ngForm">
   <div class="add-buttons">
-    <app-fs-chooser directoryMode=true multiSelections=true label="+Directory"
+    <app-fs-chooser directoryMode=true multiSelections=true [label]="'popups.addgames.addfolder' | translate"
       (chosen)="filesAndFolders = filesAndFolders.concat($event)"></app-fs-chooser>
   </div>
   <div class="add-buttons">
-    <app-fs-chooser label="+File" multiSelections=true (chosen)="filesAndFolders = filesAndFolders.concat($event)">
+    <app-fs-chooser [label]="'popups.addgames.addfile' | translate" multiSelections=true
+      (chosen)="filesAndFolders = filesAndFolders.concat($event)">
     </app-fs-chooser>
   </div>
   <div class="files-and-directories-table">
@@ -17,14 +18,16 @@
   </div>
   <table class="fields">
     <tr>
-      <td class="pr-2">Listing</td>
+      <td class="pr-2">{{ 'popups.addgames.listing' | translate }}</td>
       <td>
-        <app-drop-down-with-input defaultLabel="Enter a listing" defaultNewLabel="New listing" [list]="listings"
-          [defaultSelection]="currentListing" (selection)="selectedListing = $event"></app-drop-down-with-input>
+        <app-drop-down-with-input [defaultLabel]="'popups.specifyalisting' | translate"
+          [defaultNewLabel]="'popups.newlisting' | translate" [list]="listings" [defaultSelection]="currentListing"
+          (selection)="selectedListing = $event">
+        </app-drop-down-with-input>
       </td>
     </tr>
     <tr>
-      <td class="pr-2">Machine</td>
+      <td class="pr-2">{{ 'common.machine' | translate }}</td>
       <td>
         <app-drop-down [list]="machines" [selectedItem]="machines[0]" (selection)="selectedMachine = $event">
         </app-drop-down>
@@ -32,5 +35,5 @@
     </tr>
   </table>
   <button class="btn btn-primary btn-sm mt-3" [disabled]="filesAndFolders.length == 0 || !selectedListing"
-    (click)="submitParameters()" (keydown.enter)="submitParameters()">Add</button>
+    (click)="submitParameters()" (keydown.enter)="submitParameters()">{{ 'common.add' | translate }}</button>
 </form>

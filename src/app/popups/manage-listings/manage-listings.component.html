@@ -1,31 +1,35 @@
 <div class="total">
-    Total <span class="badge badge-light">{{ listings.length }}</span>
+    {{ 'popups.managelistings.total' | translate }}
+    <span class="badge badge-light">{{ listings.length }}</span>
 </div>
 <div [ngClass]="{listings: true, disabled: deleteMode}" #listingsTable>
     <table>
         <tr *ngFor="let listing of listings" [ngClass]="{selected: listingsSelectionMap.get(listing)}">
-            <td *ngIf="!(renameMode && listingsSelectionMap.get(listing))" [id]="listing" class="listing">{{ listing }}</td>
-            <td *ngIf="renameMode && listingsSelectionMap.get(listing)"  class="listing">
+            <td *ngIf="!(renameMode && listingsSelectionMap.get(listing))" [id]="listing" class="listing">
+                {{ listing }}
+            </td>
+            <td *ngIf="renameMode && listingsSelectionMap.get(listing)" class="listing">
                 <input class="listingRenameInput" #listingRenameInput type="text" [(ngModel)]="renamedListing"
-                  (keyup.enter)="renameListing($event)" (keyup.escape)="resetState()"
-                  (focusout)="resetState()" />
+                    (keyup.enter)="renameListing($event)" (keyup.escape)="resetState()" (focusout)="resetState()" />
             </td>
             <td class="actions">
-                <img src="assets/images/operations/rename.png" (click)="enableRenameMode(listing)" placement="top" ngbTooltip="Rename">
-                <img src="assets/images/operations/remove.png" (click)="enableDeleteMode(listing)" placement="top" ngbTooltip="Delete">
+                <img src="assets/images/operations/rename.png" (click)="enableRenameMode(listing)" placement="top"
+                    [ngbTooltip]="'common.rename' | translate">
+                <img src="assets/images/operations/remove.png" (click)="enableDeleteMode(listing)" placement="top"
+                    [ngbTooltip]="'common.delete' | translate">
             </td>
         </tr>
     </table>
 </div>
 <div class="confirmation">
     <div *ngIf="deleteMode">
-        Delete selected listing?
-        <button class="btn btn-primary btn-sm ml-1" (click)="deleteListing()">Yes</button>
-        <button class="btn btn-secondary btn-sm ml-1" (click)="resetState()">No</button>
+        {{ 'popups.managelistings.deletelistingconfirmation' | translate }}
+        <button class="btn btn-primary btn-sm ml-1" (click)="deleteListing()">{{ 'common.yes' | translate }}</button>
+        <button class="btn btn-secondary btn-sm ml-1" (click)="resetState()">{{ 'common.no' | translate }}</button>
     </div>
     <div *ngIf="mergeMode">
-        Name exists already. Merge?
-        <button class="btn btn-primary btn-sm ml-1" (click)="mergeListings()">Yes</button>
-        <button class="btn btn-secondary btn-sm ml-1" (click)="resetMergeMode(); resetState()">No</button>
+        {{ 'popups.managelistings.mergelistingsconfirmation' | translate }}
+        <button class="btn btn-primary btn-sm ml-1" (click)="mergeListings()">{{ 'common.yes' | translate }}</button>
+        <button class="btn btn-secondary btn-sm ml-1" (click)="resetMergeMode(); resetState()">{{ 'common.no' | translate }}</button>
     </div>
 </div>

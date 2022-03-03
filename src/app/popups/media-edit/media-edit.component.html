@@ -1,52 +1,56 @@
 <form>
   <table class="fields-table">
     <tr>
-      <td class="medium">ROM A</td>
+      <td class="medium">{{ 'popups.editmedia.roma' | translate }}</td>
       <td class="medium-input">
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="romA" [(ngModel)]="romA"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filtersType="ROM" (chosen)="romA = $event"></app-fs-chooser>
+          <app-fs-chooser [label]="'common.browse' | translate" filtersType="ROM" (chosen)="romA = $event">
+          </app-fs-chooser>
         </div>
       </td>
     </tr>
     <tr>
-      <td class="medium">ROM B</td>
+      <td class="medium">{{ 'popups.editmedia.romb' | translate }}</td>
       <td class="medium-input">
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="romB" [(ngModel)]="romB"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filtersType="ROM" (chosen)="romB = $event"></app-fs-chooser>
+          <app-fs-chooser [label]="'common.browse' | translate" filtersType="ROM" (chosen)="romB = $event">
+          </app-fs-chooser>
         </div>
       </td>
     </tr>
     <tr>
-      <td class="medium">Extension</td>
+      <td class="medium">{{ 'popups.editmedia.extension' | translate }}</td>
       <td class="medium-input">
-        <app-drop-down [list]="extensions" defaultLabel="Select extension" [selectedItem]="extensionRom"
-          resetButton=true (selection)="extensionRom = $event"></app-drop-down>
+        <app-drop-down [list]="extensions" [defaultLabel]="'popups.editmedia.selectextension' | translate"
+          [selectedItem]="extensionRom" resetButton=true (selection)="extensionRom = $event"></app-drop-down>
       </td>
     </tr>
     <tr>
       <p></p>
     </tr>
     <tr>
-      <td class="medium">Disk A</td>
+      <td class="medium">{{ 'popups.editmedia.diska' | translate }}</td>
       <td class="medium-input">
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="diskA" [(ngModel)]="diskA"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filtersType="Disk" (chosen)="diskA = $event"></app-fs-chooser>
+          <app-fs-chooser [label]="'common.browse' | translate" filtersType="Disk" (chosen)="diskA = $event">
+          </app-fs-chooser>
         </div>
       </td>
     </tr>
     <tr>
-      <td class="medium">Disk B</td>
+      <td class="medium">{{ 'popups.editmedia.diskb' | translate }}</td>
       <td class="medium-input">
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="diskB" [(ngModel)]="diskB"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filtersType="Disk" (chosen)="diskB = $event"></app-fs-chooser>
+          <app-fs-chooser [label]="'common.browse' | translate" filtersType="Disk" (chosen)="diskB = $event">
+          </app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -54,12 +58,13 @@
       <p></p>
     </tr>
     <tr>
-      <td class="medium">Tape</td>
+      <td class="medium">{{ 'medium.tape' | translate }}</td>
       <td class="medium-input">
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="tape" [(ngModel)]="tape"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filtersType="Tape" (chosen)="tape = $event"></app-fs-chooser>
+          <app-fs-chooser [label]="'common.browse' | translate" filtersType="Tape" (chosen)="tape = $event">
+          </app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -67,12 +72,13 @@
       <p></p>
     </tr>
     <tr>
-      <td class="medium">Harddisk</td>
+      <td class="medium">{{ 'medium.harddisk' | translate }}</td>
       <td class="medium-input">
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="harddisk" [(ngModel)]="harddisk"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filtersType="Harddisk" (chosen)="harddisk = $event"></app-fs-chooser>
+          <app-fs-chooser [label]="'common.browse' | translate" filtersType="Harddisk" (chosen)="harddisk = $event">
+          </app-fs-chooser>
         </div>
       </td>
     </tr>
@@ -80,15 +86,17 @@
       <p></p>
     </tr>
     <tr>
-      <td class="medium">Laserdisc</td>
+      <td class="medium">{{ 'medium.laserdisc' | translate }}</td>
       <td class="medium-input">
         <div class="input-group">
           <input type="text" class="form-control form-control-sm" id="laserdisc" [(ngModel)]="laserdisc"
             [ngModelOptions]="{standalone: true}">
-          <app-fs-chooser label="Browse" filtersType="Laserdisc" (chosen)="laserdisc = $event"></app-fs-chooser>
+          <app-fs-chooser [label]="'common.browse' | translate" filtersType="Laserdisc" (chosen)="laserdisc = $event">
+          </app-fs-chooser>
         </div>
       </td>
     </tr>
   </table>
-  <button class="btn btn-primary btn-sm mt-3" (click)="save()" (keyup.enter)="save()">Save</button>
+  <button class="btn btn-primary btn-sm mt-3" (click)="save()" (keyup.enter)="save()">{{ 'common.save' | translate
+    }}</button>
 </form>

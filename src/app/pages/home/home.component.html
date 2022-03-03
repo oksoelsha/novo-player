@@ -5,7 +5,7 @@
         <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle></button>
         <div ngbDropdownMenu>
           <button ngbDropdownItem type="button" (click)="undoRemove()" [disabled]="lastRemovedGame == null">
-            Restore last deleted game
+            {{ 'home.restorelastdeletedgame' | translate }}
           </button>
           <div class="dropdown-divider"></div>
           <button ngbDropdownItem type="button" (click)="manageListings.open()" [disabled]="!listings.length">
@@ -124,7 +124,7 @@
           </button>
           <div ngbDropdownMenu>
             <button ngbDropdownItem type="button" (click)="edit(selectedGame)">
-              {{ 'home.rename' | translate }}
+              {{ 'common.rename' | translate }}
             </button>
             <button ngbDropdownItem type="button" (click)="mediaEdit.open()">
               {{ 'home.editmedia' | translate }}
@@ -226,7 +226,7 @@
   </context-menu>
   <ng-template contextMenuItem divider="true"></ng-template>
   <ng-template contextMenuItem (execute)="edit($event.item)">
-    {{ 'home.rename' | translate }}
+    {{ 'common.rename' | translate }}
   </ng-template>
   <ng-template contextMenuItem (execute)="mediaEdit.open()">
     {{ 'home.editmedia' | translate }}

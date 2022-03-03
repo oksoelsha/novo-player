@@ -1,12 +1,13 @@
 <form>
     <div>
-        <span class="mr-2">Destination listing</span>
+        <span class="mr-2">{{ 'popups.changelisting.destinationlisting' | translate }}</span>
         <span class="listing-input">
-            <app-drop-down-with-input *ngIf="opened" defaultLabel="Enter a listing" defaultNewLabel="New listing"
-                [list]="destinationListings" (selection)="selectedListing = $event"></app-drop-down-with-input>
+            <app-drop-down-with-input *ngIf="opened" [defaultLabel]="'popups.specifyalisting' | translate"
+                [defaultNewLabel]="'popups.newlisting' | translate" [list]="destinationListings"
+                (selection)="selectedListing = $event"></app-drop-down-with-input>
         </span>
     </div>
     <button class="btn btn-primary btn-sm mt-3" (click)="move()" (keyup.enter)="move()" [disabled]="!selectedListing">
-        Move
+        {{ 'popups.changelisting.move' | translate }}
     </button>
 </form>

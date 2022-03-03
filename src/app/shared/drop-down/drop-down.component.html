@@ -11,7 +11,7 @@
     </div>
     <div *ngIf="resetButton && selectedItem" class="d-inline ml-2">
         <button class="btn btn-secondary btn-sm" type="button" (click)="resetSelection()">
-          Reset
+          {{ 'common.reset' | translate }}
         </button>
     </div>
 </div>

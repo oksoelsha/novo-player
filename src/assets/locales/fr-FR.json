@@ -1,7 +1,16 @@
 {
   "common": {
     "save": "Sauvegarder",
-    "none": "Rien"
+    "none": "Rien",
+    "machine": "Machine",
+    "browse": "Parcourir",
+    "reset": "Rétablir",
+    "add": "Ajouter",
+    "new": "Nouvelle",
+    "rename": "Renommer",
+    "delete": "Supprimer",
+    "yes": "Oui",
+    "no": "Non"
   },
   "home": {
     "name": "Nom",
@@ -20,6 +29,7 @@
     "mapper": "Mapper",
     "start": "Début",
     "remark": "Remarque",
+    "restorelastdeletedgame": "Restaurer le dernier jeu supprimé",
     "managelistings":"Gérer les listes",
     "addgames":"Ajouter des jeux",
     "favorites":"Favoris",
@@ -30,7 +40,6 @@
     "onopenmsx": "sur openMSX",
     "onwebmsx": "sur WebMSX",
     "actions": "Actions",
-    "rename": "Renommer",
     "editmedia": "Modifier le médium",
     "edithardware": "Modifier le matériel",
     "addtofavorites": "Ajouter aux favoris",
@@ -43,7 +52,7 @@
     "es-ES": "Espagnol",
     "fr-FR": "Français"
   },
-  "medium" : {
+  "medium": {
     "rom": "ROM",
     "disk": "Disque",
     "tape": "Cassette",
@@ -51,7 +60,6 @@
     "laserdisc": "Laserdisc"
   },
   "settings": {
-    "browse": "Parcourir",
     "openmsxpath": "Chemin d'accès de openMSX",
     "openmsxpathtooltip": "Dossier où openMSX se trouve",
     "screenshotspath": "Chemin d'accès de captures d'écran",
@@ -98,7 +106,7 @@
     "media": "Média",
     "listings": "Listes",
     "games": "Jeux",
-    "roms" : "ROM",
+    "roms": "ROM",
     "disks": "Disques",
     "tapes": "Cassettes",
     "harddisks": "Disques durs",
@@ -106,5 +114,48 @@
     "gamesrunningonopenmsx": "Jeux en cours d'exécution sur openMSX",
     "launchhistory": "Historique des lancements",
     "insights": "Informations"
+  },
+  "popups": {
+    "newlisting": "Nouvelle liste",
+    "specifyalisting": "Spécifier une liste",
+    "addgames": {
+      "addfolder": "+Dossier",
+      "addfile": "+Fichier",
+      "listing": "Liste"
+    },
+    "changelisting": {
+      "destinationlisting": "Liste cible",
+      "move": "Déplacer"
+    },
+    "editmedia": {
+      "roma": "ROM A",
+      "romb": "ROM B",
+      "extension": "Extension",
+      "selectextension": "Sélectionner une extension",
+      "diska": "Disque A",
+      "diskb": "Disque B"
+    },
+    "edithardware": {
+      "fddmode": "Mode de FDD",
+      "enableboth": "Activer les deux lecteurs de disquette",
+      "disablesecond": "Désactiver le deuxième lecteur de disquette",
+      "disableboth": "Désactiver les deux lecteurs de disquette",
+      "inputdevice": "Périphérique d'entrée",
+      "none": "Aucun",
+      "joystick": "Manette de jeu",
+      "joystickkeyboard": "Manette de jeu (clavier)",
+      "mouse": "Souris",
+      "arkanoidpad": "Arkanoid Pad",
+      "trackball": "Trackball",
+      "touchpad": "Touchpad",
+      "on": "Actif",
+      "off": "Inactif",
+      "infomsg": "Fonctionne avec openMSX 0.16 ou ultérieure"
+    },
+    "managelistings": {
+      "total": "Total",
+      "deletelistingconfirmation": "Supprimer la liste sélectionnée?",
+      "mergelistingsconfirmation": "Le nom existe déjà. Fusionner?"
+    }
   }
 }

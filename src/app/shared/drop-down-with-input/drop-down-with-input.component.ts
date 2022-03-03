@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 
 @Component({
   selector: 'app-drop-down-with-input',
@@ -21,7 +22,7 @@ export class DropDownWithInputComponent implements OnChanges {
   selectedItem = '';
   enteredItem = '';
 
-  constructor() { }
+  constructor(private localizationService: LocalizationService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.defaultSelection) {
@@ -54,7 +55,7 @@ export class DropDownWithInputComponent implements OnChanges {
   private setSelectedItemAndAdjustForDisplay(item: string, appendNew: boolean = false) {
     this.selectedOrEnteredItem = item;
     if (appendNew) {
-      this.selectedOrEnteredItemDisplay = item + ' (New)';
+      this.selectedOrEnteredItemDisplay = item + ' (' + this.localizationService.translate('common.new') + ')';
     } else {
       this.selectedOrEnteredItemDisplay = item;
     }

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 import { FDDMode } from 'src/app/models/fdd-mode';
 import { Game } from 'src/app/models/game';
 import { InputDevice } from 'src/app/models/input-device';
@@ -24,9 +25,7 @@ export class HardwareEditComponent extends PopupComponent {
   selectedInputDevice = '';
   connectGFX9000 = false;
 
-  readonly infoMsg = 'Works with openMSX 0.16 or later';
-
-  constructor(private emulatorService: EmulatorService) {
+  constructor(private emulatorService: EmulatorService, private localizationService: LocalizationService) {
     super();
   }
 
@@ -38,18 +37,18 @@ export class HardwareEditComponent extends PopupComponent {
       this.selectedMachine = this.game.machine;
     });
 
-    this.fddModes = FDDMode.map(f => f.label);
+    this.fddModes = FDDMode.map(f => this.localizationService.translate('popups.edithardware.' + f));
     if (this.game.fddMode) {
-      this.selectedFDDMode = FDDMode[this.game.fddMode].label;
+      this.selectedFDDMode = this.localizationService.translate('popups.edithardware.' + FDDMode[this.game.fddMode]);
     } else {
-      this.selectedFDDMode = FDDMode[0].label;
+      this.selectedFDDMode = this.localizationService.translate('popups.edithardware.' + FDDMode[0]);
     }
 
-    this.inputDevices = InputDevice.map(f => f.label);
+    this.inputDevices = InputDevice.map(f => this.localizationService.translate('popups.edithardware.' + f));
     if (this.game.inputDevice) {
-      this.selectedInputDevice = InputDevice[this.game.inputDevice].label;
+      this.selectedInputDevice = this.localizationService.translate('popups.edithardware.' + InputDevice[this.game.inputDevice]);
     } else {
-      this.selectedInputDevice = InputDevice[0].label;
+      this.selectedInputDevice = this.localizationService.translate('popups.edithardware.' + InputDevice[0]);
     }
 
     if (this.game.connectGFX9000) {
@@ -67,8 +66,8 @@ export class HardwareEditComponent extends PopupComponent {
     const updatedGame: Game = Object.assign({}, this.game);
 
     updatedGame.machine = this.selectedMachine;
-    updatedGame.fddMode = FDDMode.find(i => i.label === this.selectedFDDMode).value;
-    updatedGame.inputDevice = InputDevice.find(i => i.label === this.selectedInputDevice).value;
+    updatedGame.fddMode = this.fddModes.indexOf(this.selectedFDDMode);
+    updatedGame.inputDevice = this.inputDevices.indexOf(this.selectedInputDevice);
     updatedGame.connectGFX9000 = this.connectGFX9000;
 
     this.updatedGame.emit(updatedGame);

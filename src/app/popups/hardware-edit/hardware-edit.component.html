@@ -1,7 +1,7 @@
 <form>
     <table class="fields-table">
         <tr>
-            <td class="medium">Machine</td>
+            <td class="medium">{{ 'common.machine' | translate }}</td>
             <td class="medium-input">
                 <app-drop-down [list]="machines" [selectedItem]="selectedMachine"
                     (selection)="selectedMachine = $event">
@@ -9,33 +9,39 @@
             </td>
         </tr>
         <tr>
-            <td class="medium">FDD Mode</td>
+            <td class="medium">{{ 'popups.edithardware.fddmode' | translate }}</td>
             <td class="medium-input">
                 <app-drop-down [list]="fddModes" [selectedItem]="selectedFDDMode"
                     (selection)="selectedFDDMode = $event">
                 </app-drop-down>
             </td>
-            <td><img src="assets/images/general/info.png" placement="top" ngbTooltip="{{ infoMsg }}"></td>
+            <td><img src="assets/images/general/info.png" placement="top"
+                    ngbTooltip="{{ 'popups.edithardware.infomsg' | translate }}"></td>
         </tr>
         <tr>
-            <td class="medium">Input Device</td>
+            <td class="medium">{{ 'popups.edithardware.inputdevice' | translate }}</td>
             <td class="medium-input">
                 <app-drop-down [list]="inputDevices" [selectedItem]="selectedInputDevice"
                     (selection)="selectedInputDevice = $event">
                 </app-drop-down>
             </td>
-            <td><img src="assets/images/general/info.png" placement="top" ngbTooltip="{{ infoMsg }}"></td>
+            <td><img src="assets/images/general/info.png" placement="top"
+                    ngbTooltip="{{ 'popups.edithardware.infomsg' | translate }}"></td>
         </tr>
         <tr>
             <td class="medium">GFX9000</td>
             <td class="medium-input">
-                <ng-toggle onText="On" offText="Off" size="sm" [(ngModel)]="connectGFX9000"
+                <ng-toggle [onText]="'popups.edithardware.on' | translate"
+                    [offText]="'popups.edithardware.off' | translate" size="sm" [(ngModel)]="connectGFX9000"
                     [ngModelOptions]="{standalone: true}">
                     <input type="checkbox" [(ngModel)]="connectGFX9000" [ngModelOptions]="{standalone: true}" />
                 </ng-toggle>
             </td>
-            <td><img src="assets/images/general/info.png" placement="top" ngbTooltip="{{ infoMsg }}"></td>
+            <td><img src="assets/images/general/info.png" placement="top"
+                    ngbTooltip="{{ 'popups.edithardware.infomsg' | translate }}"></td>
         </tr>
     </table>
-    <button class="btn btn-primary btn-sm mt-3" (click)="save()" (keyup.enter)="save()">Save</button>
+    <button class="btn btn-primary btn-sm mt-3" (click)="save()" (keyup.enter)="save()">
+        {{ 'common.save' | translate }}
+    </button>
 </form>
