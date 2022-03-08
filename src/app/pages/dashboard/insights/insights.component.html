@@ -2,8 +2,8 @@
     <div class="card-body container">
         <h5 class="card-title">{{ 'dashboard.insights' | translate }}</h5>
         <div *ngIf="isTopTenMode()">
-            <span class="badge badge-primary badge-size">Top Ten Launched</span>
-            <a class="badge badge-dark badge-size badge-link" (click)="setLaunchTimesMode()">Launch Times</a>
+            <span class="badge badge-primary badge-size">{{ 'dashboard.toptenlaunched' | translate }}</span>
+            <a class="badge badge-dark badge-size badge-link" (click)="setLaunchTimesMode()">{{ 'dashboard.launchtimes' | translate }}</a>
             <div class="events-table">
                 <table class="table table-sm text-white">
                     <tr *ngFor="let item of topTenList">
@@ -17,8 +17,8 @@
             </div>
         </div>
         <div *ngIf="isLaunchTimesMode()">
-            <a class="badge badge-dark badge-size badge-link" (click)="setTopTenMode()">Top Ten Launched</a>
-            <span class="badge badge-primary badge-size">Launch Times</span>
+            <a class="badge badge-dark badge-size badge-link" (click)="setTopTenMode()">{{ 'dashboard.toptenlaunched' | translate }}</a>
+            <span class="badge badge-primary badge-size">{{ 'dashboard.launchtimes' | translate }}</span>
             <div>Graph...</div>
         </div>
     </div>

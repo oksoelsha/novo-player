@@ -239,9 +239,9 @@ export class HomeComponent implements OnInit {
   launch(game: Game) {
     this.gamesService.launchGame(game).then((errorMessage: string) => {
       if (errorMessage) {
-        this.alertService.failure('Failed to start openMSX for: ' + game.name + ' [' + errorMessage + ']');
+        this.alertService.failure(this.localizationService.translate('home.failedtostartopenmsxfor') + ': ' + game.name + ' [' + errorMessage + ']');
       } else {
-        this.alertService.info('openMSX window closed for: ' + game.name);
+        this.alertService.info(this.localizationService.translate('home.openmsxwindowclosedfor: ') + ' ' + game.name);
       }
     });
   }
@@ -286,7 +286,7 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
     this.gamesService.removeGame(game).then((removed: boolean) => {
       if (removed) {
-        this.alertService.success('Game was removed: ' + game.name);
+        this.alertService.success(this.localizationService.translate('home.gamewasremoved') + ': ' + game.name);
         this.lastRemovedGame = game;
         if (this.selectedGame != null && game.sha1Code === this.selectedGame.sha1Code) {
           this.initialize();
@@ -294,7 +294,7 @@ export class HomeComponent implements OnInit {
         sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
         this.removeGameFromList(game);
       } else {
-        this.alertService.failure('Game was not removed: ' + game.name);
+        this.alertService.failure(this.localizationService.translate('home.gamewasnotremoved') + ': ' + game.name);
       }
     });
   }
@@ -303,7 +303,7 @@ export class HomeComponent implements OnInit {
     if (this.lastRemovedGame != null) {
       this.gamesService.saveGame(this.lastRemovedGame).then((added: boolean) => {
         if (added) {
-          this.alertService.success('Game was restored: ' + this.lastRemovedGame.name);
+          this.alertService.success(this.localizationService.translate('home.gamewasrestored') + ': ' + this.lastRemovedGame.name);
           if (this.lastRemovedGame.listing === this.selectedListing) {
             this.addGameToSortedList(this.lastRemovedGame);
           }
@@ -311,7 +311,7 @@ export class HomeComponent implements OnInit {
           sessionStorage.removeItem('lastRemovedGame');
           this.lastRemovedGame = null;
         } else {
-          this.alertService.failure('Game was not restored: ' + this.lastRemovedGame.name);
+          this.alertService.failure(this.localizationService.translate('home.gamewasnotrestored') + ': ' + this.lastRemovedGame.name);
         }
       });
     }
@@ -320,9 +320,10 @@ export class HomeComponent implements OnInit {
   update(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then((err: boolean) => {
       if (err) {
-        this.alertService.failure('Game was not updated: ' + oldGame.name + ' - you cannot change a game\'s main file');
+        this.alertService.failure(this.localizationService.translate('home.gamewasnotupdated') + ': ' + oldGame.name +
+          ' - ' + this.localizationService.translate('home.cannotchangegamemainfile'));
       } else {
-        this.alertService.success('Game was updated: ' + newGame.name);
+        this.alertService.success(this.localizationService.translate('home.gamewasupdated') + ': ' + newGame.name);
         this.removeGameFromList(oldGame, false);
         this.addGameToSortedList(newGame);
         setTimeout(() => {
@@ -334,7 +335,8 @@ export class HomeComponent implements OnInit {
 
   move(oldGame: Game, newGame: Game) {
     this.gamesService.updateGame(oldGame, newGame).then(() => {
-      this.alertService.success('Game was moved: ' + newGame.name + ' -> ' + newGame.listing);
+      this.alertService.success(this.localizationService.translate('home.gamewasmoved') + ': ' + newGame.name + ' -> '
+        + newGame.listing);
       this.removeGameFromList(oldGame);
       this.initialize();
       this.addListingToListings(newGame.listing);
@@ -343,8 +345,8 @@ export class HomeComponent implements OnInit {
 
   setFavoritesFlag(flag: boolean) {
     this.gamesService.setFavoritesFlag(this.selectedGame, flag).then((error: boolean) => {
-      if (error) {
-        this.alertService.failure('Failed to toggle the favorites flag for: ' + this.selectedGame.name);
+      if (error) { 
+        this.alertService.failure(this.localizationService.translate('home.failedtogglefavoritesfor') + ': ' + this.selectedGame.name);
       } else {
         this.selectedGame.favorite = flag;
       }
@@ -444,10 +446,10 @@ export class HomeComponent implements OnInit {
   }
 
   startScan(parameters: ScanParameters) {
-    this.alertService.info('Started scanning process...');
+    this.alertService.info(this.localizationService.translate('home.startedscanprocess'));
     this.scanRunning = true;
     this.scanner.scan(parameters).then(result => {
-      this.alertService.info('Total games added = ' + result);
+      this.alertService.info(this.localizationService.translate('home.totalgamesadded') + " = " + result);
 
       this.gamesService.getListings().then((data: string[]) => {
         this.listings = data;
@@ -477,7 +479,7 @@ export class HomeComponent implements OnInit {
     const firstIndex = musicFile.lastIndexOf('/') + 1;
     const lastIndex = musicFile.lastIndexOf('.');
     if (lastIndex < firstIndex) {
-      return 'Unknown';
+      return this.localizationService.translate('home.unknown');
     }
     const filename = musicFile.substring(firstIndex, lastIndex);
     const separaterIndex = filename.indexOf('_');
@@ -576,7 +578,7 @@ export class HomeComponent implements OnInit {
   private addGameToSortedList(game: Game) {
     let index: number;
     for (index = 0; index < this.games.length &&
-      this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++) {}
+      this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++) { }
     if (index < this.games.length) {
       this.games.splice(index, 0, game);
     } else {
@@ -588,14 +590,14 @@ export class HomeComponent implements OnInit {
     if (this.listings.findIndex((e) => e === listing) < 0) {
       let index: number;
       for (index = 0; index < this.listings.length &&
-        this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++) {}
+        this.listings[index].toLowerCase().localeCompare(listing.toLowerCase()) < 0; index++) { }
       this.listings.splice(index, 0, listing);
     }
   }
 
   private jumpToNearestGame(charachters: string) {
     let index: number;
-    for (index = 0; index < this.games.length && !this.games[index].name.toLowerCase().startsWith(charachters.toLowerCase()); index++) {}
+    for (index = 0; index < this.games.length && !this.games[index].name.toLowerCase().startsWith(charachters.toLowerCase()); index++) { }
     if (index < this.games.length) {
       this.showInfo(this.games[index]);
     }

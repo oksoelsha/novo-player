@@ -1,2 +1,6 @@
-<span *ngIf="shortTime" title="Launched less than a minute ago">&lt; 1 m ago</span>
-<span *ngIf="!shortTime" title="Launched {{ getStartTimeDisplay() }}">{{ elapsedTime.hours }} h {{ elapsedTime.minutes }} m</span>
+<span *ngIf="shortTime" [title]="'shared.elapsedtime.lessthan1minagodetail' | translate">
+    {{ 'shared.elapsedtime.lessthan1minago' | translate }}
+</span>
+<span *ngIf="!shortTime" [title]="('shared.elapsedtime.launched' | translate) + ' ' + getStartTimeDisplay()">
+    {{ elapsedTime.hours }} h {{ elapsedTime.minutes }} m
+</span>

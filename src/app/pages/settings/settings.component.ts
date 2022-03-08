@@ -73,7 +73,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
     this.settingsService.saveSettings(settings);
     this.localizationService.useLanguage(this.languageReverseMap.get(this.language));
     this.submitDisabled = true;
-    this.alertService.success('Settings saved successfully');
+    this.alertService.success(this.localizationService.translate('settings.settingssavedsuccessfully'));
   }
 
   private setLanguages() {

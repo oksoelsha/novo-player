@@ -45,7 +45,21 @@
     "addtofavorites": "Add to Favorites",
     "removefromfavorites": "Remove from Favorites",
     "movetoanotherlisting": "Move to another listing",
-    "dropfilesandfolders": "Drop files and folders"
+    "dropfilesandfolders": "Drop files and folders",
+    "failedtostartopenmsxfor": "Failed to start openMSX for",
+    "openmsxwindowclosedfor": "openMSX window closed for",
+    "gamewasremoved": "Game was removed",
+    "gamewasnotremoved": "Games was not removed",
+    "gamewasrestored": "Game was restored",
+    "gamewasnotrestored": "Games was not restored",
+    "gamewasupdated": "Game was updated",
+    "gamewasnotupdated": "Game was not updated",
+    "cannotchangegamemainfile": "you cannot change a game's main file",
+    "gamewasmoved": "Game was moved",
+    "failedtogglefavoritesfor": "Failed to toggle the favorites status for",
+    "startedscanprocess": "Started scan process",
+    "totalgamesadded": "Total games added",
+    "unknown": "Unknown"
   },
   "language": {
     "en-US": "English",
@@ -74,7 +88,10 @@
     "webmsxpathtooltip": "Folder where offline WebMSX is. Use the embedded folder within release/stable",
     "language": "Language",
     "languagetooltip": "Language to display the text in",
-    "systemdefault": "System Default"
+    "systemdefault": "System Default",
+    "confirmation": "Confirmation",
+    "unsaveddataconfirmation": "There is unsaved data. Leave anyway?",
+    "settingssavedsuccessfully": "Settings saved successfully"
   },
   "country": {
     "BR": "Brazil",
@@ -113,7 +130,9 @@
     "laserdiscs": "Laserdiscs",
     "gamesrunningonopenmsx": "Games running on openMSX",
     "launchhistory": "Launch History",
-    "insights": "Insights"
+    "insights": "Insights",
+    "toptenlaunched": "Top Ten Launched",
+    "launchtimes": "Launch Times"
   },
   "popups": {
     "newlisting": "New listing",
@@ -156,6 +175,13 @@
       "total": "Total",
       "deletelistingconfirmation": "Deleted seleted listing?",
       "mergelistingsconfirmation": "Name exists already. Merge?"
+    }
+  },
+  "shared": {
+    "elapsedtime": {
+      "lessthan1minago": "< 1 min ago",
+      "lessthan1minagodetail": "Launched less than a minute ago",
+      "launched": "Launched"
     }
   }
 }

@@ -35,7 +35,7 @@
     "favorites":"Favoris",
     "search":"Chercher",
     "launchonopenmsx": "Lancer sur openMSX",
-    "removefromlisting": "Enlever de lista",
+    "removefromlisting": "Enlever de liste",
     "launch": "Lancer",
     "onopenmsx": "sur openMSX",
     "onwebmsx": "sur WebMSX",
@@ -45,7 +45,21 @@
     "addtofavorites": "Ajouter aux favoris",
     "removefromfavorites": "Retirer des favoris",
     "movetoanotherlisting": "Déplacer vers une autre liste",
-    "dropfilesandfolders": "Déposer les fichiers et les dossiers"
+    "dropfilesandfolders": "Déposer les fichiers et les dossiers",
+    "failedtostartopenmsxfor": "Erreur lors du lancement d'openMSX pour",
+    "openmsxwindowclosedfor": "Fenêtre d'openMSX fermée por",
+    "gamewasremoved": "Le jeu a été enlevé",
+    "gamewasnotremoved": "Le jeu n'a pas été enlevé",
+    "gamewasrestored": "Le jeu a été restauré",
+    "gamewasnotrestored": "Le jeu n'a pas été restauré",
+    "gamewasupdated": "Le jeu a été mis à jour",
+    "gamewasnotupdated": "Le jeu n'a pas été mis à jour",
+    "cannotchangegamemainfile": "vous ne pouvez pas modifier le fichier principal d'un jeu",
+    "gamewasmoved": "Le jeu a été déplacé",
+    "failedtogglefavoritesfor": "Échec de l'activation/désactivation du statut de favori pour",
+    "startedscanprocess": "L’analyse du disque a commencé",
+    "totalgamesadded": "Nombre de jeux ajoutés",
+    "unknown": "Inconnu"
   },
   "language": {
     "en-US": "Anglais",
@@ -74,7 +88,10 @@
     "webmsxpathtooltip": "Dossier où WebMSX hors ligne se trouve. Utiliser le dossier intégré dans release/stable",
     "language": "Langue",
     "languagetooltip": "La langue d'affichage",
-    "systemdefault": "Système par défaut"
+    "systemdefault": "Système par défaut",
+    "confirmation": "Confirmation",
+    "unsaveddataconfirmation": "Voulez-vous ignorer les modifications non enregistrées ?",
+    "settingssavedsuccessfully": "Les paramètres ont été enregistrés"
   },
   "country": {
     "BR": "Brésil",
@@ -113,7 +130,9 @@
     "laserdiscs": "Laserdisc",
     "gamesrunningonopenmsx": "Jeux en cours d'exécution sur openMSX",
     "launchhistory": "Historique des lancements",
-    "insights": "Informations"
+    "insights": "Informations",
+    "toptenlaunched": "Les plus joués",
+    "launchtimes": "Heures de jeu"
   },
   "popups": {
     "newlisting": "Nouvelle liste",
@@ -154,8 +173,15 @@
     },
     "managelistings": {
       "total": "Total",
-      "deletelistingconfirmation": "Supprimer la liste sélectionnée?",
-      "mergelistingsconfirmation": "Le nom existe déjà. Fusionner?"
+      "deletelistingconfirmation": "Supprimer la liste sélectionnée ?",
+      "mergelistingsconfirmation": "Le nom existe déjà. Fusionner ?"
+    }
+  },
+  "shared": {
+    "elapsedtime": {
+      "lessthan1minago": "< 1 min",
+      "lessthan1minagodetail": "Lancé il y a moins d'une minute",
+      "launched": "Lancé"
     }
   }
 }
