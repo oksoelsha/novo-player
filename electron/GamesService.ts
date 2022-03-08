@@ -1,4 +1,5 @@
 import { BrowserWindow, ipcMain } from 'electron';
+import * as fs from 'fs';
 import * as Datastore from 'nedb';
 import * as os from 'os';
 import * as path from 'path';
@@ -152,17 +153,21 @@ export class GamesService {
                 self.win.webContents.send('updateGameResponse');
             });
         } else {
-            this.hashService.getSha1Code(this.getGameMainFile(newGame)).then(data => {
-                if (oldGame.sha1Code == data.hash) {
-                    //only allow a game to be updated if the changed main file has the same hash
-                    //e.g. this can happen if the file was moved to a different folder
-                    this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
-                        self.win.webContents.send('updateGameResponse');
-                    });
-                } else {
-                    self.win.webContents.send('updateGameResponse', true);
-                }
-            });
+            if(!fs.existsSync(this.getGameMainFile(newGame))) {
+                self.win.webContents.send('updateGameResponse', true);
+            } else {
+                this.hashService.getSha1Code(this.getGameMainFile(newGame)).then(data => {
+                    if (oldGame.sha1Code == data.hash) {
+                        //only allow a game to be updated if the changed main file has the same hash
+                        //e.g. this can happen if the file was moved to a different folder
+                        this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
+                            self.win.webContents.send('updateGameResponse');
+                        });
+                    } else {
+                        self.win.webContents.send('updateGameResponse', true);
+                    }
+                });    
+            }
         }
     }
 
