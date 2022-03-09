@@ -1,11 +1,13 @@
 <div *ngIf="list && list.length > 0" ngbDropdown class="d-inline-block" (keyup)="processKeyup($event)">
     <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
         <span *ngIf="!selectedItem">{{ defaultLabel }}</span>
+        <img [src]="listIcons[list.indexOf(selectedItem)]" class="icon" *ngIf="listIcons && selectedItem">
         <span *ngIf="selectedItem">{{ selectedItem }}</span>
     </button>
     <div ngbDropdownMenu class="dropdown-scroll pt-0 pb-0">
-        <button *ngFor="let item of list" ngbDropdownItem type="button"
+        <button *ngFor="let item of list; let i = index" ngbDropdownItem type="button"
             (click)="handleSelection(item)" #dropDownItem>
+            <img [src]="listIcons[i]" class="icon" *ngIf="listIcons">
             {{ item }}
         </button>
     </div>

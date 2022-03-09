@@ -25,6 +25,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   language = '';
   languages: string[] = [];
   languageReverseMap: Map<string,string>;
+  languageIcons: string[] = [];
 
   constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesService: GamesService,
     private localizationService: LocalizationService) { }
@@ -32,6 +33,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   ngOnInit() {
     this.gamesService.getListings().then((data: string[]) => this.listings = data);
     this.setLanguages();
+    this.setLanguageIcons();
     const self = this;
     this.settingsService.getSettings().then((settings: Settings) => {
       self.openmsxPath = settings.openmsxPath;
@@ -71,18 +73,28 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
     const settings = new Settings(form.value['openmsx-path'], form.value['screenshots-path'], form.value['game-music-path'],
       this.defaultListing, form.value['webmsx-path'], this.languageReverseMap.get(this.language));
     this.settingsService.saveSettings(settings);
-    this.localizationService.useLanguage(this.languageReverseMap.get(this.language));
+    this.localizationService.useLanguage(this.languageReverseMap.get(this.language)).then(() => {
+      this.setSelectedLanguage(settings);
+      this.setLanguages();
+      this.alertService.success(this.localizationService.translate('settings.settingssavedsuccessfully'));
+    });
     this.submitDisabled = true;
-    this.alertService.success(this.localizationService.translate('settings.settingssavedsuccessfully'));
   }
 
   private setLanguages() {
+    this.languages = [];
     this.languageReverseMap = new Map();
     for(var language of LocalizationService.Languages) {
       var translatedLanguageCode = this.getLanguageDisplayName(language);
       this.languageReverseMap.set(translatedLanguageCode, language);
       this.languages.push(translatedLanguageCode);
     }
+  }
+
+  private setLanguageIcons() {
+    this.languageIcons.push('assets/images/flags/en_US.png');
+    this.languageIcons.push('assets/images/flags/es_ES.png');
+    this.languageIcons.push('assets/images/flags/fr_FR.png');
   }
 
   private getLanguageDisplayName(language: string) {

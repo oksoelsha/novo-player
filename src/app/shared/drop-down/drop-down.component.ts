@@ -8,6 +8,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChil
 export class DropDownComponent {
 
   @Input() list: string[];
+  @Input() listIcons: string[];
   @Input() selectedItem: string;
   @Input() defaultLabel: string;
   @Input() resetButton: boolean;
