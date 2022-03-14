@@ -1,4 +1,10 @@
 {
+  "navigation": {
+    "main": "Pantalla principal",
+    "dashboard": "Panel de información",
+    "settings": "Configuración",
+    "about": "Información"
+  },
   "common": {
     "save": "Guardar",
     "none": "Ninguno",

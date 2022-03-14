@@ -1,4 +1,10 @@
 {
+  "navigation": {
+    "main": "Écran d'accueil",
+    "dashboard": "Tableau de bord",
+    "settings": "Paramètres",
+    "about": "Informations"
+  },
   "common": {
     "save": "Sauvegarder",
     "none": "Rien",

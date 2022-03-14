@@ -1,5 +1,7 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { Subject } from 'rxjs/internal/Subject';
 import { LocalizationServiceConfig } from './localization-config.service';
 
 @Injectable()
@@ -9,7 +11,7 @@ export class LocalizationService {
     'es-ES',
     'fr-FR'
   ];
-  private _localeId: string = 'en-US';
+  private languageSetSubject = new Subject<any>();
 
   constructor(
     @Optional() @SkipSelf() private singleton: LocalizationService,
@@ -21,12 +23,11 @@ export class LocalizationService {
         'LocalizationService is already provided by the root module'
       );
     }
-    this._localeId = this.config.locale_id;
   }
 
   initService(): Promise<void> {
-    this._localeId = localStorage.getItem('language') || this.config.locale_id;
-    return this.useLanguage(this._localeId);
+    //no need to set the initial language when the service is first initialized. The application will set the initial language
+    return Promise.resolve();
   }
 
   async useLanguage(lang: string): Promise<void> {
@@ -34,6 +35,9 @@ export class LocalizationService {
     return this.translateService
       .use(lang)
       .toPromise()
+      .then(() => {
+        this.languageSetSubject.next();
+      })
       .catch(() => {
         throw new Error('LocalizationService.init failed');
       });
@@ -41,5 +45,9 @@ export class LocalizationService {
 
   translate(key: string | string[], interpolateParams?: object): string {
     return this.translateService.instant(key, interpolateParams) as string;
+  }
+
+  getLanguageSetEvent(): Observable<void> {
+    return this.languageSetSubject.asObservable();
   }
 }

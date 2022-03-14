@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, NavigationCancel, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { LocalizationService } from './internationalization/localization.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Novo Player';
   links: Link[];
   selectedIndex = 0;
   oldSelectedIndex = 0;
+  private languageSetSubscription: Subscription;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private localizationService: LocalizationService) {
     router.events.subscribe((val) => {
       if (val instanceof NavigationCancel) {
         // The navigation away from a form with unsaved data was canceled
@@ -25,15 +28,14 @@ export class AppComponent implements OnInit {
         this.oldSelectedIndex = 0;
       }
     });
-  }
-
-  ngOnInit() {
-    this.links = [
-      new Link('/', 'assets/images/navigation/ic_home_white_24dp.png', 'Main Screen'),
-      new Link('/dashboard', 'assets/images/navigation/ic_dashboard_white_24dp.png', 'Dashboard'),
-      new Link('/settings', 'assets/images/navigation/ic_settings_applications_white_24dp.png', 'Settings', true),
-      new Link('/help', 'assets/images/navigation/ic_help_white_24dp.png', 'About'),
-    ];
+    this.languageSetSubscription = this.localizationService.getLanguageSetEvent().subscribe(() => {
+      this.links = [
+        new Link('/', 'assets/images/navigation/ic_home_white_24dp.png', localizationService.translate('navigation.main')),
+        new Link('/dashboard', 'assets/images/navigation/ic_dashboard_white_24dp.png', localizationService.translate('navigation.dashboard')),
+        new Link('/settings', 'assets/images/navigation/ic_settings_applications_white_24dp.png', localizationService.translate('navigation.settings'), true),
+        new Link('/help', 'assets/images/navigation/ic_help_white_24dp.png', localizationService.translate('navigation.about')),
+      ];
+    });
   }
 
   setSelection(index: number) {

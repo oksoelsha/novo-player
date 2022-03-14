@@ -22,7 +22,7 @@ export class InternationalizationModule {
           multi: true
         },
         LocalizationService,
-        { provide: LOCALE_ID, useValue: config.locale_id }, // using the initial value 
+        { provide: LOCALE_ID, useValue: config.locale_id },
         { provide: LocalizationServiceConfig, useValue: config }
       ]
     };

@@ -1,4 +1,10 @@
 {
+  "navigation": {
+    "main": "Main",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "about": "About"
+  },
   "common": {
     "save": "Save",
     "none": "None",
