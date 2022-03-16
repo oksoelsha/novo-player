@@ -36,10 +36,10 @@
     "start": "Start",
     "remark": "Remark",
     "restorelastdeletedgame": "Restore last deleted game",
-    "managelistings":"Manage Listings",
-    "addgames":"Add Games",
-    "favorites":"Favorites",
-    "search":"Search",
+    "managelistings": "Manage Listings",
+    "addgames": "Add Games",
+    "favorites": "Favorites",
+    "search": "Search",
     "launchonopenmsx": "Launch on openMSX",
     "removefromlisting": "Remove from listing",
     "launch": "Launch",
@@ -70,6 +70,7 @@
   "language": {
     "en-US": "English",
     "es-ES": "Spanish",
+    "pt-BR": "Portuguese",
     "fr-FR": "French"
   },
   "medium": {

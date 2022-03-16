@@ -241,7 +241,7 @@ export class HomeComponent implements OnInit {
       if (errorMessage) {
         this.alertService.failure(this.localizationService.translate('home.failedtostartopenmsxfor') + ': ' + game.name + ' [' + errorMessage + ']');
       } else {
-        this.alertService.info(this.localizationService.translate('home.openmsxwindowclosedfor: ') + ' ' + game.name);
+        this.alertService.info(this.localizationService.translate('home.openmsxwindowclosedfor') + ': ' + game.name);
       }
     });
   }

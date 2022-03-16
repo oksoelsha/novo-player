@@ -94,6 +94,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   private setLanguageIcons() {
     this.languageIcons.push('assets/images/flags/en_US.png');
     this.languageIcons.push('assets/images/flags/es_ES.png');
+    this.languageIcons.push('assets/images/flags/pt_BR.png');
     this.languageIcons.push('assets/images/flags/fr_FR.png');
   }
 
@@ -105,7 +106,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
     if(settings.language != null) {
       this.language = this.getLanguageDisplayName(settings.language);
     } else {
-      this.language = this.getLanguageDisplayName('en-US'); //TODO add system default
+      this.language = this.getLanguageDisplayName('en-US');
     }
   }
 }

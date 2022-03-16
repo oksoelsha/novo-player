@@ -36,10 +36,10 @@
     "start": "Début",
     "remark": "Remarque",
     "restorelastdeletedgame": "Restaurer le dernier jeu supprimé",
-    "managelistings":"Gérer les listes",
-    "addgames":"Ajouter des jeux",
-    "favorites":"Favoris",
-    "search":"Chercher",
+    "managelistings": "Gérer les listes",
+    "addgames": "Ajouter des jeux",
+    "favorites": "Favoris",
+    "search": "Chercher",
     "launchonopenmsx": "Lancer sur openMSX",
     "removefromlisting": "Enlever de liste",
     "launch": "Lancer",
@@ -70,6 +70,7 @@
   "language": {
     "en-US": "Anglais",
     "es-ES": "Espagnol",
+    "pt-BR": "Portugais",
     "fr-FR": "Français"
   },
   "medium": {
@@ -91,7 +92,7 @@
     "nolistingsdefined": "Aucune liste définie",
     "selectalisting": "Sélectionner une liste",
     "webmsxpath": "Chemin d'accès de WebMSX",
-    "webmsxpathtooltip": "Dossier où WebMSX hors ligne se trouve. Utiliser le dossier intégré dans release/stable",
+    "webmsxpathtooltip": "Dossier où WebMSX hors ligne se trouve. Utilisez le dossier intégré dans release/stable",
     "language": "Langue",
     "languagetooltip": "La langue d'affichage",
     "systemdefault": "Système par défaut",
