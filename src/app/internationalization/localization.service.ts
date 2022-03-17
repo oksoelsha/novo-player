@@ -2,7 +2,6 @@ import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs/internal/Subject';
-import { LocalizationServiceConfig } from './localization-config.service';
 
 @Injectable()
 export class LocalizationService {
@@ -16,7 +15,6 @@ export class LocalizationService {
 
   constructor(
     @Optional() @SkipSelf() private singleton: LocalizationService,
-    private config: LocalizationServiceConfig,
     private translateService: TranslateService
   ) {
     if (this.singleton) {
