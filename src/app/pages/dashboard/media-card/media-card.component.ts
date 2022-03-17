@@ -26,7 +26,7 @@ export class MediaCardComponent implements OnInit {
     width: 0
   };
   readonly labels: string[] = [
-    this.localizationService.translate('dashboard.roms'), 
+    this.localizationService.translate('dashboard.roms'),
     this.localizationService.translate('dashboard.disks'),
     this.localizationService.translate('dashboard.tapes'),
     this.localizationService.translate('dashboard.harddisks'),

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EventsService } from 'src/app/services/events.service';
 
-enum DisplayModes {topTen, launchTimes};
+enum DisplayModes {topTen, launchTimes}
 
 @Component({
   selector: 'app-dashboard-insights-card',
@@ -36,11 +36,11 @@ export class InsightsComponent implements OnInit {
   }
 
   isTopTenMode(): boolean {
-    return this.currentDisplayMode == DisplayModes.topTen;
+    return this.currentDisplayMode === DisplayModes.topTen;
   }
 
   isLaunchTimesMode(): boolean {
-    return this.currentDisplayMode == DisplayModes.launchTimes;
+    return this.currentDisplayMode === DisplayModes.launchTimes;
   }
 
   setTopTenMode() {

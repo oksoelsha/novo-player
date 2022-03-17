@@ -30,10 +30,14 @@ export class AppComponent {
     });
     this.languageSetSubscription = this.localizationService.getLanguageSetEvent().subscribe(() => {
       this.links = [
-        new Link('/', 'assets/images/navigation/ic_home_white_24dp.png', localizationService.translate('navigation.main')),
-        new Link('/dashboard', 'assets/images/navigation/ic_dashboard_white_24dp.png', localizationService.translate('navigation.dashboard')),
-        new Link('/settings', 'assets/images/navigation/ic_settings_applications_white_24dp.png', localizationService.translate('navigation.settings'), true),
-        new Link('/help', 'assets/images/navigation/ic_help_white_24dp.png', localizationService.translate('navigation.about')),
+        new Link('/', 'assets/images/navigation/ic_home_white_24dp.png',
+          localizationService.translate('navigation.main')),
+        new Link('/dashboard', 'assets/images/navigation/ic_dashboard_white_24dp.png',
+          localizationService.translate('navigation.dashboard')),
+        new Link('/settings', 'assets/images/navigation/ic_settings_applications_white_24dp.png',
+          localizationService.translate('navigation.settings'), true),
+        new Link('/help', 'assets/images/navigation/ic_help_white_24dp.png',
+          localizationService.translate('navigation.about')),
       ];
     });
   }

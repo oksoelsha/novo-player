@@ -24,7 +24,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   listings: string[] = [];
   language = '';
   languages: string[] = [];
-  languageReverseMap: Map<string,string>;
+  languageReverseMap: Map<string, string>;
   languageIcons: string[] = [];
 
   constructor(private settingsService: SettingsService, private alertService: AlertsService, private gamesService: GamesService,
@@ -84,8 +84,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   private setLanguages() {
     this.languages = [];
     this.languageReverseMap = new Map();
-    for(var language of LocalizationService.Languages) {
-      var translatedLanguageCode = this.getLanguageDisplayName(language);
+    for (const language of LocalizationService.Languages) {
+      const translatedLanguageCode = this.getLanguageDisplayName(language);
       this.languageReverseMap.set(translatedLanguageCode, language);
       this.languages.push(translatedLanguageCode);
     }
@@ -103,7 +103,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   }
 
   private setSelectedLanguage(settings: Settings) {
-    if(settings.language != null) {
+    if (settings.language != null) {
       this.language = this.getLanguageDisplayName(settings.language);
     } else {
       this.language = this.getLanguageDisplayName('en-US');

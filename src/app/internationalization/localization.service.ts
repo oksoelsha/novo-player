@@ -25,7 +25,7 @@ export class LocalizationService {
   }
 
   initService(): Promise<void> {
-    //no need to set the initial language when the service is first initialized. The application will set the initial language
+    // no need to set the initial language when the service is first initialized. The application will set the initial language
     return Promise.resolve();
   }
 

@@ -239,7 +239,8 @@ export class HomeComponent implements OnInit {
   launch(game: Game) {
     this.gamesService.launchGame(game).then((errorMessage: string) => {
       if (errorMessage) {
-        this.alertService.failure(this.localizationService.translate('home.failedtostartopenmsxfor') + ': ' + game.name + ' [' + errorMessage + ']');
+        this.alertService.failure(this.localizationService.translate('home.failedtostartopenmsxfor') + ': ' + game.name
+          + ' [' + errorMessage + ']');
       } else {
         this.alertService.info(this.localizationService.translate('home.openmsxwindowclosedfor') + ': ' + game.name);
       }
@@ -345,7 +346,7 @@ export class HomeComponent implements OnInit {
 
   setFavoritesFlag(flag: boolean) {
     this.gamesService.setFavoritesFlag(this.selectedGame, flag).then((error: boolean) => {
-      if (error) { 
+      if (error) {
         this.alertService.failure(this.localizationService.translate('home.failedtogglefavoritesfor') + ': ' + this.selectedGame.name);
       } else {
         this.selectedGame.favorite = flag;
@@ -449,7 +450,7 @@ export class HomeComponent implements OnInit {
     this.alertService.info(this.localizationService.translate('home.startedscanprocess'));
     this.scanRunning = true;
     this.scanner.scan(parameters).then(result => {
-      this.alertService.info(this.localizationService.translate('home.totalgamesadded') + " = " + result);
+      this.alertService.info(this.localizationService.translate('home.totalgamesadded') + ' = ' + result);
 
       this.gamesService.getListings().then((data: string[]) => {
         this.listings = data;
