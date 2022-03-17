@@ -29,10 +29,11 @@ export class LocalizationService {
     return Promise.resolve();
   }
 
-  async useLanguage(lang: string): Promise<void> {
-    this.translateService.setDefaultLang(lang);
+  async useLanguage(language: string): Promise<void> {
+    const sanitizedLanguage = this.santizeLanguageToUse(language);
+    this.translateService.setDefaultLang(sanitizedLanguage);
     return this.translateService
-      .use(lang)
+      .use(sanitizedLanguage)
       .toPromise()
       .then(() => {
         this.languageSetSubject.next();
@@ -48,5 +49,13 @@ export class LocalizationService {
 
   getLanguageSetEvent(): Observable<void> {
     return this.languageSetSubject.asObservable();
+  }
+
+  private santizeLanguageToUse(language: string): string {
+    if (LocalizationService.Languages.indexOf(language) > -1) {
+      return language;
+    } else {
+      return 'en-US';
+    }
   }
 }

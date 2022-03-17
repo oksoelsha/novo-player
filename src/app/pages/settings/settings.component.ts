@@ -103,7 +103,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, DeactivateCompo
   }
 
   private setSelectedLanguage(settings: Settings) {
-    if (settings.language != null) {
+    if (settings.language) {
       this.language = this.getLanguageDisplayName(settings.language);
     } else {
       this.language = this.getLanguageDisplayName('en-US');
