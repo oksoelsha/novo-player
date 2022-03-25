@@ -54,6 +54,7 @@ export class GameUtils {
         'Pong',
         'Beat-\'em-up',
         'Dexterity',
+        'Dungeon',
     ];
 
     /* tslint:disable:no-bitwise */
