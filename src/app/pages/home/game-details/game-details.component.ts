@@ -3,6 +3,7 @@ import { LocalizationService } from 'src/app/internationalization/localization.s
 import { Game } from 'src/app/models/game';
 import { GameUtils } from 'src/app/models/game-utils';
 import { GamesService } from 'src/app/services/games.service';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-home-game-details',
@@ -13,6 +14,7 @@ export class GameDetailsComponent implements OnChanges {
 
   @Input() selectedGame: Game;
   @ViewChild('gameDetailSimpleText', { static: true }) private gameDetailSimpleText: TemplateRef<object>;
+  @ViewChild('gameDetailSimpleTextWithCopy', { static: true }) private gameDetailSimpleTextWithCopy: TemplateRef<object>;
   @ViewChild('gameDetailFiles', { static: true }) private gameDetailFiles: TemplateRef<object>;
   @ViewChild('gameDetailMedium', { static: true }) private gameDetailMedium: TemplateRef<object>;
   @ViewChild('gameDetailSize', { static: true }) private gameDetailSize: TemplateRef<object>;
@@ -30,7 +32,7 @@ export class GameDetailsComponent implements OnChanges {
     { name: this.localizationService.translate('home.company'), value: 'company', blockName: 'gameDetailSimpleText' },
     { name: this.localizationService.translate('home.year'), value: 'year', blockName: 'gameDetailSimpleText' },
     { name: this.localizationService.translate('home.country'), value: 'country', blockName: 'gameDetailCountry' },
-    { name: 'SHA1', value: 'sha1Code', blockName: 'gameDetailSimpleText' },
+    { name: 'SHA1', value: 'sha1Code', blockName: 'gameDetailSimpleTextWithCopy' },
     { name: this.localizationService.translate('home.size'), value: 'size', blockName: 'gameDetailSize' },
     { name: this.localizationService.translate('home.generations'), value: 'generations', blockName: 'gameDetailGenerations' },
     { name: this.localizationService.translate('home.sound'), value: 'sounds', blockName: 'gameDetailSounds' },
@@ -67,7 +69,7 @@ export class GameDetailsComponent implements OnChanges {
 
   private selectedGameMedium: Promise<string>;
 
-  constructor(private gamesService: GamesService, private localizationService: LocalizationService) { }
+  constructor(private gamesService: GamesService, private localizationService: LocalizationService, private clipboard: Clipboard) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selectedGame.isFirstChange() ||
@@ -163,6 +165,10 @@ export class GameDetailsComponent implements OnChanges {
 
   getGenerationMSXAddress() {
     return 'http://www.generation-msx.nl/msxdb/softwareinfo/' + this.selectedGame.generationMSXId;
+  }
+
+  copy(text: string) {
+    this.clipboard.copy(text);
   }
 
   private setSelectedGameMedium() {

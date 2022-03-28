@@ -65,7 +65,9 @@
     "failedtogglefavoritesfor": "Failed to toggle the favorites status for",
     "startedscanprocess": "Started scan process",
     "totalgamesadded": "Total games added",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "copy": "Copy",
+    "copied": "Value copied"
   },
   "language": {
     "en-US": "English",

@@ -65,7 +65,9 @@
     "failedtogglefavoritesfor": "Échec de l'activation/désactivation du statut de favori pour",
     "startedscanprocess": "L’analyse du disque a commencé",
     "totalgamesadded": "Nombre de jeux ajoutés",
-    "unknown": "Inconnu"
+    "unknown": "Inconnu",
+    "copy": "Copier",
+    "copied": "Valeur copiée"
   },
   "language": {
     "en-US": "Anglais",

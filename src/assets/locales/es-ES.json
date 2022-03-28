@@ -65,7 +65,9 @@
     "failedtogglefavoritesfor": "Error al alternar el estado de favorito por",
     "startedscanprocess": "Se inició el examen de disco",
     "totalgamesadded": "Cantidad de juegos agregados",
-    "unknown": "Desconocido"
+    "unknown": "Desconocido",
+    "copy": "Copiar",
+    "copied": "Valor copiado"
   },
   "language": {
     "en-US": "Inglés",

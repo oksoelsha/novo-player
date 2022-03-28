@@ -12,6 +12,12 @@
     {{ selectedGame[detail.value] }}
 </ng-template>
 
+<ng-template #gameDetailSimpleTextWithCopy let-detail>
+    {{ selectedGame[detail.value] }}
+    <img src="assets/images/general/copy.png" class="copy" draggable="false" (click)="copy(selectedGame[detail.value])"
+    [title]="'home.copy' | translate" [ngbPopover]="'home.copied' | translate" placement="bottom"/>
+</ng-template>
+
 <ng-template #gameDetailFiles>
     <div class="long-names" *ngFor="let file of getSelectedGameFiles()">
         <a href="#" (click)="exploreFile(file)">{{ file }}</a>
