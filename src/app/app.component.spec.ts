@@ -20,7 +20,7 @@ describe('AppComponent', () => {
             useFactory: HttpLoaderFactory,
             deps: [HttpClient]
           }
-        })    
+        })
       ],
       declarations: [
         AppComponent,

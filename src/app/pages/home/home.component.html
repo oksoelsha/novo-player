@@ -62,10 +62,16 @@
     </div>
     <div id="games-table">
       <table *ngIf="games">
-        <tr>
-          <th class="name-title">{{ 'home.name' | translate }}</th>
-          <th class="company-title">{{ 'home.company' | translate }}</th>
-          <th class="year-title">{{ 'home.year' | translate }}</th>
+        <tr class="table-header">
+          <th class="name-title" (click)="setSort('name')">
+            {{ 'home.name' | translate }} <span>{{ getSortStatus('name') }}</span>
+          </th>
+          <th class="company-title" (click)="setSort('company')">
+            {{ 'home.company' | translate }} <span>{{ getSortStatus('company') }}</span>
+          </th>
+          <th class="year-title" (click)="setSort('year')">
+            {{ 'home.year' | translate }} <span>{{ getSortStatus('year') }}</span>
+          </th>
         </tr>
       </table>
       <div id="games-table-data" tabindex="0" (keydown)="processKeyEventsOnTable($event)">

@@ -19,6 +19,20 @@ import { GameUtils } from 'src/app/models/game-utils';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { LocalizationService } from 'src/app/internationalization/localization.service';
 
+enum SortDirection {
+  ASC, DESC
+}
+
+class SortData {
+  field: string;
+  direction: SortDirection;
+
+  constructor(field: string, direction: SortDirection) {
+    this.field = field;
+    this.direction = direction;
+  }
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -72,6 +86,7 @@ export class HomeComponent implements OnInit {
   musicFiles: string[] = [];
   selectedMusicFile: string;
   favorites: Game[] = [];
+  sortData: SortData;
 
   constructor(private gamesService: GamesService, private scanner: ScannerService, private alertService: AlertsService,
     private settingsService: SettingsService, private eventsService: EventsService, private router: Router,
@@ -179,6 +194,12 @@ export class HomeComponent implements OnInit {
       this.lastRemovedGame = JSON.parse(sessionStorage.getItem('lastRemovedGame'));
     }
 
+    if (sessionStorage.getItem('sortData') != null) {
+      this.sortData = JSON.parse(sessionStorage.getItem('sortData'));
+    } else {
+      this.sortData = new SortData('name', SortDirection.ASC);
+    }
+
     const self = this;
     this.settingsService.getSettings().then((settings: Settings) => {
       this.gamesService.getListings().then((data: string[]) => {
@@ -223,6 +244,7 @@ export class HomeComponent implements OnInit {
     this.selectedListing = listing;
     sessionStorage.setItem('selectedListing', listing);
     this.gamesService.getGames(this.selectedListing).then((data: Game[]) => {
+      this.sortGames(data);
       this.games = data;
       this.gamesEditMode.clear();
       for (const game of data) {
@@ -234,6 +256,33 @@ export class HomeComponent implements OnInit {
         }
       }
     });
+  }
+
+  setSort(field: string) {
+    if (this.sortData.field === field) {
+      if (this.sortData.direction === SortDirection.ASC) {
+        this.sortData.direction = SortDirection.DESC;
+      } else {
+        this.sortData.direction = SortDirection.ASC;
+      }
+    } else {
+      this.sortData.field = field;
+      this.sortData.direction = SortDirection.ASC;
+    }
+    sessionStorage.setItem('sortData', JSON.stringify(this.sortData));
+    this.sortGames(this.games);
+  }
+
+  getSortStatus(field: string): string {
+    if (this.sortData.field === field) {
+      if (this.sortData.direction === SortDirection.ASC) {
+        return '↑';
+      } else {
+        return '↓';
+      }
+    } else {
+      return '';
+    }
   }
 
   launch(game: Game) {
@@ -577,14 +626,8 @@ export class HomeComponent implements OnInit {
   }
 
   private addGameToSortedList(game: Game) {
-    let index: number;
-    for (index = 0; index < this.games.length &&
-      this.games[index].name.toLowerCase().localeCompare(game.name.toLowerCase()) < 0; index++) { }
-    if (index < this.games.length) {
-      this.games.splice(index, 0, game);
-    } else {
-      this.games.push(game);
-    }
+    this.games.push(game);
+    this.sortGames(this.games);
   }
 
   private addListingToListings(listing: string) {
@@ -627,5 +670,21 @@ export class HomeComponent implements OnInit {
       webMSXParams.TAPE = this.selectedGame.tape;
     }
     return webMSXParams;
+  }
+
+  private sortGames(games: Game[]) {
+    games.sort((a: Game, b: Game) => {
+      if (!a[this.sortData.field]) {
+        return 1;
+      } else if (!b[this.sortData.field]) {
+        return -1;
+      } else if (a[this.sortData.field].toString().toLowerCase() < b[this.sortData.field].toString().toLowerCase()) {
+        return this.sortData.direction === SortDirection.ASC ? -1 : 1;
+      } else if (a[this.sortData.field].toString().toLowerCase() > b[this.sortData.field].toString().toLowerCase()) {
+        return this.sortData.direction === SortDirection.ASC ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
   }
 }

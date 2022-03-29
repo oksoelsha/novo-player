@@ -28,7 +28,6 @@ export class GamesService {
   async getGames(listing: string): Promise<Game[]> {
     return new Promise<Game[]>((resolve, reject) => {
       this.ipc.once('getGamesResponse', (event, games) => {
-        games.sort((a: Game, b: Game) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
         resolve(games);
       });
       this.ipc.send('getGames', listing);

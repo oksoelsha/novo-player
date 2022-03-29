@@ -57,7 +57,7 @@ describe('GameUtils', () => {
   it('Genre function should return null if an out-of-range index is given', () => {
     const game: Game = new Game('name', '123abc', 256);
     expect(GameUtils.getGenre(0)).toBeNull();
-    expect(GameUtils.getGenre(51)).toBeNull();
+    expect(GameUtils.getGenre(52)).toBeNull();
   });
 });
 
