@@ -25,6 +25,10 @@
           </button>
         </div>
       </div>
+      <div class="d-inline-block ml-2" *ngIf="scanRunning">
+        <img src="assets/images/general/loading.gif">
+        {{ 'home.scanning' | translate }} . . .
+      </div>
       <div class="action-buttons">
         <div class="d-inline-block">
           <button class="btn btn-secondary btn-sm action-button" type="button" (click)="scanParameters.open()"
