@@ -18,6 +18,7 @@ import { Event, EventSource, EventType } from 'src/app/models/event';
 import { GameUtils } from 'src/app/models/game-utils';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { LocalizationService } from 'src/app/internationalization/localization.service';
+import { ChangeHistoryType, UndoService } from 'src/app/services/undo.service';
 
 enum SortDirection {
   ASC, DESC
@@ -67,7 +68,6 @@ export class HomeComponent implements OnInit {
   gamesEditMode: Map<string, boolean> = new Map();
   editedGameName: string;
   selectedGame: Game;
-  lastRemovedGame: Game = null;
   screenshotA1: GameSecondaryData;
   screenshotA2: GameSecondaryData;
   screenshotB1: GameSecondaryData;
@@ -90,7 +90,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private gamesService: GamesService, private scanner: ScannerService, private alertService: AlertsService,
     private settingsService: SettingsService, private eventsService: EventsService, private router: Router,
-    private contextMenuService: ContextMenuService, private localizationService: LocalizationService) { }
+    private contextMenuService: ContextMenuService, private localizationService: LocalizationService,
+    private undoService: UndoService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
@@ -130,6 +131,8 @@ export class HomeComponent implements OnInit {
         }, 600);
       } else if (this.ctrlOrCommandKey(event) && (event.key === 'f' || event.key === 'F')) {
         this.searchDropdown.open();
+      } else if (this.ctrlOrCommandKey(event) && (event.key === 'z' || event.key === 'Z')) {
+        this.undo();
       } else if (this.selectedGame != null) {
         if (event.key === 'Enter') {
           this.launch(this.selectedGame);
@@ -189,10 +192,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.initialize();
     this.gamesTable = document.getElementById('games-table-data');
-
-    if (sessionStorage.getItem('lastRemovedGame') != null) {
-      this.lastRemovedGame = JSON.parse(sessionStorage.getItem('lastRemovedGame'));
-    }
 
     if (sessionStorage.getItem('sortData') != null) {
       this.sortData = JSON.parse(sessionStorage.getItem('sortData'));
@@ -337,11 +336,9 @@ export class HomeComponent implements OnInit {
     this.gamesService.removeGame(game).then((removed: boolean) => {
       if (removed) {
         this.alertService.success(this.localizationService.translate('home.gamewasremoved') + ': ' + game.name);
-        this.lastRemovedGame = game;
         if (this.selectedGame != null && game.sha1Code === this.selectedGame.sha1Code) {
           this.initialize();
         }
-        sessionStorage.setItem('lastRemovedGame', JSON.stringify(game));
         this.removeGameFromList(game);
       } else {
         this.alertService.failure(this.localizationService.translate('home.gamewasnotremoved') + ': ' + game.name);
@@ -349,21 +346,53 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  undoRemove() {
-    if (this.lastRemovedGame != null) {
-      this.gamesService.saveGame(this.lastRemovedGame).then((added: boolean) => {
-        if (added) {
-          this.alertService.success(this.localizationService.translate('home.gamewasrestored') + ': ' + this.lastRemovedGame.name);
-          if (this.lastRemovedGame.listing === this.selectedListing) {
-            this.addGameToSortedList(this.lastRemovedGame);
+  undo() {
+    const changeHistory = this.undoService.getGameToRestore();
+    if (changeHistory) {
+      if (changeHistory.type === ChangeHistoryType.DELETE) {
+        const gameToRestore = changeHistory.oldGame;
+        this.gamesService.saveGame(gameToRestore).then((added: boolean) => {
+          if (added) {
+            this.alertService.success(this.localizationService.translate('home.gamewasrestored') + ': ' + gameToRestore.name +
+              ' [' + gameToRestore.listing + ']');
+            if (gameToRestore.listing === this.selectedListing) {
+              this.addGameToSortedList(gameToRestore);
+            }
+            this.addListingToListings(gameToRestore.listing);
+          } else {
+            this.alertService.failure(this.localizationService.translate('home.gamewasnotrestored') + ': ' + gameToRestore.name +
+              ' [' + gameToRestore.listing + ']');
           }
-          this.addListingToListings(this.lastRemovedGame.listing);
-          sessionStorage.removeItem('lastRemovedGame');
-          this.lastRemovedGame = null;
-        } else {
-          this.alertService.failure(this.localizationService.translate('home.gamewasnotrestored') + ': ' + this.lastRemovedGame.name);
-        }
-      });
+        });
+      } else {
+        const gameToRestore = changeHistory.oldGame;
+        const newGame = changeHistory.newGame;
+        this.gamesService.updateGame(newGame, gameToRestore, true).then((err: boolean) => {
+          if (err) {
+            this.alertService.failure(this.localizationService.translate('home.gamewasnotrestored') + ': ' + gameToRestore.name +
+              ' [' + gameToRestore.listing + ']');
+          } else {
+            this.alertService.success(this.localizationService.translate('home.gamewasrestored') + ': ' + gameToRestore.name +
+              ' [' + gameToRestore.listing + ']');
+            if (gameToRestore.listing === this.selectedListing) {
+              this.removeGameFromList(newGame, false);
+              this.addGameToSortedList(gameToRestore);
+              setTimeout(() => {
+                this.showInfo(gameToRestore);
+              }, 0);
+              if (gameToRestore.listing !== newGame.listing) {
+                // remove the other listing if it was empty - the easiest way to do it is to get all listings again
+                this.gamesService.getListings().then((data: string[]) => {
+                  this.listings = data;
+                });
+              }
+            } else if (gameToRestore.listing !== this.selectedListing && newGame.listing === this.selectedListing) {
+              this.removeGameFromList(newGame, true);
+              this.addListingToListings(gameToRestore.listing);
+            }
+          }
+        });
+      }
     }
   }
 

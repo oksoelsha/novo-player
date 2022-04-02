@@ -4,6 +4,7 @@ import { Game } from '../models/game';
 import { GameSecondaryData } from '../models/secondary-data';
 import { Totals } from '../models/totals';
 import { LaunchActivityService } from './launch-activity.service';
+import { UndoService } from './undo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { LaunchActivityService } from './launch-activity.service';
 export class GamesService {
   private ipc: IpcRenderer;
 
-  constructor(private launchActivityService: LaunchActivityService) {
+  constructor(private launchActivityService: LaunchActivityService, private undoService: UndoService) {
     this.ipc = window.require('electron').ipcRenderer;
   }
 
@@ -59,15 +60,21 @@ export class GamesService {
   async removeGame(game: Game) {
     return new Promise<boolean>((resolve, reject) => {
       this.ipc.once('removeGameResponse', (event, removed: boolean) => {
+        if (removed) {
+          this.undoService.addToHistory(game);
+        }
         resolve(removed);
       });
       this.ipc.send('removeGame', game);
     });
   }
 
-  async updateGame(oldGame: Game, newGame: Game) {
+  async updateGame(oldGame: Game, newGame: Game, restoreMode: boolean = false) {
     return new Promise<boolean>((resolve, reject) => {
       this.ipc.once('updateGameResponse', (event, err: boolean) => {
+        if (!err && !restoreMode) {
+          this.undoService.addToHistory(oldGame, newGame);
+        }
         resolve(err);
       });
       this.ipc.send('updateGame', oldGame, newGame);

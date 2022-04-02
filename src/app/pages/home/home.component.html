@@ -4,8 +4,8 @@
       <div ngbDropdown class="d-inline-block mr-1" (openChange)="handleOpenMenuEvents($event)">
         <button class="btn btn-secondary btn-sm" type="button" ngbDropdownToggle></button>
         <div ngbDropdownMenu>
-          <button ngbDropdownItem type="button" (click)="undoRemove()" [disabled]="lastRemovedGame == null">
-            {{ 'home.restorelastdeletedgame' | translate }}
+          <button ngbDropdownItem type="button" (click)="undo()">
+            {{ 'home.undo' | translate }}
           </button>
           <div class="dropdown-divider"></div>
           <button ngbDropdownItem type="button" (click)="manageListings.open()" [disabled]="!listings.length">

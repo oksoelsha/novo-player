@@ -35,7 +35,7 @@
     "mapper": "Mapper",
     "start": "Début",
     "remark": "Remarque",
-    "restorelastdeletedgame": "Restaurer le dernier jeu supprimé",
+    "undo": "Annuler",
     "managelistings": "Gérer les listes",
     "addgames": "Ajouter des jeux",
     "favorites": "Favoris",
