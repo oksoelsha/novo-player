@@ -81,14 +81,18 @@
       <div id="games-table-data" tabindex="0" (keydown)="processKeyEventsOnTable($event)">
         <table>
           <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}"
-            class="{{ selectedGameClass(game) }}" (contextmenu)="onContextMenu($event, game)">
-            <td class="medium-img"><img src="{{ getGameMedium(game) }}" draggable="false"></td>
-            <td *ngIf="!gamesEditMode.get(game.sha1Code)" class="name">{{ game.name }}</td>
-            <td *ngIf="gamesEditMode.get(game.sha1Code)" class="name">
-              <input id="gameNameEditInput" #gameNameEditInput type="text" [(ngModel)]="editedGameName"
-                (keyup.enter)="processNewGameName($event)" (keyup.escape)="cancelEditMode()"
-                (focusout)="cancelEditMode()" />
-            </td>
+            class="{{ game | selectedGameClass : selectedGame }}" (contextmenu)="onContextMenu($event, game)">
+            <td class="medium-img"><img src="{{ game | gameMediumIcon }}" draggable="false"></td>
+            <ng-container *ngIf="(game | editRowMode : gameToRename); else editRow">
+              <td class="name">
+                <input id="gameNameEditInput" #gameNameEditInput type="text" [(ngModel)]="editedGameName"
+                  (keyup.enter)="processNewGameName($event)" (keyup.escape)="cancelEditMode()"
+                  (focusout)="cancelEditMode()" />
+              </td>
+            </ng-container>
+            <ng-template #editRow>
+              <td class="name">{{ game.name }}</td>
+            </ng-template>
             <td class="company">{{ game.company }}</td>
             <td class="year">{{ game.year }}</td>
             <td>

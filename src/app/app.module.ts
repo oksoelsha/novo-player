@@ -41,6 +41,9 @@ import { FileSystemChooserComponent } from './shared/fs-chooser/fs-chooser.compo
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { WebLinkComponent } from './shared/web-link/web-link.component';
 import { WindowControlsComponent } from './shared/window-controls/window-controls.component';
+import { GameMediumIconPipe } from './pages/home/pipes/game-medium-icon.pipe';
+import { SelectedGameClassPipe } from './pages/home/pipes/selected-game-class.pipe';
+import { EditRowModePipe } from './pages/home/pipes/edit-row-mode.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/locales/', '.json');
@@ -76,7 +79,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ManageListingsComponent,
     LaunchEventsComponent,
     PaginationComponent,
-    InsightsComponent
+    InsightsComponent,
+    GameMediumIconPipe,
+    SelectedGameClassPipe,
+    EditRowModePipe
   ],
   imports: [
     BrowserModule,

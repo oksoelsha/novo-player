@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { LocalizationService } from 'src/app/internationalization/localization.service';
 import { Game } from 'src/app/models/game';
 import { GameUtils } from 'src/app/models/game-utils';
@@ -8,7 +8,8 @@ import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-home-game-details',
   templateUrl: './game-details.component.html',
-  styleUrls: ['./game-details.component.sass']
+  styleUrls: ['./game-details.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameDetailsComponent implements OnChanges {
 

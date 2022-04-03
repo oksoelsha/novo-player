@@ -65,9 +65,9 @@ export class HomeComponent implements OnInit {
 
   selectedListing = '';
   games: Game[] = [];
-  gamesEditMode: Map<string, boolean> = new Map();
   editedGameName: string;
   selectedGame: Game;
+  gameToRename: Game;
   screenshotA1: GameSecondaryData;
   screenshotA2: GameSecondaryData;
   screenshotB1: GameSecondaryData;
@@ -245,9 +245,8 @@ export class HomeComponent implements OnInit {
     this.gamesService.getGames(this.selectedListing).then((data: Game[]) => {
       this.sortGames(data);
       this.games = data;
-      this.gamesEditMode.clear();
+      this.gameToRename = null;
       for (const game of data) {
-        this.gamesEditMode.set(game.sha1Code, false);
         if (sha1Code && game.sha1Code === sha1Code) {
           setTimeout(() => {
             this.showInfo(game);
@@ -307,8 +306,8 @@ export class HomeComponent implements OnInit {
   }
 
   edit(game: Game) {
+    this.gameToRename = this.selectedGame;
     this.editedGameName = game.name;
-    this.gamesEditMode.set(game.sha1Code, true);
     setTimeout(() => {
       this.gameNameEdit.nativeElement.focus();
       this.gameNameEdit.nativeElement.select();
@@ -321,13 +320,12 @@ export class HomeComponent implements OnInit {
       renamedGame.name = this.editedGameName.trim();
       this.update(this.selectedGame, renamedGame);
       event.stopPropagation();
-      this.editedGameName = '';
-      this.gamesEditMode.set(this.selectedGame.sha1Code, false);
+      this.cancelEditMode();
     }
   }
 
   cancelEditMode() {
-    this.gamesEditMode.set(this.selectedGame.sha1Code, false);
+    this.gameToRename = null;
     this.editedGameName = '';
   }
 
@@ -510,20 +508,6 @@ export class HomeComponent implements OnInit {
     return game?.favorite;
   }
 
-  getGameMedium(game: Game): string {
-    if (game.romA != null) {
-      return 'assets/images/media/rom.png';
-    } else if (game.diskA != null) {
-      return 'assets/images/media/disk.png';
-    } else if (game.tape != null) {
-      return 'assets/images/media/tape.png';
-    } else if (game.harddisk != null) {
-      return 'assets/images/media/harddisk.png';
-    } else if (game.laserdisc != null) {
-      return 'assets/images/media/laserdisc.png';
-    }
-  }
-
   startScan(parameters: ScanParameters) {
     this.alertService.info(this.localizationService.translate('home.startedscanprocess'));
     this.scanRunning = true;
@@ -540,14 +524,6 @@ export class HomeComponent implements OnInit {
       });
       this.scanRunning = false;
     });
-  }
-
-  selectedGameClass(game: Game): string {
-    if (this.selectedGame != null && game.sha1Code === this.selectedGame.sha1Code) {
-      return 'selected-game';
-    } else {
-      return '';
-    }
   }
 
   setSelectedMusicFile(musicFile: string) {
@@ -677,7 +653,7 @@ export class HomeComponent implements OnInit {
   }
 
   private isEditMode(): boolean {
-    return this.selectedGame && this.gamesEditMode.get(this.selectedGame.sha1Code);
+    return this.selectedGame && this.selectedGame === this.gameToRename;
   }
 
   private showInfoBySha1Code(sha1Code: string) {
