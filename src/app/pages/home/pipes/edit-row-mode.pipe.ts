@@ -6,7 +6,7 @@ import { Game } from 'src/app/models/game';
 })
 export class EditRowModePipe implements PipeTransform {
 
-  transform(game: Game, gameToRename): boolean {
+  transform(game: Game, gameToRename: Game): boolean {
     return game === gameToRename;
   }
 }

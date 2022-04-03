@@ -230,6 +230,7 @@ export class HomeComponent implements OnInit {
 
   setSelectedListing(listing: string) {
     if (listing !== this.selectedListing) {
+      this.games = [];
       this.selectedGame = null;
       sessionStorage.removeItem('selectedGame');
       this.setScreenshots(this.noScreenshotData);
