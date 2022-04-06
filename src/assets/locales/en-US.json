@@ -75,7 +75,8 @@
     "es-ES": "Spanish",
     "pt-BR": "Portuguese",
     "fr-FR": "French",
-    "it-IT": "Italian"
+    "it-IT": "Italian",
+    "ja-JP": "Japanese"
   },
   "medium": {
     "rom": "ROM",
@@ -184,7 +185,7 @@
     },
     "managelistings": {
       "total": "Total",
-      "deletelistingconfirmation": "Deleted seleted listing?",
+      "deletelistingconfirmation": "Delete selected listing?",
       "mergelistingsconfirmation": "Name exists already. Merge?"
     }
   },

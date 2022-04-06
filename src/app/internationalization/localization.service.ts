@@ -10,7 +10,8 @@ export class LocalizationService {
     'es-ES',
     'pt-BR',
     'fr-FR',
-    'it-IT'
+    'it-IT',
+    'ja-JP'
   ];
   private languageSetSubject = new Subject<any>();
 

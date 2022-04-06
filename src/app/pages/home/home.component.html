@@ -30,15 +30,15 @@
         {{ 'home.scanning' | translate }} . . .
       </div>
       <div class="action-buttons">
-        <div class="d-inline-block">
+        <div class="d-inline-block" placement="top" [ngbTooltip]="'home.addgames' | translate">
           <button class="btn btn-secondary btn-sm action-button" type="button" (click)="scanParameters.open()"
-            [disabled]="scanRunning" placement="top" [ngbTooltip]="'home.addgames' | translate">
+            [disabled]="scanRunning">
             <strong>+</strong>
           </button>
         </div>
-        <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
-          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle placement="top"
-            [ngbTooltip]="'home.favorites' | translate">
+        <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)"
+          placement="top" [ngbTooltip]="'home.favorites' | translate">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle>
             &starf;
           </button>
           <div ngbDropdownMenu>
@@ -51,11 +51,10 @@
               </div>
             </button>
           </div>
-        </div>
+        </div>       
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;"
-          #searchDropdown="ngbDropdown">
-          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle placement="top"
-            [ngbTooltip]="'home.search' | translate">
+          #searchDropdown="ngbDropdown" placement="top" [ngbTooltip]="'home.search' | translate">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle>
             ⌕
           </button>
           <div ngbDropdownMenu>
