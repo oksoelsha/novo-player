@@ -16,7 +16,7 @@
                 </app-drop-down>
             </td>
             <td><img src="assets/images/general/info.png" placement="top"
-                    ngbTooltip="{{ 'popups.edithardware.infomsg' | translate }}"></td>
+                    [ngbTooltip]="'popups.edithardware.infomsg' | translate"></td>
         </tr>
         <tr>
             <td class="medium">{{ 'popups.edithardware.inputdevice' | translate }}</td>
@@ -26,7 +26,7 @@
                 </app-drop-down>
             </td>
             <td><img src="assets/images/general/info.png" placement="top"
-                    ngbTooltip="{{ 'popups.edithardware.infomsg' | translate }}"></td>
+                    [ngbTooltip]="'popups.edithardware.infomsg' | translate"></td>
         </tr>
         <tr>
             <td class="medium">GFX9000</td>
@@ -38,7 +38,7 @@
                 </ng-toggle>
             </td>
             <td><img src="assets/images/general/info.png" placement="top"
-                    ngbTooltip="{{ 'popups.edithardware.infomsg' | translate }}"></td>
+                    [ngbTooltip]="'popups.edithardware.infomsg' | translate"></td>
         </tr>
     </table>
     <button class="btn btn-primary btn-sm mt-3" (click)="save()" (keyup.enter)="save()">

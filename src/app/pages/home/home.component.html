@@ -30,15 +30,15 @@
         {{ 'home.scanning' | translate }} . . .
       </div>
       <div class="action-buttons">
-        <div class="d-inline-block" placement="top" [ngbTooltip]="'home.addgames' | translate">
+        <div class="d-inline-block">
           <button class="btn btn-secondary btn-sm action-button" type="button" (click)="scanParameters.open()"
-            [disabled]="scanRunning">
+            [disabled]="scanRunning" [title]="'home.addgames' | translate">
             <strong>+</strong>
           </button>
         </div>
-        <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)"
-          placement="top" [ngbTooltip]="'home.favorites' | translate">
-          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle>
+        <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); getFavorites($event)">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle
+            [title]="'home.favorites' | translate">
             &starf;
           </button>
           <div ngbDropdownMenu>
@@ -51,14 +51,16 @@
               </div>
             </button>
           </div>
-        </div>       
+        </div>
         <div ngbDropdown class="d-inline-block pl-1" (openChange)="handleOpenMenuEvents($event); searchMenuOpen = $event;"
-          #searchDropdown="ngbDropdown" placement="top" [ngbTooltip]="'home.search' | translate">
-          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle>
+          #searchDropdown="ngbDropdown">
+          <button class="btn btn-secondary btn-sm action-button" type="button" ngbDropdownToggle
+            [title]="'home.search' | translate">
             ⌕
           </button>
           <div ngbDropdownMenu>
-            <app-home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen"></app-home-game-search>
+            <app-home-game-search (selectedGame)="showFoundGame($event)" [parentMenuOpen]="searchMenuOpen">
+            </app-home-game-search>
           </div>
         </div>
       </div>
