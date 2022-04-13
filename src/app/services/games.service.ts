@@ -35,14 +35,16 @@ export class GamesService {
     });
   }
 
-  launchGame(game: Game): Promise<string> {
+  async launchGame(game: Game): Promise<string> {
     const time: number = Date.now();
-    this.launchActivityService.recordGameStart(game, time);
     return new Promise<string>((resolve, reject) => {
       this.ipc.once('launchGameResponse' + time, (event, errorMessage: string) => {
         // this resolving means that either openMSX failed to start or the window was closed
         this.launchActivityService.recordGameFinish(game, time);
         resolve(errorMessage);
+      });
+      this.ipc.once('launchGameProcessIdResponse' + game.sha1Code, (event, pid: number) => {
+        this.launchActivityService.recordGameStart(game, time, pid);
       });
       this.ipc.send('launchGame', game, time);
     });
@@ -81,7 +83,7 @@ export class GamesService {
     });
   }
 
-  getSecondaryData(game: Game): Promise<GameSecondaryData> {
+  async getSecondaryData(game: Game): Promise<GameSecondaryData> {
     return new Promise<GameSecondaryData>((resolve, reject) => {
       this.ipc.once('getSecondaryDataResponse' + game.sha1Code, (event, arg) => {
         resolve(arg);

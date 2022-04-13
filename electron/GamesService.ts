@@ -183,7 +183,7 @@ export class GamesService {
         } else if (game.laserdisc != null) {
             return game.laserdisc;
         } else {
-            return "";
+            return '';
         }
     }
 

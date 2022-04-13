@@ -1,7 +1,6 @@
 import * as cp from 'child_process'
 import { BrowserWindow, ipcMain } from 'electron'
 import { EventLogService } from 'EventLogService'
-import * as path from 'path'
 import { SettingsService } from 'SettingsService'
 import { Event, EventSource, EventType } from '../src/app/models/event'
 import { Game } from '../src/app/models/game'
@@ -39,11 +38,11 @@ export class EmulatorLaunchService {
     private static readonly Input_Device_TRACKBALL = 'plug joyportb trackball';
     private static readonly Input_Device_TOUCHPAD = 'plug joyportb touchpad';
 
-    private static readonly FDD_MODE_DISABLE_SECOND = 'after boot { keymatrixdown 6 2; after time 14 \\\"keymatrixup 6 2\\\" }';
-    private static readonly FDD_MODE_DISABLE_BOTH = 'after boot { keymatrixdown 6 1; after time 14 \\\"keymatrixup 6 1\\\" }';
+    private static readonly FDD_MODE_DISABLE_SECOND = 'after boot { keymatrixdown 6 2; after time 14 \"keymatrixup 6 2\" }';
+    private static readonly FDD_MODE_DISABLE_BOTH = 'after boot { keymatrixdown 6 1; after time 14 \"keymatrixup 6 1\" }';
 
     private static readonly ENABLE_GFX9000_CMD = 'ext gfx9000; ' +
-        'ext slotexpander; ' + 'after time 10 \\\"set videosource GFX9000\\\"';
+        'ext slotexpander; ' + 'after time 10 \"set videosource GFX9000\"';
 
     private static readonly tclCommandArgs: TCLCommands[] = [
         new TCLCommands('inputDevice', [
@@ -80,24 +79,29 @@ export class EmulatorLaunchService {
 
     private launch(game: Game, time: number) {
         var self = this;
-        var openmsx = '"' + path.join(this.settingsService.getSettings().openmsxPath, PlatformUtils.getOpenmsxBinary()) + '" ';
-        const ls = cp.exec(openmsx + this.getArguments(game), function (error: cp.ExecException, stdout, stderr) {
-            if (error) {
-                console.log(error.message);
-                let errorMessage: string;
-                let splitText: string = self.getSplitText(error);
-                if (splitText) {
-                    errorMessage = error.message.substring(error.message.indexOf(splitText) + splitText.length);
-                } else {
-                    errorMessage = 'Error launching openMSX';
-                }
-                self.win.webContents.send('launchGameResponse' + time, errorMessage);
+        var options = {
+            cwd: this.settingsService.getSettings().openmsxPath,
+            detached: true
+        };
+
+        const process = cp.spawn(PlatformUtils.getOpenmsxBinary(), this.getArguments(game), options);
+        process.on("error", (error) => {
+            console.log(error.message);
+            let errorMessage: string;
+            let splitText: string = self.getSplitText(error);
+            if (splitText) {
+                errorMessage = error.message.substring(error.message.indexOf(splitText) + splitText.length);
             } else {
-                // this is called when openMSX window is closed
-                self.win.webContents.send('launchGameResponse' + time);
+                errorMessage = 'Error launching openMSX';
             }
+            self.win.webContents.send('launchGameResponse' + time, errorMessage);
         });
 
+        process.on("close", (error: any) => {
+            self.win.webContents.send('launchGameResponse' + time);
+        });
+
+        this.win.webContents.send('launchGameProcessIdResponse' + game.sha1Code, process.pid);
         this.eventLogService.logEvent(new Event(EventSource.openMSX, EventType.LAUNCH, GameUtils.getMonikor(game)));
     }
 
@@ -111,16 +115,20 @@ export class EmulatorLaunchService {
         }
     }
 
-    private getArguments(game: Game): string {
-        var basicArgs = EmulatorLaunchService.fieldsToArgs
-            .filter(e => game[e[0]])
-            .map(e => '-' + e[1] + ' "' + game[e[0]] + '"')
-            .join(' ');
+    private getArguments(game: Game): string[] {
+        let args: string[] = [];
+        EmulatorLaunchService.fieldsToArgs.forEach (field => {
+            if (game[field[0]]) {
+                args.push('-' + field[1]);
+                args.push(game[field[0]]);
+            }
+        });
+        this.addTclCommandArguments(args, game);
 
-        return basicArgs + this.getTclCommandArguments(game);
+        return args;
     }
 
-    private getTclCommandArguments(game: Game): string {
+    private addTclCommandArguments(args: string[], game: Game) {
         let commandLineArgs: string[] = [];
         for (let item of EmulatorLaunchService.tclCommandArgs) {
             if (game[item.field]) {
@@ -131,11 +139,9 @@ export class EmulatorLaunchService {
                 }
             }
         }
-
         if (commandLineArgs.length > 0) {
-            return ' -command "' + commandLineArgs.join(';') + '"';
-        } else {
-            return '';
+            args.push('-command');
+            args.push(commandLineArgs.join(';'));
         }
     }
 }

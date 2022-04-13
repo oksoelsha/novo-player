@@ -6,9 +6,26 @@
             <table class="table table-sm text-white" *ngIf="launchActivities.length > 0">
                 <tr *ngFor="let activity of launchActivities">
                     <td class="activity-game-name" title="{{ activity.game.name }}">{{ activity.game.name }}</td>
-                    <td class="activity-game-listing" title="{{ activity.game.listing }}">{{ activity.game.listing }}</td>
+                    <td class="activity-game-listing" title="{{ activity.game.listing }}">{{ activity.game.listing }}
+                    </td>
                     <td>
                         <app-elapsed-time [startTime]="activity.time"></app-elapsed-time>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle openmsx-connect"
+                                data-toggle="dropdown">
+                                ● ● ●
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-righ">
+                                <button ngbDropdownItem type="button" (click)="resetMachine(activity.pid)">
+                                    Reset
+                                </button>
+                                <button ngbDropdownItem type="button" (click)="switchDisk(activity.pid)">
+                                    Switch disk
+                                </button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </table>

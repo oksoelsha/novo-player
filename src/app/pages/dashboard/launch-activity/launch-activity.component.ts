@@ -32,4 +32,12 @@ export class LaunchActivityComponent implements OnDestroy {
 
     return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
   }
+
+  switchDisk(pid: number) {
+    this.launchActivityService.switchDisk(pid, 'C:\\Games\\MSX System\\Software\\DSK\\aleste2\\Aleste2_2.zip');
+  }
+
+  resetMachine(pid: number) {
+    this.launchActivityService.resetMachine(pid);
+  }
 }

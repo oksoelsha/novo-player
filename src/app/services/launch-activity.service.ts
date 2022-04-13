@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IpcRenderer } from 'electron';
 import { Observable, Subject } from 'rxjs';
 import { Game } from '../models/game';
 
@@ -9,11 +10,14 @@ export class LaunchActivityService {
 
   private subject = new Subject<LaunchActivity[]>();
   private launchActivities: LaunchActivity[] = [];
+  private ipc: IpcRenderer;
 
-  constructor() { }
+  constructor() {
+    this.ipc = window.require('electron').ipcRenderer;
+  }
 
-  recordGameStart(game: Game, time: number) {
-    this.launchActivities.push(new LaunchActivity(game, time));
+  recordGameStart(game: Game, time: number, pid: number) {
+    this.launchActivities.push(new LaunchActivity(game, time, pid));
     this.subject.next(this.launchActivities);
   }
 
@@ -32,14 +36,34 @@ export class LaunchActivityService {
   getUpdatedActivities(): Observable<LaunchActivity[]> {
     return this.subject.asObservable();
   }
+
+  switchDisk(pid: number, disk: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once('switchDiskOnOpenmsxResponse', (event: any, switched: boolean) => {
+        resolve(switched);
+      });
+      this.ipc.send('switchDiskOnOpenmsx', pid, disk);
+    });
+  }
+
+  resetMachine(pid: number) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once('resetOnOpenmsxResponse', (event: any, reset: boolean) => {
+        resolve(reset);
+      });
+      this.ipc.send('resetOnOpenmsx', pid);
+    });
+  }
 }
 
 export class LaunchActivity {
   game: Game;
   time: number;
+  pid: number;
 
-  constructor(game: Game, time: number) {
+  constructor(game: Game, time: number, pid: number) {
     this.game = game;
     this.time = time;
+    this.pid = pid;
   }
 }
