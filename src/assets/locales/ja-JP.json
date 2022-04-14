@@ -144,7 +144,8 @@
     "launchhistory": "起動履歴",
     "insights": "洞察",
     "toptenlaunched": "ほとんどの開始ゲーム",
-    "launchtimes": "起動時間"
+    "launchtimes": "起動時間",
+    "switchdisks": "スイッチ ディスク"
   },
   "popups": {
     "newlisting": "新しいリスト",

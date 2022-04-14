@@ -144,7 +144,8 @@
     "launchhistory": "Launch History",
     "insights": "Insights",
     "toptenlaunched": "Top Ten Launched",
-    "launchtimes": "Launch Times"
+    "launchtimes": "Launch Times",
+    "switchdisks": "Switch Disks"
   },
   "popups": {
     "newlisting": "New listing",

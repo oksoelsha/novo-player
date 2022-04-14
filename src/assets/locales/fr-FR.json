@@ -144,7 +144,8 @@
     "launchhistory": "Historique des lancements",
     "insights": "Informations",
     "toptenlaunched": "Les plus joués",
-    "launchtimes": "Heures de jeu"
+    "launchtimes": "Heures de jeu",
+    "switchdisks": "Changer de disque"
   },
   "popups": {
     "newlisting": "Nouvelle liste",

@@ -37,12 +37,22 @@ export class LaunchActivityService {
     return this.subject.asObservable();
   }
 
-  switchDisk(pid: number, disk: string) {
+  getFileGroup(pid: number, game: Game): Promise<string[]> {
+    return new Promise<string[]>((resolve, reject) => {
+      this.ipc.once('getFileGroupResponse' + pid, (event: any, fileGroup: string[]) => {
+        resolve(fileGroup);
+      });
+      //TODO Send main file: disk or tape
+      this.ipc.send('getFileGroup', pid, game.diskA);
+    });
+  }
+
+  switchDisk(pid: number, medium: string) {
     return new Promise<boolean>((resolve, reject) => {
       this.ipc.once('switchDiskOnOpenmsxResponse', (event: any, switched: boolean) => {
         resolve(switched);
       });
-      this.ipc.send('switchDiskOnOpenmsx', pid, disk);
+      this.ipc.send('switchDiskOnOpenmsx', pid, medium);
     });
   }
 
