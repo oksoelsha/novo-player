@@ -145,7 +145,8 @@
     "insights": "Insights",
     "toptenlaunched": "Top Ten Launched",
     "launchtimes": "Launch Times",
-    "switchdisks": "Switch Disks"
+    "switchdisks": "Switch Disks",
+    "switchtapes": "Switch Tapes"
   },
   "popups": {
     "newlisting": "New listing",

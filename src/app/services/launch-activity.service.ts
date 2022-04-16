@@ -37,13 +37,12 @@ export class LaunchActivityService {
     return this.subject.asObservable();
   }
 
-  getFileGroup(pid: number, game: Game): Promise<string[]> {
+  getFileGroup(pid: number, medium: string): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
       this.ipc.once('getFileGroupResponse' + pid, (event: any, fileGroup: string[]) => {
         resolve(fileGroup);
       });
-      //TODO Send main file: disk or tape
-      this.ipc.send('getFileGroup', pid, game.diskA);
+      this.ipc.send('getFileGroup', pid, medium);
     });
   }
 
@@ -53,6 +52,15 @@ export class LaunchActivityService {
         resolve(switched);
       });
       this.ipc.send('switchDiskOnOpenmsx', pid, medium);
+    });
+  }
+
+  switchTape(pid: number, medium: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once('switchTapeOnOpenmsxResponse', (event: any, switched: boolean) => {
+        resolve(switched);
+      });
+      this.ipc.send('switchTapeOnOpenmsx', pid, medium);
     });
   }
 

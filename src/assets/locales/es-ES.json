@@ -145,7 +145,8 @@
     "insights": "Conclusiones",
     "toptenlaunched": "Más jugados",
     "launchtimes": "Tiempos de juego",
-    "switchdisks": "Cambiar discos"
+    "switchdisks": "Cambiar disco",
+    "switchtapes": "Cambiar cassette"
   },
   "popups": {
     "newlisting": "Nueva lista",

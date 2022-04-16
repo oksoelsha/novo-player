@@ -24,9 +24,19 @@ export class LaunchActivityComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.launchActivities.forEach(activity => {
-      this.launchActivityService.getFileGroup(activity.pid, activity.game).then((fileGroup: string[]) => {
-        this.fileGroupMap.set(activity.pid, fileGroup);
-      });
+      let medium: string;
+      if (this.isDisk(activity.game)) {
+        medium = activity.game.diskA;
+      } else if (this.isTape(activity.game)) {
+        medium = activity.game.tape;
+      } else {
+        medium = null;
+      }
+      if (medium) {
+        this.launchActivityService.getFileGroup(activity.pid, medium).then((fileGroup: string[]) => {
+          this.fileGroupMap.set(activity.pid, fileGroup);
+        });
+      }
     })
   }
 
@@ -35,8 +45,15 @@ export class LaunchActivityComponent implements OnInit, OnDestroy {
   }
 
   getMediumDisplayName(medium: string) {
-    //FIX IT FOR non-WINDOWS
-    return medium.substring(medium.lastIndexOf('\\') + 1, medium.lastIndexOf('.'));
+    let separatorIndex = medium.lastIndexOf('\\');
+    if (separatorIndex < 0) {
+      separatorIndex = medium.lastIndexOf('/')
+    }
+    return medium.substring(separatorIndex + 1, medium.lastIndexOf('.'));
+  }
+
+  isMediumCanHaveGroup(game: Game): boolean {
+    return this.isDisk(game) || this.isTape(game);
   }
 
   getTimeDisplay(time: number): string {
@@ -45,14 +62,26 @@ export class LaunchActivityComponent implements OnInit, OnDestroy {
     const minutes = '0' + date.getMinutes();
     const seconds = '0' + date.getSeconds();
 
-    return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    return hours + ':' + minutes.substring(-2) + ':' + seconds.substring(-2);
   }
 
-  switchDisk(pid: number, medium: string) {
-    this.launchActivityService.switchDisk(pid, medium);
+  switchMedium(pid: number, game: Game, medium: string) {
+    if (this.isDisk(game)) {
+      this.launchActivityService.switchDisk(pid, medium);
+    } else {
+      this.launchActivityService.switchTape(pid, medium);
+    }
   }
 
   resetMachine(pid: number) {
     this.launchActivityService.resetMachine(pid);
+  }
+
+  private isDisk(game: Game) {
+    return game.romA == null && game.diskA != null;
+  }
+
+  private isTape(game: Game) {
+    return game.romA == null && game.diskA == null && game.tape != null;
   }
 }

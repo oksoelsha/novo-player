@@ -138,11 +138,14 @@ export class FilesService {
     private getFileGroup(filename: string): string[] {
         const diskPatternIndexParenthesis = filename.indexOf('(Disk ');
         const diskPatternIndexSquare = filename.indexOf('[Disk ');
+        const tapePatternIndex = filename.indexOf('(Side ');
         let counterIndex: number;
         if (diskPatternIndexParenthesis > 0 && filename.indexOf(' of ') == (diskPatternIndexParenthesis + 7)) {
             counterIndex = diskPatternIndexParenthesis + 6;
         } else if (diskPatternIndexSquare > 0 && filename.indexOf(' of ') == (diskPatternIndexSquare + 7)) {
             counterIndex = diskPatternIndexSquare + 6;
+        } else if (tapePatternIndex > 0 && filename.indexOf(')', tapePatternIndex) == (tapePatternIndex + 7)) {
+            counterIndex = tapePatternIndex + 6;
         } else {
             counterIndex = filename.lastIndexOf('.') - 1;
         }

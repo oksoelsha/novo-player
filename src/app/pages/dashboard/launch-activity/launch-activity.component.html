@@ -13,17 +13,20 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle openmsx-connect" data-toggle="dropdown">
+                            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle openmsx-connect"
+                                data-toggle="dropdown">
                                 ● ● ●
                             </button>
                             <div class="dropdown-menu dropdown-menu-right openmsx-connect-dropdown-scroll">
                                 <button ngbDropdownItem type="button" (click)="resetMachine(activity.pid)">
                                     {{ 'common.reset' | translate }}
                                 </button>
-                                <ng-container *ngIf="fileGroupMap.get(activity.pid).length > 1">
-                                    <h6 class="dropdown-header">{{ 'dashboard.switchdisks' | translate }}:</h6>
-                                    <button *ngFor="let medium of fileGroupMap.get(activity.pid)" ngbDropdownItem type="button"
-                                        (click)="switchDisk(activity.pid, medium)">
+                                <ng-container
+                                    *ngIf="isMediumCanHaveGroup(activity.game) && fileGroupMap.get(activity.pid).length > 1">
+                                    <h6 *ngIf="isDisk(activity.game)" class="dropdown-header">{{ 'dashboard.switchdisks' | translate }}:</h6>
+                                    <h6 *ngIf="isTape(activity.game)" class="dropdown-header">{{ 'dashboard.switchtapes' | translate }}:</h6>
+                                    <button *ngFor="let medium of fileGroupMap.get(activity.pid)" ngbDropdownItem
+                                        type="button" (click)="switchMedium(activity.pid, activity.game, medium)">
                                         <div class="ml-2">{{ getMediumDisplayName(medium) }}</div>
                                     </button>
                                 </ng-container>
