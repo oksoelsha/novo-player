@@ -196,6 +196,9 @@
       "lessthan1minago": "< 1 min",
       "lessthan1minagodetail": "Lanzado hace menos de un minuto",
       "launched": "Lanzado"
+    },
+    "dropdownwithinput": {
+      "inputfieldhelp": "Presione Enter o haga clic en la flecha para usar el nuevo nombre"
     }
   }
 }

@@ -196,6 +196,9 @@
       "lessthan1minago": "1分未満前",
       "lessthan1minagodetail": "1分以内にリリースされました",
       "launched": "実施中"
+    },
+    "dropdownwithinput": {
+      "inputfieldhelp": "Enterキーを押すか、矢印をクリックして新しい名前を使用します"
     }
   }
 }

@@ -10,14 +10,15 @@
             </button>
         </div>
         <div *ngIf="list.length > 0" class="dropdown-divider mt-0 mb-0"></div>
-        <hr/>
+        <hr />
         <div class="dropdown">
             <h6 class="dropdown-header">{{ defaultNewLabel }}</h6>
         </div>
         <div class="dropdown pl-4 pr-4">
             <div class="input-group input-group-sm mb-3">
                 <input type="text" class="form-control" name="item" (keydown.enter)="setEnteredItem($event)"
-                    [(ngModel)]="enteredItem" />
+                    [(ngModel)]="enteredItem" [ngbTooltip]="'shared.dropdownwithinput.inputfieldhelp' | translate"
+                    placement="top" />
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button"
                         (click)="setEnteredItem($event)">&gt;</button>

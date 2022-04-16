@@ -196,6 +196,9 @@
       "lessthan1minago": "< 1 min",
       "lessthan1minagodetail": "Avviato meno di un minuto fa",
       "launched": "Avviato"
+    },
+    "dropdownwithinput": {
+      "inputfieldhelp": "Premi Invio o fai clic sulla freccia per utilizzare il nuovo nome"
     }
   }
 }

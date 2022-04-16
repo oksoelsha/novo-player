@@ -196,6 +196,9 @@
       "lessthan1minago": "< 1 min ago",
       "lessthan1minagodetail": "Launched less than a minute ago",
       "launched": "Launched"
+    },
+    "dropdownwithinput": {
+      "inputfieldhelp": "Press Enter or click on the arrow to use the new name"
     }
   }
 }
