@@ -3,7 +3,7 @@ import * as os from 'os';
 import * as fs from 'fs';
 import * as util from 'util';
 import * as path from 'path';
-import { parseString } from 'xml2js';
+//import { parseString } from 'xml2js';
 import { htonl, ntohl } from 'network-byte-order';
 
 import * as NES from 'node-expose-sspi-strict';
@@ -41,7 +41,7 @@ export class OpenmsxConnector {
 			this.connected = false;
 		});
 		this.openmsx.on('data', data => {
-			this.handleOpenMSXResponse(data);
+//			this.handleOpenMSXResponse(data);
 		});
 
 		if (os.platform() == "win32") {
@@ -122,7 +122,7 @@ export class OpenmsxConnector {
 			}
 		});
 	}
-
+/*
 	private async parse(str: string): Promise<any> {
 		return new Promise<any>((resolve, reject) => {
 			parseString(str, (error: any, result: any) => {
@@ -131,7 +131,7 @@ export class OpenmsxConnector {
 			});
 		});
 	}
-
+*/
 	private async waitResponse(): Promise<ArrayBuffer> {
 		return new Promise<ArrayBuffer>(async (resolve, reject) => {
 			this.openmsx.once('readable', () => {
@@ -218,7 +218,7 @@ export class OpenmsxConnector {
 			resolve(true);
 		});
 	}
-
+/*
 	private async handleOpenMSXResponse(data: Buffer) {
 		let str: string = data.toString();
 		if (str.indexOf("<openmsx-output>") == 0) {
@@ -236,4 +236,5 @@ export class OpenmsxConnector {
 			}
 		}
 	}
+*/
 }
