@@ -10,7 +10,7 @@ import { ScanService } from './ScanService'
 import { EmulatorHardwareService } from './EmulatorHardwareService'
 import { HashService } from './HashService'
 import { EventLogService } from './EventLogService'
-import { OpenmsxControlService } from './OpenmsxControlService'
+import { OpenMSXControlService } from './OpenMSXControlService'
 
 let win: BrowserWindow;
 
@@ -68,11 +68,11 @@ function initializeServices() {
 
     const eventLogService = new EventLogService(win);
 
-    const emulatorLaunchService = new EmulatorLaunchService(win, settingsService, eventLogService);
+    new EmulatorLaunchService(win, settingsService, eventLogService);
 
-    const emulatorHardwareService = new EmulatorHardwareService(win, settingsService);
+    new EmulatorHardwareService(win, settingsService);
 
-    new OpenmsxControlService(win);
+    new OpenMSXControlService(win);
 
     //services that are rare to execute and have internal state -> create new instance per request
     ipcMain.on('scan', (event, directories: string[], listing: string, machine: string) => {

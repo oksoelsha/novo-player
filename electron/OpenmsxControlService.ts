@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron';
-import { OpenmsxConnector } from './OpenMSXConnector';
+import { OpenMSXConnector } from './OpenMSXConnector';
 
-export class OpenmsxControlService {
+export class OpenMSXControlService {
 
     constructor(private win: BrowserWindow) {
         this.init();
@@ -38,7 +38,7 @@ export class OpenmsxControlService {
     }
 
     private async executeCommandOnOpenmsx(pid: number, command: string) {
-        const openmsxConnector = new OpenmsxConnector(pid);
+        const openmsxConnector = new OpenMSXConnector(pid);
 
         await openmsxConnector.connect();
         openmsxConnector.sendCommand(command);

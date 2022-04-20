@@ -1,21 +1,19 @@
-import * as net from 'net';
-import * as os from 'os';
 import * as fs from 'fs';
-import * as util from 'util';
-import * as path from 'path';
-//import { parseString } from 'xml2js';
+import * as net from 'net';
 import { htonl, ntohl } from 'network-byte-order';
-
 import * as NES from 'node-expose-sspi-strict';
+import * as os from 'os';
+import * as path from 'path';
+import { PlatformUtils } from './utils/PlatformUtils';
 
 let nes: typeof NES;
-if (os.platform() == "win32") {
+if (PlatformUtils.isWindows()) {
 	nes = require('node-expose-sspi-strict');
 }
 
 // This class was based on the following implementation:
 // https://github.com/S0urceror/DeZog/blob/master/src/remotes/openmsx/openmsxremote.ts
-export class OpenmsxConnector {
+export class OpenMSXConnector {
 	openmsx: net.Socket;
 	pid: number;
 	connected: boolean;
@@ -44,15 +42,15 @@ export class OpenmsxConnector {
 //			this.handleOpenMSXResponse(data);
 		});
 
-		if (os.platform() == "win32") {
+		if (PlatformUtils.isWindows()) {
 			await this.authorize();
 		}
 
-		this.openmsx.write("<openmsx-control>");
+		this.openmsx.write('<openmsx-control>');
 	}
 
 	sendCommand(cmd: string) {
-		this.openmsx.write("<command>" + cmd + "</command>");
+		this.openmsx.write('<command>' + cmd + '</command>');
 	}
 
 	disconnect() {
@@ -66,21 +64,15 @@ export class OpenmsxConnector {
 		return new Promise<net.Socket>(async (resolve, reject) => {
 			try {
 				let username: string;
-				if (os.platform() == 'win32') {
+				if (PlatformUtils.isWindows()) {
 					username = 'default';
 				} else {
 					username = os.userInfo().username;
 				}
 
 				let folder = path.join(os.tmpdir(), 'openmsx-' + username);
-				const readDir = util.promisify(fs.readdir);
-				const filenames = await readDir(folder);
-				if (filenames.length == 0) {
-					reject(new Error(`OpenMSX not running`));
-				}
-
-				var socketpath: string = path.join(folder, 'socket.' + this.pid);
-				if (os.platform() != 'win32') {
+				let socketpath: string = path.join(folder, 'socket.' + this.pid);
+				if (!PlatformUtils.isWindows()) {
 					const client = net.createConnection(socketpath);
 					var timer = setTimeout(function () {
 						client.destroy();
@@ -89,14 +81,14 @@ export class OpenmsxConnector {
 					client.on('connect', () => {
 						clearTimeout(timer);
 						resolve(client);
-					})
+					});
 					client.on('error', (err: Error) => {
 						try {
 							fs.unlinkSync(socketpath);
 						} catch (er) {
 							//ignore
 						}
-					})
+					});
 				} else {
 					let ports: Buffer = fs.readFileSync(socketpath);
 					let port = Number.parseInt(ports.toString());
@@ -108,17 +100,17 @@ export class OpenmsxConnector {
 					client.on('connect', () => {
 						clearTimeout(timer);
 						resolve(client);
-					})
+					});
 					client.on('error', (err: Error) => {
 						try {
 							fs.unlinkSync(socketpath);
 						} catch (er) {
 							//ignore
 						}
-					})
+					});
 				}
 			} catch {
-				reject(new Error("Error connecting to OpenMSX"));
+				reject(new Error('Error connecting to OpenMSX'));
 			}
 		});
 	}
@@ -140,8 +132,9 @@ export class OpenmsxConnector {
 				let len: number = ntohl(buflen, 0);
 				let chunk: Buffer;
 				while (null == (chunk = this.openmsx.read(len))) { };
-				if (len != chunk.byteLength)
+				if (len != chunk.byteLength) {
 					reject(new Error(`Not the expected length ${len}:${chunk.byteLength}`));
+				}
 				resolve(chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.byteLength));
 			});
 		})
@@ -156,18 +149,18 @@ export class OpenmsxConnector {
 			} as NES.AcquireCredHandleInput;
 
 			const clientCred = nes.sspi.AcquireCredentialsHandle(credInput);
-			const packageInfo = nes.sspi.QuerySecurityPackageInfo("Negotiate");
+			const packageInfo = nes.sspi.QuerySecurityPackageInfo('Negotiate');
 
 			///////////////////////////////////////////////
 			// CHALLENGE
 			var input: NES.InitializeSecurityContextInput = {
 				credential: clientCred.credential,
-				targetName: "",
+				targetName: '',
 				cbMaxToken: packageInfo.cbMaxToken
 			};
 			let clientSecurityContext = nes.sspi.InitializeSecurityContext(input);
 			if (clientSecurityContext.SECURITY_STATUS !== 'SEC_I_CONTINUE_NEEDED') {
-				throw new Error("Authentication error");
+				throw new Error('Authentication error');
 			}
 			let len: number = clientSecurityContext.SecBufferDesc.buffers[0].byteLength;
 			var blen: Uint8Array = new Uint8Array(4);
@@ -188,7 +181,7 @@ export class OpenmsxConnector {
 			// RESPONSE
 			input = {
 				credential: clientCred.credential,
-				targetName: "",
+				targetName: '',
 				serverSecurityContext: {
 					SecBufferDesc: {
 						ulVersion: 0,
@@ -221,9 +214,9 @@ export class OpenmsxConnector {
 /*
 	private async handleOpenMSXResponse(data: Buffer) {
 		let str: string = data.toString();
-		if (str.indexOf("<openmsx-output>") == 0) {
+		if (str.indexOf('<openmsx-output>') == 0) {
 		} else {
-			if (str.indexOf("<openmsx>") == 0) {
+			if (str.indexOf('<openmsx>') == 0) {
 				let v: any = await this.parse(`<openmsx>${str}</openmsx>`);
 				if (v.openmsx.reply != undefined) {
 					for (let r of v.openmsx.reply) {

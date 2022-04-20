@@ -51,15 +51,15 @@ export class PlatformUtils {
         }
     }
 
-    private static isWindows(): boolean {
+    static isWindows(): boolean {
         return os.platform() == 'win32';
     }
 
-    private static isLinux(): boolean {
+    static isLinux(): boolean {
         return os.platform() == 'linux';
     }
 
-    private static isMacOS(): boolean {
+    static isMacOS(): boolean {
         return os.platform() == 'darwin';
     }
 
