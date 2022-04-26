@@ -81,8 +81,9 @@
       </table>
       <div id="games-table-data" tabindex="0" (keydown)="processKeyEventsOnTable($event)">
         <table>
-          <tr *ngFor="let game of games" (click)="showInfo(game)" id="{{ game.sha1Code }}"
-            class="{{ game | selectedGameClass : selectedGame }}" (contextmenu)="onContextMenu($event, game)">
+          <tr *ngFor="let game of games" (click)="processClickOnGame($event, game)" id="{{ game.sha1Code }}"
+            class="{{ game | selectedGameClass : selectedGame : otherSelectedGames }}"
+            (contextmenu)="onContextMenu($event, game)">
             <td class="medium-img"><img src="{{ game | gameMediumIcon }}" draggable="false"></td>
             <ng-container *ngIf="(game | editRowMode : gameToRename); else editRow">
               <td class="name">
@@ -96,12 +97,12 @@
             </ng-template>
             <td class="company">{{ game.company }}</td>
             <td class="year">{{ game.year }}</td>
-            <td>
+            <td class="cell-actions">
               <span>
                 <img src="assets/images/operations/play.png" (click)="launch(game)" placement="top"
                   [ngbTooltip]="'home.launchonopenmsx' | translate" draggable="false">
-                <img src="assets/images/operations/remove.png" (click)="remove($event, game)" placement="top"
-                  [ngbTooltip]="'home.removefromlisting' | translate" draggable="false">
+                <img src="assets/images/operations/remove.png" *ngIf="otherSelectedGames.size == 0" (click)="remove($event, game)"
+                  placement="top" [ngbTooltip]="'home.removefromlisting' | translate" draggable="false">
               </span>
             </td>
           </tr>
@@ -125,10 +126,12 @@
             {{ 'home.launch' | translate }}
           </button>
           <div ngbDropdownMenu>
-            <button ngbDropdownItem type="button" (click)="launch(selectedGame)" [disabled]="!isOpenMSXPathDefined">
+            <button [disabled]="otherSelectedGames.size > 0" ngbDropdownItem type="button"
+              (click)="launch(selectedGame)" [disabled]="!isOpenMSXPathDefined">
               {{ 'home.onopenmsx' | translate }}
             </button>
-            <button ngbDropdownItem type="button" (click)="launchWebmsx(selectedGame)" [disabled]="!isWebMSXPathDefined">
+            <button [disabled]="otherSelectedGames.size > 0" ngbDropdownItem type="button"
+              (click)="launchWebmsx(selectedGame)" [disabled]="!isWebMSXPathDefined">
               {{ 'home.onwebmsx' | translate }}
             </button>
           </div>
@@ -138,28 +141,34 @@
             {{ 'home.actions' | translate }}
           </button>
           <div ngbDropdownMenu>
-            <button ngbDropdownItem type="button" (click)="edit(selectedGame)">
+            <button [disabled]="otherSelectedGames.size > 0" ngbDropdownItem type="button" (click)="edit(selectedGame)">
               {{ 'common.rename' | translate }}
             </button>
-            <button ngbDropdownItem type="button" (click)="mediaEdit.open()">
+            <button [disabled]="otherSelectedGames.size > 0" ngbDropdownItem type="button" (click)="mediaEdit.open()">
               {{ 'home.editmedia' | translate }}
             </button>
-            <button ngbDropdownItem type="button" (click)="hardwareEdit.open()">
+            <button [disabled]="otherSelectedGames.size > 0" ngbDropdownItem type="button"
+              (click)="hardwareEdit.open()">
               {{ 'home.edithardware' | translate }}
             </button>
             <div class="dropdown-divider"></div>
-            <button *ngIf="!selectedGame.favorite" ngbDropdownItem type="button" (click)="setFavoritesFlag(true)">
+            <button [disabled]="otherSelectedGames.size > 0" *ngIf="!selectedGame.favorite" ngbDropdownItem
+              type="button" (click)="setFavoritesFlag(true)">
               {{ 'home.addtofavorites' | translate }}
             </button>
-            <button *ngIf="selectedGame.favorite" ngbDropdownItem type="button" (click)="setFavoritesFlag(false)">
+            <button [disabled]="otherSelectedGames.size > 0" *ngIf="selectedGame.favorite" ngbDropdownItem type="button"
+              (click)="setFavoritesFlag(false)">
               {{ 'home.removefromfavorites' | translate }}
+            </button>
+            <button ngbDropdownItem type="button" (click)="remove(null, selectedGame)">
+              {{ 'home.removefromlisting' | translate }}
             </button>
             <button ngbDropdownItem type="button" (click)="changeListing.open()">
               {{ 'home.movetoanotherlisting' | translate }}
             </button>
           </div>
         </div>
-        <div *ngIf="musicFiles.length > 0" class="d-inline-block">
+        <div *ngIf="musicFiles.length > 0 && otherSelectedGames.size == 0" class="d-inline-block">
           <div class="d-inline-block" ngbDropdown (openChange)="handleOpenMenuEvents($event); musicMenuOpen = $event;">
             <button class="btn btn-secondary btn-sm" ngbDropdownToggle type="button">
               &#9836;
@@ -169,10 +178,11 @@
                 (click)="setSelectedMusicFile(musicFile)">
                 {{ getMusicName(musicFile) }}
               </button>
-            </div>    
+            </div>
           </div>
           <div class="d-inline-block">
-            <app-home-game-music [musicUrl]="selectedMusicFile" [title]="getMusicName(selectedMusicFile)"></app-home-game-music>
+            <app-home-game-music [musicUrl]="selectedMusicFile" [title]="getMusicName(selectedMusicFile)">
+            </app-home-game-music>
           </div>
         </div>
         <div id="game-details">
@@ -212,15 +222,17 @@
   </ng-template>
 </app-popup>
 
-<app-popup popupId="change-listing-id" [titleHeader]="'home.movetoanotherlisting' | translate" (openStatus)="popupOpen = $event">
+<app-popup popupId="change-listing-id" [titleHeader]="'home.movetoanotherlisting' | translate"
+  (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-change-listing [popupId]="popupId" (openStatus)="popupOpen = $event" [game]="selectedGame"
-      [listings]="listings" (updatedGame)="move(selectedGame, $event)" #changeListing>
+      [listings]="listings" (newListing)="move(selectedGame, $event)" #changeListing>
     </app-change-listing>
   </ng-template>
 </app-popup>
 
-<app-popup popupId="manage-listings-id" [titleHeader]="'home.managelistings' | translate" (openStatus)="popupOpen = $event">
+<app-popup popupId="manage-listings-id" [titleHeader]="'home.managelistings' | translate"
+  (openStatus)="popupOpen = $event">
   <ng-template let-popupId="popupId">
     <app-manage-listings [popupId]="popupId" (openStatus)="popupOpen = $event" [listings]="listings"
       (updatedListing)="updateListings($event)" #manageListings></app-manage-listings>
@@ -228,7 +240,7 @@
 </app-popup>
 
 <context-menu (close)="contextMenuOpened = false" [menuClass]="'context-menu'">
-  <ng-template contextMenuItem [subMenu]="launchSubMenu">
+  <ng-template contextMenuItem [visible]="isMenuItemVisible" [subMenu]="launchSubMenu">
     {{ 'home.launch' | translate }}
   </ng-template>
   <context-menu #launchSubMenu>
@@ -239,23 +251,26 @@
       {{ 'home.onwebmsx' | translate }}
     </ng-template>
   </context-menu>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem (execute)="edit($event.item)">
+  <ng-template contextMenuItem [visible]="isMenuItemVisible" divider="true"></ng-template>
+  <ng-template contextMenuItem [visible]="isMenuItemVisible" (execute)="edit($event.item)">
     {{ 'common.rename' | translate }}
   </ng-template>
-  <ng-template contextMenuItem (execute)="mediaEdit.open()">
+  <ng-template contextMenuItem [visible]="isMenuItemVisible" (execute)="mediaEdit.open()">
     {{ 'home.editmedia' | translate }}
   </ng-template>
-  <ng-template contextMenuItem (execute)="hardwareEdit.open()">
+  <ng-template contextMenuItem [visible]="isMenuItemVisible" (execute)="hardwareEdit.open()">
     {{ 'home.edithardware' | translate }}
   </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
+  <ng-template contextMenuItem [visible]="isMenuItemVisible" divider="true"></ng-template>
   <ng-template contextMenuItem [visible]="isMenuItemAddFavorite" (execute)="setFavoritesFlag(true)">
     {{ 'home.addtofavorites' | translate }}
   </ng-template>
   <ng-template contextMenuItem [visible]="isMenuItemRemoveFavorite" (execute)="setFavoritesFlag(false)">
     {{ 'home.removefromfavorites' | translate }}
   </ng-template>
+  <ng-template contextMenuItem (execute)="remove(null, $event.item)">
+    {{ 'home.removefromlisting' | translate }}
+  </ng-template>  
   <ng-template contextMenuItem (execute)="changeListing.open()">
     {{ 'home.movetoanotherlisting' | translate }}
   </ng-template>

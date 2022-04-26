@@ -67,6 +67,7 @@ export class HomeComponent implements OnInit {
   games: Game[] = [];
   editedGameName: string;
   selectedGame: Game;
+  otherSelectedGames: Set<Game> = new Set<Game>();
   gameToRename: Game;
   screenshotA1: GameSecondaryData;
   screenshotA2: GameSecondaryData;
@@ -331,16 +332,32 @@ export class HomeComponent implements OnInit {
   }
 
   remove(event: any, game: Game) {
-    event.stopPropagation();
-    this.gamesService.removeGame(game).then((removed: boolean) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    const gamesToRemove = this.getAllSelectedGames(game);
+    this.gamesService.removeGames(gamesToRemove).then((removed: boolean) => {
       if (removed) {
-        this.alertService.success(this.localizationService.translate('home.gamewasremoved') + ': ' + game.name);
-        if (this.selectedGame != null && game.sha1Code === this.selectedGame.sha1Code) {
+        if (this.otherSelectedGames.size == 0) {
+          this.alertService.success(this.localizationService.translate('home.gamewasremoved') + ': ' + game.name);
+        } else {
+          this.alertService.success(this.localizationService.translate('home.gameswereremoved'));
+        }
+        if (game === this.selectedGame) {
+          // remove() request may come from the actions menu which will be removed from the DOM after calling
+          // initialize(). Therefore, we need to decrement the open menus count here
+          if (this.openMenuEventCounter > 0) {
+            this.openMenuEventCounter--;
+          }
           this.initialize();
         }
-        this.removeGameFromList(game);
+        this.removeGamesFromList(gamesToRemove);
       } else {
-        this.alertService.failure(this.localizationService.translate('home.gamewasnotremoved') + ': ' + game.name);
+        if (this.otherSelectedGames.size == 0) {
+          this.alertService.failure(this.localizationService.translate('home.gamewasnotremoved') + ': ' + game.name);
+        } else {
+          this.alertService.failure(this.localizationService.translate('home.gameswerenotremoved'));
+        }
       }
     });
   }
@@ -411,13 +428,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  move(oldGame: Game, newGame: Game) {
-    this.gamesService.updateGame(oldGame, newGame).then(() => {
-      this.alertService.success(this.localizationService.translate('home.gamewasmoved') + ': ' + newGame.name + ' -> '
-        + newGame.listing);
-      this.removeGameFromList(oldGame);
-      this.initialize();
-      this.addListingToListings(newGame.listing);
+  move(game: Game, newListing: string) {
+    const gamesToMove = this.getAllSelectedGames(game);
+    this.gamesService.moveGames(gamesToMove, newListing).then(() => {
+      if (this.otherSelectedGames.size == 0) {
+        this.alertService.success(this.localizationService.translate('home.gamewasmoved') + ': ' + game.name);
+      } else {
+        this.alertService.success(this.localizationService.translate('home.gamesweremoved'));
+      }
+    if (game === this.selectedGame) {
+        // move() request may come from the actions menu which will be removed from the DOM after calling
+        // initialize(). Therefore, we need to decrement the open menus count here
+        if (this.openMenuEventCounter > 0) {
+          this.openMenuEventCounter--;
+        }
+        this.initialize();
+      }
+      this.removeGamesFromList(gamesToMove);
+      this.addListingToListings(newListing);
     });
   }
 
@@ -460,8 +488,29 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  processClickOnGame(event: any, game: Game) {
+    if (game === this.selectedGame) {
+      return;
+    }
+    if (this.ctrlOrCommandKey(event)) {
+      if (!this.selectedGame) {
+        this.showInfo(game);
+      } else {
+        this.otherSelectedGames = new Set<Game>(this.otherSelectedGames);
+        if (this.otherSelectedGames.has(game)) {
+          this.otherSelectedGames.delete(game);
+        } else {
+          this.otherSelectedGames.add(game);
+        }
+      }
+    } else {
+      this.showInfo(game);
+    }
+  }
+
   showInfo(game: Game) {
     this.selectedGame = game;
+    this.otherSelectedGames.clear();
     sessionStorage.setItem('selectedGame', JSON.stringify(game));
     this.adjustScrollForSelectedGame(game);
     this.gamesService.getSecondaryData(game).then((secondaryData) => {
@@ -491,7 +540,9 @@ export class HomeComponent implements OnInit {
 
   onContextMenu($event: MouseEvent, game: Game): void {
     this.contextMenuOpened = true;
-    this.showInfo(game);
+    if (game !== this.selectedGame && !this.otherSelectedGames.has(game)) {
+      this.showInfo(game);
+    }
     this.contextMenuService.show.next({
       contextMenu: this.rightClickMenu,
       event: $event,
@@ -501,12 +552,18 @@ export class HomeComponent implements OnInit {
     $event.stopPropagation();
   }
 
+  isMenuItemVisible = (game: Game): boolean => {
+    return !(this.otherSelectedGames.has(game) || (game === this.selectedGame && this.otherSelectedGames.size > 0));
+  }
+
   isMenuItemAddFavorite = (game: Game): boolean => {
-    return !game?.favorite;
+    return !game?.favorite &&
+      !(this.otherSelectedGames.has(game) || (game === this.selectedGame && this.otherSelectedGames.size > 0));
   }
 
   isMenuItemRemoveFavorite = (game: Game): boolean => {
-    return game?.favorite;
+    return game?.favorite &&
+      !(this.otherSelectedGames.has(game) || (game === this.selectedGame && this.otherSelectedGames.size > 0));
   }
 
   startScan(parameters: ScanParameters) {
@@ -613,12 +670,33 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  private removeGamesFromList(games: Game[]) {
+    games.forEach(game => {
+      this.removeGameFromList(game);
+    });
+  }
+
   private removeGameFromList(game: Game, switchListingIfLastGameInCurrentListing: boolean = true) {
     this.games.splice(this.games.findIndex((e) => e.sha1Code === game.sha1Code), 1);
+    this.otherSelectedGames.clear();
 
     if (switchListingIfLastGameInCurrentListing && this.games.length === 0) {
       this.switchListingIfCurrentIsEmpty();
     }
+  }
+
+  private getAllSelectedGames(game: Game) {
+    const gamesToRemove: Game[] = [];
+    if (game === this.selectedGame || this.otherSelectedGames.has(game)) {
+      // this means that this game is one of the selected games
+      gamesToRemove.push(this.selectedGame);
+      this.otherSelectedGames.forEach(otherGame => {
+        gamesToRemove.push(otherGame);
+      });
+    } else {
+      gamesToRemove.push(game);
+    }
+    return gamesToRemove;
   }
 
   private switchListingIfCurrentIsEmpty() {

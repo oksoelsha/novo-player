@@ -12,7 +12,7 @@ export class ChangeListingComponent extends PopupComponent {
   @Input() popupId: string;
   @Input() game: Game;
   @Input() listings: string[];
-  @Output() updatedGame: EventEmitter<Game> = new EventEmitter<Game>();
+  @Output() newListing: EventEmitter<string> = new EventEmitter<string>();
 
   destinationListings: string[] = [];
   selectedListing = '';
@@ -38,10 +38,7 @@ export class ChangeListingComponent extends PopupComponent {
   }
 
   move() {
-    const updatedGame: Game = Object.assign({}, this.game);
-    updatedGame.listing = this.selectedListing;
-
-    this.updatedGame.emit(updatedGame);
+    this.newListing.emit(this.selectedListing);
 
     this.close();
   }

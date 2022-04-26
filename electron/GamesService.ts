@@ -26,7 +26,7 @@ export class GamesService {
 
     saveGameFromScan(game: Game): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            var gameDO: GameDO = new GameDO(game);
+            let gameDO: GameDO = new GameDO(game);
             this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
                 return resolve(err == null);
             });
@@ -46,12 +46,16 @@ export class GamesService {
             this.saveGame(game);
         });
 
-        ipcMain.on('removeGame', (event, game: Game) => {
-            this.removeGame(game);
+        ipcMain.on('removeGames', (event, games: Game[]) => {
+            this.removeGames(games);
         });
 
         ipcMain.on('updateGame', (event, oldGame: Game, newGame: Game) => {
             this.updateGame(oldGame, newGame);
+        });
+
+        ipcMain.on('moveGames', (event, games: Game[], newListing: string) => {
+            this.moveGames(games, newListing);
         });
 
         ipcMain.on('getTotals', (event, arg) => {
@@ -80,26 +84,51 @@ export class GamesService {
     }
 
     private saveGame(game: Game) {
-        var self = this;
-        var gameDO: GameDO = new GameDO(game);
+        let self = this;
+        let gameDO: GameDO = new GameDO(game);
         this.database.insert(gameDO, function (err: any, savedGame: GameDO) {
             self.win.webContents.send('saveGameResponse', err == null);
         });
     }
 
-    private removeGame(game: Game) {
-        var self = this;
-        this.database.remove({ _id: game.sha1Code }, {}, function (err: any, numRemoved: number) {
-            self.win.webContents.send('removeGameResponse', numRemoved == 1);
+    private removeGames(games: Game[]) {
+        let self = this;
+        let totalAttemptedRemoves: number = 0;
+        let totalRemoved: number = 0;
+        games.forEach(game => {
+            this.database.remove({ _id: game.sha1Code }, {}, function (err: any, numRemoved: number) {
+                totalRemoved = totalRemoved + numRemoved;
+                totalAttemptedRemoves++;
+                if (totalAttemptedRemoves == games.length) {
+                    self.win.webContents.send('removeGamesResponse', totalRemoved == games.length);
+                }
+            });
+        });
+    }
+
+    private moveGames(games: Game[], newListing: string) {
+        let self = this;
+        let totalAttemptedMoves: number = 0;
+        let totalMoved: number = 0;
+        games.forEach(game => {
+            let gameDO: GameDO = new GameDO(game);
+            gameDO.listing = newListing;
+            this.database.update({ _id: game.sha1Code }, gameDO, {}, function (err: any, numMoved: number) {
+                totalMoved = totalMoved + numMoved;
+                totalAttemptedMoves++;
+                if (totalAttemptedMoves == games.length) {
+                    self.win.webContents.send('moveGamesResponse', totalMoved == games.length);
+                }
+            });
         });
     }
 
     private getListings() {
-        var self = this;
+        let self = this;
         let listings: string[] = [];
         let tempSet = new Set();
         this.database.find({}, function (err: any, entries: any) {
-            for (var entry of entries) {
+            for (let entry of entries) {
                 if (!tempSet.has(entry.listing)) {
                     tempSet.add(entry.listing);
                     listings.push(entry.listing);
@@ -111,14 +140,14 @@ export class GamesService {
     }
 
     private getGames(listing: string) {
-        var self = this;
+        let self = this;
         let games: Game[] = [];
         this.database.find({ listing: listing }, function (err: any, entries: any) {
-            for (var entry of entries) {
+            for (let entry of entries) {
                 let gameDO: GameDO = new GameDO(entry);
                 let game: Game = new Game(entry.name, entry._id, entry.size);
 
-                for (var field of PersistenceUtils.fieldsToPersist) {
+                for (let field of PersistenceUtils.fieldsToPersist) {
                     if (gameDO[field] != game[field]) {
                         game[field] = gameDO[field];
                     }
@@ -145,8 +174,8 @@ export class GamesService {
     }
 
     private updateGame(oldGame: Game, newGame: Game) {
-        var self = this;
-        var gameDO: GameDO = new GameDO(newGame);
+        let self = this;
+        let gameDO: GameDO = new GameDO(newGame);
 
         if (this.getGameMainFile(oldGame) == this.getGameMainFile(newGame)) {
             this.database.update({ _id: oldGame.sha1Code }, gameDO, {}, function () {
@@ -188,7 +217,7 @@ export class GamesService {
     }
 
     private getTotals() {
-        var self = this;
+        let self = this;
         let totals: Totals;
         let listings:number = 0;
         let games:number = 0;
@@ -200,7 +229,7 @@ export class GamesService {
         let tempSet = new Set();
         this.database.find({}, function (err: any, entries: any) {
             games = entries.length;
-            for (var entry of entries) {
+            for (let entry of entries) {
                 if (!tempSet.has(entry.listing)) {
                     tempSet.add(entry.listing);
                     listings++;
@@ -225,13 +254,13 @@ export class GamesService {
     }
 
     private search(text: string) {
-        var self = this;
+        let self = this;
         let games: Game[] = [];
         let sanitizedText: string = text.replace(/[(){}[\]\\?|]/g,'');
 
         this.database.find({$or: [{name:{$regex: new RegExp(sanitizedText, 'i') }}, {_id:{$regex: new RegExp('^' + sanitizedText, 'i')}}]}, function (err: any, entries: any) {
             let index: number = 0;
-            for (var entry of entries) {
+            for (let entry of entries) {
                 let gameDO: GameDO = new GameDO(entry);
                 let game: Game = new Game(entry.name, entry._id, entry.size);
                 game.setListing(gameDO.listing);
@@ -248,31 +277,31 @@ export class GamesService {
     }
 
     private renameListing(oldName: string, newName: string) {
-        var self = this;
+        let self = this;
         this.database.update({ listing: oldName }, { $set: { listing: newName } }, { multi: true }, function () {
             self.win.webContents.send('renameListingResponse');
         });
     }
 
     private deleteListing(name: string) {
-        var self = this;
+        let self = this;
         this.database.remove({ listing: name }, { multi: true }, function () {
             self.win.webContents.send('deleteListingResponse', true);
         });
     }
 
     private setFavoritesFlag(game: Game, flag: boolean) {
-        var self = this;
+        let self = this;
         this.database.update({ _id: game.sha1Code }, { $set: { favorite: flag } }, {}, function () {
             self.win.webContents.send('setFavoritesFlagResponse', false);
         });
     }
 
     private getFavorites() {
-        var self = this;
+        let self = this;
         let favorites: Game[] = [];
         this.database.find({ favorite: true }, function (err: any, entries: any) {
-            for (var entry of entries) {
+            for (let entry of entries) {
                 let gameDO: GameDO = new GameDO(entry);
                 let game: Game = new Game(entry.name, entry._id, entry.size);
                 game.setListing(gameDO.listing);

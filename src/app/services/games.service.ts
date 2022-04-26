@@ -59,15 +59,33 @@ export class GamesService {
     });
   }
 
-  async removeGame(game: Game) {
+  async removeGames(gamesToRemove: Game[]) {
     return new Promise<boolean>((resolve, reject) => {
-      this.ipc.once('removeGameResponse', (event, removed: boolean) => {
+      this.ipc.once('removeGamesResponse', (event, removed: boolean) => {
         if (removed) {
-          this.undoService.addToHistory(game);
+          gamesToRemove.forEach(game => {
+            this.undoService.addToHistory(game);
+          });
         }
         resolve(removed);
       });
-      this.ipc.send('removeGame', game);
+      this.ipc.send('removeGames', gamesToRemove);
+    });
+  }
+
+  async moveGames(gamesToMove: Game[], newListing: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.ipc.once('moveGamesResponse', (event, moved: boolean) => {
+        if (moved) {
+          gamesToMove.forEach(game => {
+            const updatedGame: Game = Object.assign({}, game);
+            updatedGame.listing = newListing;
+            this.undoService.addToHistory(game, updatedGame);
+          });
+        }
+        resolve(moved);
+      });
+      this.ipc.send('moveGames', gamesToMove, newListing);
     });
   }
 
