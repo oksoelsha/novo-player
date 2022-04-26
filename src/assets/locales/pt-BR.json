@@ -75,11 +75,12 @@
   },
   "language": {
     "en-US": "Inglês",
-    "es-ES": "Espanhol",
-    "pt-BR": "Português",
+    "nl-NL": "Holandês",
     "fr-FR": "Francês",
     "it-IT": "Italiano",
-    "ja-JP": "Japonês"
+    "ja-JP": "Japonês",
+    "pt-BR": "Português",
+    "es-ES": "Espanhol"
   },
   "medium": {
     "rom": "ROM",

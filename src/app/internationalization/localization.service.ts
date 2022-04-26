@@ -7,11 +7,12 @@ import { Subject } from 'rxjs';
 export class LocalizationService {
   public static readonly Languages = [
     'en-US',
-    'es-ES',
-    'pt-BR',
+    'nl-NL',
     'fr-FR',
     'it-IT',
-    'ja-JP'
+    'ja-JP',
+    'pt-BR',
+    'es-ES'
   ];
   private languageSetSubject = new Subject<any>();
 
